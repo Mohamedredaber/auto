@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Laravel\Sanctum\HasApiTokens;
 return new class extends Migration {
+    use HasApiTokens;
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -17,7 +18,6 @@ return new class extends Migration {
             $table->string('password');
 
             $table->string('phone');
-            
             $table->enum('role', [
                 'super_admin',
                 'admin_agence',
