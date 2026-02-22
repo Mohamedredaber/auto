@@ -1,33 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required'
-    ]);
+    public function register(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name'  => 'required',
+            'email'      => 'required|email|unique:users',
+            'password'   => 'required|min:6',
+            'phone'      => 'required'
+        ]);
 
-    if (!Auth::attempt($request->only('email', 'password'))) {
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'email'      => $request->email,
+            'password'   => Hash::make($request->password),
+            'phone'      => $request->phone,
+            'role'       => 'client'
+        ]);
+
         return response()->json([
-            'message' => 'Identifiants incorrects'
-        ], 401);
+            'status' => true,
+            'message' => 'Utilisateur créé avec succès',
+            'user' => $user
+        ], 201);
     }
-
-    $user = Auth::user();
-
-    // Création du token
-    $token = $user->createToken('auth_token')->plainTextToken;
-
-    return response()->json([
-        'status' => true,
-        'token' => $token,
-        'user' => $user
-    ]);
-}
 }
