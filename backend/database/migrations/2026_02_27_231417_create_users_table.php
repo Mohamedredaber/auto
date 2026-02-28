@@ -3,28 +3,21 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Laravel\Sanctum\HasApiTokens;
-return new class extends Migration {
-    use HasApiTokens;
+
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-
             $table->string('first_name');
             $table->string('last_name');
-
             $table->string('email')->unique();
             $table->string('password');
-
             $table->string('phone');
-            $table->enum('role', [
-                'super_admin',
-                'admin_agence',
-                'employe_agence',
-                'client'
-            ])->default('client');
+            $table->enum('role', ['client', 'admin_agency', 'super_admin'])->default('client');
 
+            // Lié à agencies — null si c'est un client
             $table->foreignId('agency_id')
                   ->nullable()
                   ->constrained('agencies')
@@ -38,4 +31,4 @@ return new class extends Migration {
     {
         Schema::dropIfExists('users');
     }
-};
+}; 

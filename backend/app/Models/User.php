@@ -18,7 +18,7 @@ class User extends Authenticatable
         'password',
         'phone',
         'role',
-        'agency_id'
+        'agency_id',
     ];
 
     protected $hidden = [
@@ -27,13 +27,34 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed', // Laravel 10+ hash automatique
+        
+        'password' => 'hashed',
     ];
 
-    // 🔹 Relation avec agence
-    public function agency()
+    // ── Relations ──────────────────────────────────────────
+    public function agency(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Agency::class);
+    }
+
+    // ── Helpers ────────────────────────────────────────────
+    public function isClient(): bool
+    {
+        return $this->role === 'client';
+    }
+
+    public function isAgencyAdmin(): bool
+    {
+        return $this->role === 'admin_agency';
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin';
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return trim("{$this->first_name} {$this->last_name}");
     }
 }
