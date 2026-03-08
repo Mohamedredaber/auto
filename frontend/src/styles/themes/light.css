@@ -1,0 +1,11 @@
+[data-theme="light"] {
+
+  --bg-main: var(--color-white);
+  --bg-card: var(--color-gray-100);
+
+  --text-main: #111827;
+  --text-secondary: #4b5563;
+
+  --border-color: #e5e7eb;
+
+}
