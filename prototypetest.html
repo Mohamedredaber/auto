@@ -1,0 +1,3164 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AutoConnect — Location de Voitures Premium au Maroc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ══════════════════════════════════════════════
+   ROOT — palette Mercedes-inspired + red scale
+══════════════════════════════════════════════ */
+      :root {
+        /* BG */
+        --bg-main: #0a0c10;
+        --bg-nav: #080a0d;
+        --bg-hero: #0d1520;
+        --bg-section: #0e1016;
+        --bg-card: #13161e;
+        --bg-card-hover: #191d28;
+        --bg-input: #141820;
+
+        /* TEXT */
+        --tx: #ffffff;
+        --tx-2: #c8cdd6;
+        --tx-3: #8892a0;
+        --tx-4: #4a5568;
+
+        /* BLUE ACCENTS */
+        --blue: #2a5298;
+        --blue-bright: #3b82f6;
+        --blue-glow: rgba(42, 100, 180, 0.3);
+        --silver: #a8b4c0;
+
+        /* RED SCALE (premium, désaturé→vif) */
+        --red-100: #2d0c0f;
+        --red-200: #4a1015;
+        --red-300: #7a1a20;
+        --red-400: #a01e26;
+        --red-500: #c0272f;
+        --red-600: #d4323a;
+        --red-700: #e63f47;
+        --red-800: #f15a5a;
+        --red-glow-sm: rgba(192, 39, 47, 0.12);
+        --red-glow-md: rgba(192, 39, 47, 0.22);
+        --red-glow-lg: rgba(192, 39, 47, 0.38);
+
+        /* BORDERS */
+        --bd: #1e2530;
+        --bd-2: #252d3a;
+
+        /* MISC */
+        --r-sm: 8px;
+        --r-md: 12px;
+        --r-lg: 16px;
+        --r-xl: 24px;
+        --r-pill: 100px;
+        --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        --sh: 0 8px 32px rgba(0, 0, 0, 0.55);
+        --sh-red: 0 8px 32px var(--red-glow-md);
+
+        --f-d: "Syne", sans-serif;
+        --f-b: "Outfit", sans-serif;
+        --f-m: "JetBrains Mono", monospace;
+      }
+
+      /* ══════════════════════════════════════════════
+   RESET
+══════════════════════════════════════════════ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg-main);
+        color: var(--tx);
+        font-family: var(--f-b);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        outline: none;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+        object-fit: cover;
+      }
+      ::selection {
+        background: var(--red-glow-md);
+        color: var(--red-700);
+      }
+      ::-webkit-scrollbar {
+        width: 3px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--red-500);
+        border-radius: 2px;
+      }
+
+      /* ══════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════ */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.75);
+        }
+      }
+      @keyframes glowBtn {
+        0%,
+        100% {
+          box-shadow: 0 0 18px var(--red-glow-sm);
+        }
+        50% {
+          box-shadow: 0 0 36px var(--red-glow-md);
+        }
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-12px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes cardReveal {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes lineGrow {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+      @keyframes spinSlow {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        height: 64px;
+        background: rgba(8, 10, 13, 0.95);
+        backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        padding: 0 40px;
+        gap: 32px;
+        animation: slideDown 0.4s var(--ease) both;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--f-d);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--tx);
+        flex-shrink: 0;
+      }
+      .nav-logo-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--red-500);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 16px var(--red-glow-sm);
+        position: relative;
+        overflow: hidden;
+      }
+      .nav-logo-icon::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.2) 0%,
+          transparent 60%
+        );
+      }
+      .nav-logo span {
+        color: var(--red-700);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex: 1;
+      }
+      .nav-link {
+        padding: 7px 14px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--tx-3);
+        border-radius: var(--r-sm);
+        transition:
+          color 0.2s,
+          background 0.2s;
+      }
+      .nav-link:hover {
+        color: var(--tx);
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .nav-link.active {
+        color: var(--red-700);
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+      }
+      .btn-nav-login {
+        padding: 8px 20px;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--tx);
+        background: transparent;
+        border: 1.5px solid var(--bd-2);
+        border-radius: var(--r-pill);
+        transition: all 0.2s;
+      }
+      .btn-nav-login:hover {
+        border-color: var(--red-500);
+        color: var(--red-700);
+      }
+      .btn-nav-signup {
+        padding: 8px 20px;
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #fff;
+        background: var(--red-500);
+        border: 1.5px solid var(--red-500);
+        border-radius: var(--r-pill);
+        transition: all 0.2s;
+        animation: glowBtn 3s ease-in-out infinite;
+      }
+      .btn-nav-signup:hover {
+        background: var(--red-600);
+        border-color: var(--red-600);
+        transform: translateY(-1px);
+        animation: none;
+      }
+
+      /* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
+      .hero {
+        min-height: 100vh;
+        padding-top: 64px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding-inline: 24px;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          180deg,
+          #0a0e1a 0%,
+          #060810 60%,
+          #0a0c10 100%
+        );
+      }
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(var(--bd) 1px, transparent 1px),
+          linear-gradient(90deg, var(--bd) 1px, transparent 1px);
+        background-size: 56px 56px;
+        opacity: 0.35;
+        mask-image: radial-gradient(
+          ellipse 85% 65% at 50% 45%,
+          black 20%,
+          transparent 80%
+        );
+        -webkit-mask-image: radial-gradient(
+          ellipse 85% 65% at 50% 45%,
+          black 20%,
+          transparent 80%
+        );
+      }
+      .hero-glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 80% 50% at 50% 15%,
+            rgba(42, 82, 152, 0.18) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 50% 40% at 20% 70%,
+            var(--red-glow-sm) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 45% 35% at 85% 60%,
+            rgba(42, 82, 152, 0.1) 0%,
+            transparent 50%
+          );
+      }
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 780px;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 18px;
+        background: rgba(42, 82, 152, 0.12);
+        border: 1px solid rgba(42, 82, 152, 0.3);
+        border-radius: var(--r-pill);
+        font-family: var(--f-m);
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--blue-bright);
+        margin-bottom: 30px;
+        animation: fadeIn 0.6s 0.1s both;
+      }
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--blue-bright);
+        animation: pulse 1.8s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+
+      .hero-h1 {
+        font-family: var(--f-d);
+        font-weight: 800;
+        font-size: clamp(42px, 7vw, 80px);
+        line-height: 1.1;
+        color: var(--tx);
+        margin-bottom: 22px;
+        animation: fadeUp 0.7s 0.2s both;
+      }
+      .hero-h1 .accent {
+        color: var(--red-700);
+        display: inline-block;
+        position: relative;
+      }
+      .hero-h1 .accent::after {
+        content: "";
+        position: absolute;
+        bottom: 2px;
+        left: 0;
+        height: 3px;
+        background: var(--red-600);
+        border-radius: 2px;
+        animation: lineGrow 0.9s 0.95s both;
+      }
+      .hero-desc {
+        font-size: 16px;
+        color: var(--tx-2);
+        max-width: 520px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+        animation: fadeUp 0.7s 0.35s both;
+      }
+
+      /* Search bar */
+      .hero-search {
+        display: flex;
+        align-items: stretch;
+        background: var(--bg-input);
+        border: 1px solid var(--bd-2);
+        border-radius: var(--r-pill);
+        padding: 6px 6px 6px 20px;
+        gap: 0;
+        margin-bottom: 60px;
+        animation: fadeUp 0.7s 0.5s both;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+        max-width: 700px;
+        width: 100%;
+        transition:
+          border-color 0.25s,
+          box-shadow 0.25s;
+      }
+      .hero-search:focus-within {
+        border-color: var(--red-500);
+        box-shadow:
+          0 0 0 3px var(--red-glow-sm),
+          0 8px 40px rgba(0, 0, 0, 0.4);
+      }
+      .hs-field {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 6px 16px;
+        border-right: 1px solid var(--bd);
+        min-width: 120px;
+      }
+      .hs-field:last-of-type {
+        border-right: none;
+      }
+      .hs-field label {
+        font-family: var(--f-m);
+        font-size: 8.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--tx-4);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .hs-field label svg {
+        flex-shrink: 0;
+        color: var(--tx-4);
+      }
+      .hs-field input,
+      .hs-field select {
+        background: transparent;
+        border: none;
+        outline: none;
+        font-family: var(--f-b);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--tx);
+      }
+      .hs-field input::placeholder {
+        color: var(--tx-4);
+      }
+      .hs-field select option {
+        background: var(--bg-card);
+      }
+      .hs-field input[type="date"] {
+        color-scheme: dark;
+      }
+      .hs-btn {
+        padding: 10px 24px;
+        background: var(--red-500);
+        color: #fff;
+        border-radius: var(--r-pill);
+        font-family: var(--f-d);
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .hs-btn:hover {
+        background: var(--red-600);
+        box-shadow: 0 0 24px var(--red-glow-md);
+      }
+
+      /* Hero image */
+      .hero-img-wrap {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 860px;
+        border-radius: var(--r-xl);
+        overflow: hidden;
+        border: 1px solid var(--bd-2);
+        box-shadow:
+          0 24px 80px rgba(0, 0, 0, 0.7),
+          0 0 0 1px rgba(255, 255, 255, 0.04);
+        animation: fadeUp 0.8s 0.65s both;
+      }
+      .hero-img-wrap img {
+        width: 100%;
+        aspect-ratio: 16/7;
+        object-fit: cover;
+      }
+      .hero-img-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to right,
+          rgba(10, 12, 16, 0.7) 0%,
+          transparent 50%,
+          rgba(10, 12, 16, 0.3) 100%
+        );
+      }
+
+      /* ══════════════════════════════════════════════
+   SECTION COMMONS
+══════════════════════════════════════════════ */
+      .section {
+        padding: 88px 24px;
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .s-center {
+        text-align: center;
+      }
+      .s-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--f-m);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--red-700);
+        margin-bottom: 14px;
+      }
+      .s-tag::before {
+        content: "";
+        display: inline-block;
+        width: 20px;
+        height: 1.5px;
+        background: var(--red-600);
+        flex-shrink: 0;
+      }
+      .s-title {
+        font-family: var(--f-d);
+        font-weight: 700;
+        font-size: clamp(28px, 4vw, 44px);
+        color: var(--tx);
+        margin-bottom: 14px;
+        line-height: 1.15;
+      }
+      .s-title span {
+        color: var(--red-700);
+      }
+      .s-desc {
+        font-size: 15px;
+        color: var(--tx-2);
+        line-height: 1.8;
+        max-width: 520px;
+      }
+      .s-center .s-desc {
+        margin: 0 auto;
+      }
+
+      /* ══════════════════════════════════════════════
+   VEHICLES GRID
+══════════════════════════════════════════════ */
+      .vehicles-section {
+        padding: 88px 24px;
+        background: var(--bg-section);
+        border-top: 1px solid var(--bd);
+      }
+      .veh-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 36px;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .veh-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .veh-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--bd-2);
+        transition: background 0.2s;
+        cursor: pointer;
+      }
+      .veh-dot.on {
+        background: var(--red-500);
+      }
+
+      .cars-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .car-card {
+        background: var(--bg-card);
+        border: 1px solid var(--bd);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+        transition: all 0.28s var(--ease);
+        cursor: pointer;
+        position: relative;
+      }
+      .car-card:hover {
+        border-color: var(--red-500);
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px var(--red-glow-sm);
+      }
+
+      .car-img {
+        position: relative;
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        background: linear-gradient(135deg, #13161e, #0e1016);
+      }
+      .car-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s var(--ease);
+      }
+      .car-card:hover .car-img img {
+        transform: scale(1.06);
+      }
+      .car-img-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.5) 0%,
+          transparent 60%
+        );
+      }
+
+      .car-rating {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 9px;
+        border-radius: var(--r-pill);
+        background: rgba(10, 12, 16, 0.8);
+        backdrop-filter: blur(8px);
+        font-family: var(--f-m);
+        font-size: 10px;
+        color: var(--tx-2);
+      }
+      .car-rating-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #f59e0b;
+        flex-shrink: 0;
+      }
+
+      .car-fav {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(10, 12, 16, 0.7);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .car-fav:hover {
+        background: var(--red-500);
+      }
+      .car-fav svg {
+        color: var(--tx-3);
+        transition: color 0.2s;
+      }
+      .car-fav:hover svg {
+        color: #fff;
+      }
+
+      .car-body {
+        padding: 16px;
+      }
+      .car-name {
+        font-family: var(--f-d);
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--tx);
+        margin-bottom: 4px;
+      }
+      .car-agency {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--tx-3);
+        margin-bottom: 12px;
+      }
+      .car-agency svg {
+        flex-shrink: 0;
+      }
+      .car-price {
+        display: flex;
+        align-items: baseline;
+        gap: 3px;
+        margin-bottom: 14px;
+      }
+      .car-amt {
+        font-family: var(--f-d);
+        font-size: 24px;
+        color: var(--tx);
+        font-weight: 700;
+      }
+      .car-unit {
+        font-size: 12px;
+        color: var(--tx-3);
+      }
+      .car-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .btn-details {
+        flex: 1;
+        padding: 9px;
+        background: transparent;
+        color: var(--tx-2);
+        border: 1px solid var(--bd-2);
+        border-radius: var(--r-md);
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .btn-details:hover {
+        border-color: var(--red-500);
+        color: var(--red-700);
+      }
+      .btn-reserve {
+        flex: 1;
+        padding: 9px;
+        background: var(--blue-bright);
+        color: #fff;
+        border: 1px solid var(--blue-bright);
+        border-radius: var(--r-md);
+        font-size: 13px;
+        font-weight: 700;
+        transition: all 0.2s;
+      }
+      .btn-reserve:hover {
+        background: #2563eb;
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+      }
+
+      /* ══════════════════════════════════════════════
+   AGENCIES
+══════════════════════════════════════════════ */
+      .agencies-section {
+        padding: 88px 24px;
+        background: var(--bg-main);
+        border-top: 1px solid var(--bd);
+      }
+      .agencies-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 72px;
+      }
+      .agency-card {
+        padding: 24px;
+        background: var(--bg-card);
+        border: 1px solid var(--bd);
+        border-radius: var(--r-lg);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: all 0.25s var(--ease);
+        cursor: pointer;
+      }
+      .agency-card:hover {
+        border-color: var(--red-500);
+        background: var(--bg-card-hover);
+        transform: translateX(4px);
+      }
+      .agency-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--bg-section);
+        border: 1px solid var(--bd-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .agency-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+      .agency-info {
+        flex: 1;
+      }
+      .agency-name {
+        font-family: var(--f-d);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--tx);
+        margin-bottom: 4px;
+      }
+      .agency-location {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--tx-3);
+        margin-bottom: 8px;
+      }
+      .agency-rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .agency-stars {
+        display: flex;
+        gap: 2px;
+      }
+      .agency-stars svg {
+        color: #f59e0b;
+      }
+      .agency-rating-val {
+        font-family: var(--f-m);
+        font-size: 11px;
+        color: var(--tx-2);
+      }
+      .btn-agency {
+        padding: 8px 18px;
+        background: transparent;
+        color: var(--tx-2);
+        border: 1px solid var(--bd-2);
+        border-radius: var(--r-md);
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+      .btn-agency:hover {
+        border-color: var(--red-500);
+        color: var(--red-700);
+      }
+
+      /* HOW IT WORKS */
+      .hiw-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        position: relative;
+      }
+      .hiw-grid::before {
+        content: "";
+        position: absolute;
+        top: 28px;
+        left: 16.5%;
+        right: 16.5%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--bd-2) 20%,
+          var(--bd-2) 80%,
+          transparent
+        );
+      }
+      .hiw-item {
+        padding: 0 24px;
+        text-align: center;
+      }
+      .hiw-num {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--red-500);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-family: var(--f-m);
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 0 24px var(--red-glow-sm);
+      }
+      .hiw-num.blue {
+        background: var(--blue-bright);
+        box-shadow: 0 0 24px rgba(59, 130, 246, 0.25);
+      }
+      .hiw-num.check {
+        background: #10b981;
+        box-shadow: 0 0 24px rgba(16, 185, 129, 0.25);
+      }
+      .hiw-title {
+        font-family: var(--f-d);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--tx);
+        margin-bottom: 10px;
+      }
+      .hiw-desc {
+        font-size: 13.5px;
+        color: var(--tx-2);
+        line-height: 1.7;
+      }
+
+      /* ══════════════════════════════════════════════
+   WHY CHOOSE
+══════════════════════════════════════════════ */
+      .why-section {
+        padding: 88px 24px;
+        background: var(--bg-section);
+        border-top: 1px solid var(--bd);
+      }
+      .why-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 72px;
+      }
+      .why-card {
+        padding: 24px 20px;
+        background: var(--bg-card);
+        border: 1px solid var(--bd);
+        border-radius: var(--r-lg);
+        transition: all 0.25s var(--ease);
+      }
+      .why-card:hover {
+        border-color: var(--red-400);
+        background: var(--bg-card-hover);
+        transform: translateY(-3px);
+      }
+      .why-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
+      .why-icon svg {
+        color: var(--blue-bright);
+      }
+      .why-title {
+        font-family: var(--f-d);
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--tx);
+        margin-bottom: 8px;
+      }
+      .why-desc {
+        font-size: 13px;
+        color: var(--tx-2);
+        line-height: 1.65;
+      }
+
+      /* TESTIMONIALS */
+      .testi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .testi-card {
+        padding: 26px;
+        background: var(--bg-card);
+        border: 1px solid var(--bd);
+        border-radius: var(--r-lg);
+        transition: all 0.25s var(--ease);
+      }
+      .testi-card:hover {
+        border-color: var(--red-400);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px var(--red-glow-sm);
+      }
+      .testi-stars {
+        display: flex;
+        gap: 3px;
+        margin-bottom: 14px;
+      }
+      .testi-stars svg {
+        color: #f59e0b;
+      }
+      .testi-text {
+        font-size: 14px;
+        color: var(--tx-2);
+        line-height: 1.78;
+        margin-bottom: 20px;
+        font-style: italic;
+      }
+      .testi-author {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .testi-av {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: var(--bg-section);
+        border: 1.5px solid var(--bd-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--f-d);
+        font-size: 14px;
+        color: var(--tx-2);
+        flex-shrink: 0;
+      }
+      .testi-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--tx);
+      }
+      .testi-role {
+        font-family: var(--f-m);
+        font-size: 9px;
+        color: var(--tx-3);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+
+      /* ══════════════════════════════════════════════
+   AGENCY CTA BAND
+══════════════════════════════════════════════ */
+      .agency-cta-section {
+        padding: 88px 24px;
+        background: var(--bg-main);
+        border-top: 1px solid var(--bd);
+      }
+      .agency-band {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: var(--blue-bright);
+        border-radius: var(--r-xl);
+        padding: 60px 64px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .agency-band::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 20% 50%,
+          rgba(255, 255, 255, 0.12) 0%,
+          transparent 55%
+        );
+      }
+      .agency-band::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+      .agency-band-content {
+        position: relative;
+        z-index: 1;
+      }
+      .agency-band h2 {
+        font-family: var(--f-d);
+        font-size: clamp(26px, 3.5vw, 42px);
+        color: #fff;
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 12px;
+      }
+      .agency-band p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.7;
+        max-width: 400px;
+      }
+      .agency-band-btns {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 12px;
+        flex-direction: column;
+      }
+      .btn-band-w {
+        padding: 13px 28px;
+        background: #fff;
+        color: var(--blue-bright);
+        border: 2px solid #fff;
+        border-radius: var(--r-pill);
+        font-family: var(--f-d);
+        font-size: 15px;
+        font-weight: 700;
+        transition: all 0.2s;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .btn-band-w:hover {
+        background: transparent;
+        color: #fff;
+      }
+      .btn-band-dark {
+        padding: 13px 28px;
+        background: #0a0c10;
+        color: #fff;
+        border: 2px solid #0a0c10;
+        border-radius: var(--r-pill);
+        font-family: var(--f-d);
+        font-size: 15px;
+        font-weight: 700;
+        transition: all 0.2s;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .btn-band-dark:hover {
+        background: transparent;
+        border-color: #fff;
+      }
+
+      /* ══════════════════════════════════════════════
+   FAQ
+══════════════════════════════════════════════ */
+      .faq-section {
+        padding: 88px 24px;
+        background: var(--bg-section);
+        border-top: 1px solid var(--bd);
+      }
+      .faq-list {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      .faq-item {
+        border-bottom: 1px solid var(--bd);
+        overflow: hidden;
+      }
+      .faq-question {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 22px 0;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--tx);
+        transition: color 0.2s;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+      .faq-question:hover {
+        color: var(--red-700);
+      }
+      .faq-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--bg-card);
+        border: 1px solid var(--bd-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.2s;
+      }
+      .faq-icon svg {
+        color: var(--tx-3);
+        transition: transform 0.3s;
+      }
+      .faq-item.open .faq-icon {
+        background: var(--red-500);
+        border-color: var(--red-500);
+      }
+      .faq-item.open .faq-icon svg {
+        color: #fff;
+        transform: rotate(180deg);
+      }
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.35s var(--ease),
+          padding 0.35s;
+        font-size: 14px;
+        color: var(--tx-2);
+        line-height: 1.75;
+        padding: 0;
+      }
+      .faq-item.open .faq-answer {
+        max-height: 200px;
+        padding-bottom: 22px;
+      }
+
+      /* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+      .footer {
+        padding: 64px 40px 32px;
+        background: var(--bg-nav);
+        border-top: 1px solid var(--bd);
+      }
+      .footer-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.8fr 1fr 1fr 1.4fr;
+        gap: 48px;
+        margin-bottom: 56px;
+      }
+      .footer-brand {
+      }
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .footer-logo-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: var(--red-500);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .footer-logo-name {
+        font-family: var(--f-d);
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--tx);
+      }
+      .footer-logo-name span {
+        color: var(--red-700);
+      }
+      .footer-tagline {
+        font-size: 13.5px;
+        color: var(--tx-2);
+        line-height: 1.7;
+        margin-bottom: 20px;
+        max-width: 260px;
+      }
+      .footer-socials {
+        display: flex;
+        gap: 10px;
+      }
+      .social-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: var(--bg-card);
+        border: 1px solid var(--bd-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--tx-3);
+        transition: all 0.2s;
+      }
+      .social-btn:hover {
+        border-color: var(--red-500);
+        color: var(--red-700);
+        background: var(--red-100);
+      }
+      .footer-col-title {
+        font-family: var(--f-d);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--tx);
+        letter-spacing: 0.04em;
+        margin-bottom: 18px;
+      }
+      .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-link {
+        font-size: 13.5px;
+        color: var(--tx-3);
+        transition: color 0.2s;
+      }
+      .footer-link:hover {
+        color: var(--red-700);
+      }
+      .footer-newsletter-desc {
+        font-size: 13px;
+        color: var(--tx-2);
+        line-height: 1.65;
+        margin-bottom: 16px;
+      }
+      .newsletter-form {
+        display: flex;
+        gap: 8px;
+      }
+      .newsletter-input {
+        flex: 1;
+        padding: 10px 14px;
+        background: var(--bg-card);
+        border: 1px solid var(--bd-2);
+        border-radius: var(--r-md);
+        color: var(--tx);
+        font-family: var(--f-b);
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .newsletter-input::placeholder {
+        color: var(--tx-4);
+      }
+      .newsletter-input:focus {
+        border-color: var(--blue-bright);
+      }
+      .newsletter-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: var(--r-md);
+        background: var(--blue-bright);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background 0.2s;
+      }
+      .newsletter-btn:hover {
+        background: #2563eb;
+      }
+      .footer-bottom {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 24px;
+        border-top: 1px solid var(--bd);
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .footer-copy {
+        font-family: var(--f-m);
+        font-size: 11px;
+        color: var(--tx-3);
+        letter-spacing: 0.05em;
+      }
+      .footer-badges {
+        display: flex;
+        gap: 20px;
+      }
+      .footer-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--f-m);
+        font-size: 10px;
+        color: var(--tx-3);
+        letter-spacing: 0.05em;
+      }
+      .footer-badge svg {
+        color: var(--red-700);
+      }
+
+      /* ══════════════════════════════════════════════
+   ONBOARDING OVERLAY (image 8)
+══════════════════════════════════════════════ */
+      .onboard-section {
+        padding: 88px 24px;
+        background: var(--bg-main);
+        border-top: 1px solid var(--bd);
+      }
+      .onboard-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+      .onboard-card {
+        padding: 32px 24px;
+        text-align: center;
+        background: var(--bg-card);
+        border: 1px solid var(--bd);
+        border-radius: var(--r-xl);
+        transition: all 0.25s var(--ease);
+        cursor: pointer;
+      }
+      .onboard-card:hover {
+        border-color: var(--red-500);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px var(--red-glow-sm);
+      }
+      .onboard-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--red-200);
+        border: 1.5px solid var(--red-400);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+      .onboard-icon svg {
+        color: var(--red-700);
+      }
+      .onboard-title {
+        font-family: var(--f-d);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--tx);
+        margin-bottom: 8px;
+      }
+      .onboard-desc {
+        font-size: 13px;
+        color: var(--tx-2);
+        line-height: 1.65;
+      }
+
+      /* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+      @media (max-width: 1024px) {
+        .cars-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .agencies-grid {
+          grid-template-columns: 1fr;
+        }
+        .why-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .testi-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .agency-band {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .agency-band p {
+          max-width: 100%;
+        }
+        .agency-band-btns {
+          flex-direction: row;
+          justify-content: center;
+        }
+      }
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 0 20px;
+          gap: 14px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .hero-search {
+          flex-direction: column;
+          border-radius: var(--r-xl);
+          padding: 14px;
+        }
+        .hs-field {
+          border-right: none;
+          border-bottom: 1px solid var(--bd);
+          padding-bottom: 12px;
+        }
+        .hs-field:last-of-type {
+          border-bottom: none;
+        }
+        .cars-grid {
+          grid-template-columns: 1fr;
+        }
+        .hiw-grid {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .hiw-grid::before {
+          display: none;
+        }
+        .why-grid {
+          grid-template-columns: 1fr;
+        }
+        .testi-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        .agency-band {
+          padding: 40px 24px;
+        }
+        .agency-band-btns {
+          flex-direction: column;
+          align-items: center;
+        }
+        .onboard-cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══════════════════════════════
+     NAVBAR
+═══════════════════════════════ -->
+    <nav class="navbar">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"
+            />
+            <path d="M7 17h10" />
+            <circle cx="7.5" cy="17.5" r="2.5" />
+            <circle cx="16.5" cy="17.5" r="2.5" />
+            <path d="M5 9l2-4h10l2 4" />
+          </svg>
+        </div>
+        Auto<span>Connect</span>
+      </a>
+      <div class="nav-links">
+        <a href="#" class="nav-link active">Accueil</a>
+        <a href="#vehicles" class="nav-link">Trouver une voiture</a>
+        <a href="#agencies" class="nav-link">Agences</a>
+        <a href="#hiw" class="nav-link">Comment ça marche</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-nav-login">Connexion</button>
+        <button class="btn-nav-signup">Inscription</button>
+      </div>
+    </nav>
+
+    <!-- ═══════════════════════════════
+     HERO
+═══════════════════════════════ -->
+    <section class="hero" id="home">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Leader de la location de prestige au Maroc
+        </div>
+
+        <h1 class="hero-h1">
+          Trouvez la voiture<br />
+          <span class="accent">parfaite</span> pour<br />
+          votre voyage
+        </h1>
+
+        <p class="hero-desc">
+          Comparez les offres des meilleures agences de location et réservez
+          votre véhicule premium en quelques minutes seulement.
+        </p>
+
+        <!-- Search bar -->
+        <div class="hero-search">
+          <div class="hs-field">
+            <label>
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Ville
+            </label>
+            <input type="text" placeholder="Où allez-vous ?" />
+          </div>
+          <div class="hs-field">
+            <label>
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Départ
+            </label>
+            <input type="date" />
+          </div>
+          <div class="hs-field">
+            <label>
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Retour
+            </label>
+            <input type="date" />
+          </div>
+          <div class="hs-field">
+            <label>
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"
+                />
+                <line x1="4" y1="22" x2="4" y2="15" />
+              </svg>
+              Type
+            </label>
+            <select>
+              <option value="">Tous types</option>
+              <option>SUV</option>
+              <option>Berline</option>
+              <option>Sport</option>
+              <option>Électrique</option>
+            </select>
+          </div>
+          <button class="hs-btn">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            Rechercher
+          </button>
+        </div>
+
+        <!-- Hero image -->
+        <div class="hero-img-wrap">
+          <img
+            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1200&q=80&auto=format&fit=crop"
+            alt="Voiture de luxe AutoConnect Maroc"
+          />
+          <div class="hero-img-overlay"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════
+     VEHICLES
+═══════════════════════════════ -->
+    <section class="vehicles-section" id="vehicles">
+      <div class="wrap">
+        <div class="s-center" style="margin-bottom: 36px">
+          <h2 class="s-title">Voitures populaires près de vous</h2>
+          <p class="s-desc">
+            Découvrez nos modèles les plus prisés, prêts à prendre la route dès
+            aujourd'hui.
+          </p>
+        </div>
+
+        <div class="veh-controls">
+          <div class="veh-dots">
+            <div class="veh-dot on"></div>
+            <div class="veh-dot"></div>
+            <div class="veh-dot"></div>
+          </div>
+        </div>
+
+        <div class="cars-grid">
+          <!-- Porsche -->
+          <div class="car-card">
+            <div class="car-img">
+              <img
+                src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=600&q=80&auto=format&fit=crop"
+                alt="Porsche Taycan"
+              />
+              <div class="car-img-overlay"></div>
+              <div class="car-rating">
+                <span class="car-rating-dot"></span>4.9
+              </div>
+              <div class="car-fav">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="car-body">
+              <p class="car-name">Porsche Taycan Turbo S</p>
+              <p class="car-agency">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Casablanca &middot; Elite Drive
+              </p>
+              <div class="car-price">
+                <span class="car-amt">4 500</span
+                ><span class="car-unit">&nbsp;DH / jour</span>
+              </div>
+              <div class="car-actions">
+                <button class="btn-details">Détails</button>
+                <button class="btn-reserve">Réserver</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tesla -->
+          <div class="car-card">
+            <div class="car-img">
+              <img
+                src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600&q=80&auto=format&fit=crop"
+                alt="Tesla Model S"
+              />
+              <div class="car-img-overlay"></div>
+              <div class="car-rating">
+                <span class="car-rating-dot"></span>4.8
+              </div>
+              <div class="car-fav">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="car-body">
+              <p class="car-name">Tesla Model S Plaid</p>
+              <p class="car-agency">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Rabat &middot; Volt Rentals
+              </p>
+              <div class="car-price">
+                <span class="car-amt">3 200</span
+                ><span class="car-unit">&nbsp;DH / jour</span>
+              </div>
+              <div class="car-actions">
+                <button class="btn-details">Détails</button>
+                <button class="btn-reserve">Réserver</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- BMW -->
+          <div class="car-card">
+            <div class="car-img">
+              <img
+                src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80&auto=format&fit=crop"
+                alt="BMW M4"
+              />
+              <div class="car-img-overlay"></div>
+              <div class="car-rating">
+                <span class="car-rating-dot"></span>4.7
+              </div>
+              <div class="car-fav">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="car-body">
+              <p class="car-name">BMW M4 Competition</p>
+              <p class="car-agency">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Marrakech &middot; Bavaria Luxury
+              </p>
+              <div class="car-price">
+                <span class="car-amt">2 800</span
+                ><span class="car-unit">&nbsp;DH / jour</span>
+              </div>
+              <div class="car-actions">
+                <button class="btn-details">Détails</button>
+                <button class="btn-reserve">Réserver</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mercedes -->
+          <div class="car-card">
+            <div class="car-img">
+              <img
+                src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80&auto=format&fit=crop"
+                alt="Mercedes AMG"
+              />
+              <div class="car-img-overlay"></div>
+              <div class="car-rating">
+                <span class="car-rating-dot"></span>5.0
+              </div>
+              <div class="car-fav">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="car-body">
+              <p class="car-name">Mercedes AMG GT 63</p>
+              <p class="car-agency">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Tanger &middot; Star Cars
+              </p>
+              <div class="car-price">
+                <span class="car-amt">3 900</span
+                ><span class="car-unit">&nbsp;DH / jour</span>
+              </div>
+              <div class="car-actions">
+                <button class="btn-details">Détails</button>
+                <button class="btn-reserve">Réserver</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Audi -->
+          <div class="car-card">
+            <div class="car-img">
+              <img
+                src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&q=80&auto=format&fit=crop"
+                alt="Audi RS e-tron"
+              />
+              <div class="car-img-overlay"></div>
+              <div class="car-rating">
+                <span class="car-rating-dot"></span>4.9
+              </div>
+              <div class="car-fav">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="car-body">
+              <p class="car-name">Audi RS e-tron GT</p>
+              <p class="car-agency">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Agadir &middot; Quattro Rent
+              </p>
+              <div class="car-price">
+                <span class="car-amt">3 100</span
+                ><span class="car-unit">&nbsp;DH / jour</span>
+              </div>
+              <div class="car-actions">
+                <button class="btn-details">Détails</button>
+                <button class="btn-reserve">Réserver</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Range Rover -->
+          <div class="car-card" style="border-color: var(--red-400)">
+            <div class="car-img">
+              <img
+                src="https://images.unsplash.com/photo-1519245659620-e859806a8d3b?w=600&q=80&auto=format&fit=crop"
+                alt="Range Rover"
+              />
+              <div class="car-img-overlay"></div>
+              <div class="car-rating">
+                <span class="car-rating-dot"></span>4.8
+              </div>
+              <div class="car-fav">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="car-body">
+              <p class="car-name">Range Rover Sport SVR</p>
+              <p class="car-agency">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Fès &middot; Summit Auto
+              </p>
+              <div class="car-price">
+                <span class="car-amt">2 500</span
+                ><span class="car-unit">&nbsp;DH / jour</span>
+              </div>
+              <div class="car-actions">
+                <button class="btn-details">Détails</button>
+                <button class="btn-reserve">Réserver</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lamborghini -->
+          <div class="car-card">
+            <div class="car-img">
+              <img
+                src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&auto=format&fit=crop"
+                alt="Lamborghini Urus"
+              />
+              <div class="car-img-overlay"></div>
+              <div
+                class="car-rating"
+                style="background: rgba(239, 68, 68, 0.25)"
+              >
+                <span
+                  class="car-rating-dot"
+                  style="background: var(--red-700)"
+                ></span
+                >4.9
+              </div>
+              <div class="car-fav">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="car-body">
+              <p class="car-name">Lamborghini Urus Performance</p>
+              <p class="car-agency">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Marrakech &middot; Luxe Prestige
+              </p>
+              <div class="car-price">
+                <span class="car-amt">8 500</span
+                ><span class="car-unit">&nbsp;DH / jour</span>
+              </div>
+              <div class="car-actions">
+                <button class="btn-details">Détails</button>
+                <button class="btn-reserve">Réserver</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bentley -->
+          <div class="car-card">
+            <div class="car-img">
+              <img
+                src="https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=600&q=80&auto=format&fit=crop"
+                alt="Bentley Continental"
+              />
+              <div class="car-img-overlay"></div>
+              <div class="car-rating">
+                <span class="car-rating-dot"></span>4.8
+              </div>
+              <div class="car-fav">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="car-body">
+              <p class="car-name">Bentley Continental GT</p>
+              <p class="car-agency">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Casablanca &middot; Heritage Motors
+              </p>
+              <div class="car-price">
+                <span class="car-amt">7 200</span
+                ><span class="car-unit">&nbsp;DH / jour</span>
+              </div>
+              <div class="car-actions">
+                <button class="btn-details">Détails</button>
+                <button class="btn-reserve">Réserver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════
+     AGENCIES + HOW IT WORKS
+═══════════════════════════════ -->
+    <section class="agencies-section" id="agencies">
+      <div class="wrap">
+        <div class="s-center" style="margin-bottom: 40px">
+          <h2 class="s-title">Agences partenaires</h2>
+          <p class="s-desc">
+            Nous collaborons avec les leaders du secteur pour vous garantir un
+            service irréprochable.
+          </p>
+        </div>
+
+        <div class="agencies-grid">
+          <div class="agency-card">
+            <div class="agency-avatar">
+              <img
+                src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=100&h=100&q=80&auto=format&fit=crop"
+                alt="Elite Drive"
+              />
+            </div>
+            <div class="agency-info">
+              <p class="agency-name">Elite Drive</p>
+              <p class="agency-location">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Casablanca &middot; 124 voitures
+              </p>
+              <div class="agency-rating">
+                <div class="agency-stars">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                    />
+                  </svg>
+                </div>
+                <span class="agency-rating-val">4.9</span>
+              </div>
+            </div>
+            <button class="btn-agency">Voir l'agence</button>
+          </div>
+
+          <div class="agency-card">
+            <div class="agency-avatar">
+              <img
+                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100&h=100&q=80&auto=format&fit=crop"
+                alt="Volt Rentals"
+              />
+            </div>
+            <div class="agency-info">
+              <p class="agency-name">Volt Rentals</p>
+              <p class="agency-location">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Rabat &middot; 85 voitures
+              </p>
+              <div class="agency-rating">
+                <div class="agency-stars">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                    />
+                  </svg>
+                </div>
+                <span class="agency-rating-val">4.8</span>
+              </div>
+            </div>
+            <button class="btn-agency">Voir l'agence</button>
+          </div>
+
+          <div class="agency-card">
+            <div class="agency-avatar">
+              <img
+                src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=100&h=100&q=80&auto=format&fit=crop"
+                alt="Luxe Prestige"
+              />
+            </div>
+            <div class="agency-info">
+              <p class="agency-name">Luxe Prestige</p>
+              <p class="agency-location">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Marrakech &middot; 42 voitures
+              </p>
+              <div class="agency-rating">
+                <div class="agency-stars">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                    />
+                  </svg>
+                </div>
+                <span class="agency-rating-val">5.0</span>
+              </div>
+            </div>
+            <button class="btn-agency">Voir l'agence</button>
+          </div>
+        </div>
+
+        <!-- How it works -->
+        <div
+          style="border-top: 1px solid var(--bd); padding-top: 72px"
+          id="hiw"
+        >
+          <div class="s-center" style="margin-bottom: 56px">
+            <h2 class="s-title">Comment fonctionne AutoConnect</h2>
+          </div>
+          <div class="hiw-grid">
+            <div class="hiw-item">
+              <div class="hiw-num">1</div>
+              <h3 class="hiw-title">Rechercher une voiture</h3>
+              <p class="hiw-desc">
+                Entrez votre destination, vos dates et comparez instantanément
+                des centaines d'offres de luxe.
+              </p>
+            </div>
+            <div class="hiw-item">
+              <div class="hiw-num blue">2</div>
+              <h3 class="hiw-title">Comparer les offres</h3>
+              <p class="hiw-desc">
+                Filtrez par prix, agence, type de carburant ou avis utilisateurs
+                pour trouver la perle rare.
+              </p>
+            </div>
+            <div class="hiw-item">
+              <div class="hiw-num check">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <h3 class="hiw-title">Réserver facilement</h3>
+              <p class="hiw-desc">
+                Confirmez votre réservation en ligne de manière sécurisée et
+                récupérez vos clés à l'agence.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════
+     WHY + TESTIMONIALS
+═══════════════════════════════ -->
+    <section class="why-section">
+      <div class="wrap">
+        <div class="s-center" style="margin-bottom: 40px">
+          <h2 class="s-title">Pourquoi choisir AutoConnect</h2>
+        </div>
+
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+            </div>
+            <h3 class="why-title">Large choix</h3>
+            <p class="why-desc">
+              Plus de 500 modèles de luxe disponibles dans toutes les grandes
+              villes du Maroc.
+            </p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <polyline points="9 12 11 14 15 10" />
+              </svg>
+            </div>
+            <h3 class="why-title">Agences fiables</h3>
+            <p class="why-desc">
+              Nous vérifions chaque partenaire pour garantir votre sécurité et
+              votre satisfaction.
+            </p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+            <h3 class="why-title">Réservation rapide</h3>
+            <p class="why-desc">
+              Moins de 3 minutes entre votre recherche et la confirmation de
+              réservation.
+            </p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
+            <h3 class="why-title">Meilleurs prix</h3>
+            <p class="why-desc">
+              Nous négocions des tarifs exclusifs en dirhams pour nos
+              utilisateurs marocains.
+            </p>
+          </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div style="border-top: 1px solid var(--bd); padding-top: 72px">
+          <div class="s-center" style="margin-bottom: 14px">
+            <h2 class="s-title">Avis clients</h2>
+            <p class="s-desc" style="margin: 0 auto">
+              Ce que nos utilisateurs disent de leur expérience avec
+              AutoConnect.
+            </p>
+          </div>
+          <div style="height: 40px"></div>
+          <div class="testi-grid">
+            <div class="testi-card">
+              <div class="testi-stars">
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+              </div>
+              <p class="testi-text">
+                "Le service est impeccable. La Porsche était en état neuf et le
+                processus de réservation a pris moins de 3 minutes. Je
+                recommande vivement."
+              </p>
+              <div class="testi-author">
+                <div class="testi-av">
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&q=80&auto=format&fit=crop"
+                    alt="Youssef Benali"
+                  />
+                </div>
+                <div>
+                  <p class="testi-name">Youssef Benali</p>
+                  <p class="testi-role">CEO, TechVentures Maroc</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="testi-card">
+              <div class="testi-stars">
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+              </div>
+              <p class="testi-text">
+                "Trouver une voiture de luxe à Marrakech n'a jamais été aussi
+                simple. AutoConnect compare réellement les meilleures offres
+                disponibles."
+              </p>
+              <div class="testi-author">
+                <div class="testi-av">
+                  <img
+                    src="https://images.unsplash.com/photo-1494790108755-2616b612b629?w=80&h=80&q=80&auto=format&fit=crop"
+                    alt="Salma Kabbaj"
+                  />
+                </div>
+                <div>
+                  <p class="testi-name">Salma Kabbaj</p>
+                  <p class="testi-role">Architecte</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="testi-card">
+              <div class="testi-stars">
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+              </div>
+              <p class="testi-text">
+                "Une flexibilité totale. J'ai prolongé ma location d'une Tesla
+                en quelques clics depuis mon mobile. Interface parfaite, aucun
+                stress."
+              </p>
+              <div class="testi-author">
+                <div class="testi-av">
+                  <img
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&q=80&auto=format&fit=crop"
+                    alt="Karim Lahlou"
+                  />
+                </div>
+                <div>
+                  <p class="testi-name">Karim Lahlou</p>
+                  <p class="testi-role">Entrepreneur</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════
+     AGENCY CTA
+═══════════════════════════════ -->
+    <section class="agency-cta-section">
+      <div class="agency-band">
+        <div class="agency-band-content">
+          <h2>Vous possédez une<br />agence de location ?</h2>
+          <p>
+            Rejoignez le réseau AutoConnect et commencez à recevoir des
+            réservations de clients qualifiés dès aujourd'hui.
+          </p>
+        </div>
+        <div class="agency-band-btns">
+          <button class="btn-band-w">Inscrire mon agence</button>
+          <button class="btn-band-dark">Explorer les voitures</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════
+     FAQ
+═══════════════════════════════ -->
+    <section class="faq-section" id="contact">
+      <div class="wrap">
+        <div class="s-center" style="margin-bottom: 48px">
+          <h2 class="s-title">Questions fréquentes</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item open">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Quels sont les documents requis ?
+              <div class="faq-icon">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+            </button>
+            <div class="faq-answer">
+              Pour louer un véhicule, vous devez être âgé de plus de 21 ans (25
+              ans pour certains modèles de luxe), posséder un permis de conduire
+              valide depuis plus de 2 ans et présenter une carte de crédit pour
+              la caution. Une pièce d'identité nationale ou passeport est
+              également requise.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Puis-je annuler ma réservation ?
+              <div class="faq-icon">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+            </button>
+            <div class="faq-answer">
+              Oui, vous pouvez annuler gratuitement jusqu'à 48h avant la date de
+              prise en charge. Entre 24h et 48h, des frais de 20% s'appliquent.
+              En dessous de 24h, la première journée est facturée. Les
+              conditions varient selon les agences partenaires.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              L'assurance est-elle incluse ?
+              <div class="faq-icon">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+            </button>
+            <div class="faq-answer">
+              Une assurance responsabilité civile de base est incluse dans tous
+              nos tarifs. Des options d'assurance tous risques et de protection
+              du conducteur sont disponibles en supplément. Nous vous
+              recommandons vivement de souscrire à la protection complète pour
+              les véhicules premium.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              La livraison à domicile est-elle possible ?
+              <div class="faq-icon">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+            </button>
+            <div class="faq-answer">
+              Oui, beaucoup de nos agences partenaires proposent la livraison et
+              la reprise à domicile, à l'hôtel ou à l'aéroport dans un rayon de
+              50 km. Ce service est disponible à partir de 200 DH selon la
+              distance. Sélectionnez cette option lors de la réservation.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════
+     FOOTER
+═══════════════════════════════ -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#fff"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"
+                />
+                <path d="M7 17h10" />
+                <circle cx="7.5" cy="17.5" r="2.5" />
+                <circle cx="16.5" cy="17.5" r="2.5" />
+                <path d="M5 9l2-4h10l2 4" />
+              </svg>
+            </div>
+            <span class="footer-logo-name">Auto<span>Connect</span></span>
+          </div>
+          <p class="footer-tagline">
+            La plateforme de référence pour la location de voitures premium et
+            de luxe. Nous connectons les meilleures agences avec les voyageurs
+            les plus exigeants.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="social-btn">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="social-btn">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a href="#" class="social-btn">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Navigation</p>
+          <div class="footer-links">
+            <a href="#" class="footer-link">Accueil</a>
+            <a href="#" class="footer-link">Trouver une voiture</a>
+            <a href="#" class="footer-link">Agences partenaires</a>
+            <a href="#" class="footer-link">Comment ça marche</a>
+            <a href="#" class="footer-link">Blog &amp; Actualités</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Support</p>
+          <div class="footer-links">
+            <a href="#" class="footer-link">Centre d'aide</a>
+            <a href="#" class="footer-link">Contactez-nous</a>
+            <a href="#" class="footer-link">Conditions d'utilisation</a>
+            <a href="#" class="footer-link">Politique de confidentialité</a>
+            <a href="#" class="footer-link">Mentions légales</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="footer-col-title">S'abonner à la newsletter</p>
+          <p class="footer-newsletter-desc">
+            Recevez nos meilleures offres et actualités directement dans votre
+            boîte mail.
+          </p>
+          <div class="newsletter-form">
+            <input
+              class="newsletter-input"
+              type="email"
+              placeholder="Votre email"
+            />
+            <button class="newsletter-btn">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          &copy; 2024 AUTOCONNECT TECHNOLOGIES. TOUS DROITS RÉSERVÉS.
+        </p>
+        <div class="footer-badges">
+          <div class="footer-badge">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            CONÇU AU MAROC
+          </div>
+          <div class="footer-badge">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            PLATEFORME SÉCURISÉE
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      /* Scroll reveal */
+      const revEls = document.querySelectorAll(
+        ".car-card,.agency-card,.why-card,.testi-card,.hiw-item",
+      );
+      const revIO = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+              e.target.style.animationDelay = `${(i % 4) * 0.08}s`;
+              e.target.style.animation = "cardReveal .45s ease both";
+              revIO.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      revEls.forEach((el) => {
+        el.style.opacity = "0";
+        revIO.observe(el);
+      });
+
+      /* Navbar scroll */
+      const navbar = document.querySelector(".navbar");
+      window.addEventListener(
+        "scroll",
+        () => {
+          navbar.style.borderBottomColor =
+            window.scrollY > 10 ? "rgba(255,255,255,.06)" : "var(--bd)";
+          navbar.style.boxShadow =
+            window.scrollY > 10 ? "0 4px 32px rgba(0,0,0,.5)" : "none";
+        },
+        { passive: true },
+      );
+
+      /* FAQ */
+      function toggleFaq(btn) {
+        const item = btn.closest(".faq-item");
+        const isOpen = item.classList.contains("open");
+        document
+          .querySelectorAll(".faq-item")
+          .forEach((i) => i.classList.remove("open"));
+        if (!isOpen) item.classList.add("open");
+      }
+
+      /* Veh dots */
+      document.querySelectorAll(".veh-dot").forEach((dot, i) => {
+        dot.addEventListener("click", () => {
+          document
+            .querySelectorAll(".veh-dot")
+            .forEach((d) => d.classList.remove("on"));
+          dot.classList.add("on");
+        });
+      });
+    </script>
+  </body>
+</html>

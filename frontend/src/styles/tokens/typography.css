@@ -1,0 +1,48 @@
+/* =============================================
+   TOKENS — TYPOGRAPHY
+   AutoConnect
+   ============================================= */
+
+:root {
+  /* === FONT FAMILIES === */
+  --font-display:   'Barlow Condensed', 'Oswald', sans-serif;  /* titres hero */
+  --font-heading:   'Sora', 'DM Sans', sans-serif;              /* titres sections */
+  --font-body:      'DM Sans', 'Plus Jakarta Sans', sans-serif; /* texte courant */
+  --font-mono:      'JetBrains Mono', 'Fira Code', monospace;   /* prix, codes */
+
+  /* === FONT SIZES === */
+  --text-xs:    0.75rem;    /* 12px */
+  --text-sm:    0.875rem;   /* 14px */
+  --text-base:  1rem;       /* 16px */
+  --text-md:    1.125rem;   /* 18px */
+  --text-lg:    1.25rem;    /* 20px */
+  --text-xl:    1.5rem;     /* 24px */
+  --text-2xl:   1.875rem;   /* 30px */
+  --text-3xl:   2.25rem;    /* 36px */
+  --text-4xl:   3rem;       /* 48px */
+  --text-5xl:   3.75rem;    /* 60px */
+  --text-hero:  5rem;       /* 80px — hero title */
+
+  /* === FONT WEIGHTS === */
+  --weight-light:     300;
+  --weight-regular:   400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+  --weight-bold:      700;
+  --weight-extrabold: 800;
+  --weight-black:     900;
+
+  /* === LINE HEIGHTS === */
+  --leading-tight:   1.1;
+  --leading-snug:    1.3;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.7;
+  --leading-loose:   2;
+
+  /* === LETTER SPACING === */
+  --tracking-tight:  -0.03em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.05em;
+  --tracking-wider:   0.1em;
+  --tracking-widest:  0.2em;
+}

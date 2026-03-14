@@ -1,46 +1,366 @@
+/* ============================================================
+   AUTOCONNECT — NAVBAR STYLES
+   File: navbar.css
+   Description: Styles for the main navigation bar
+   Author: AutoConnect Team
+   ============================================================ */
+
+
+/* ============================================================
+   1. CSS CUSTOM PROPERTIES (Design Tokens)
+   ============================================================ */
+
+:root {
+  /* Brand Colors */
+  --nav-bg:              #0d0d0d;
+  --nav-border:          rgba(255, 255, 255, 0.07);
+
+  /* Text */
+  --nav-text-primary:    #ffffff;
+  --nav-text-secondary:  rgba(255, 255, 255, 0.65);
+  --nav-text-hover:      #ffffff;
+
+  /* Accent */
+  --nav-accent:          #e02020;
+  --nav-accent-hover:    #c41a1a;
+  --nav-accent-glow:     rgba(224, 32, 32, 0.25);
+
+  /* Dimensions */
+  --nav-height:          64px;
+  --nav-padding-x:       32px;
+  --nav-logo-size:       36px;
+
+  /* Typography */
+  --nav-font-family:     'Inter', 'Segoe UI', system-ui, sans-serif;
+  --nav-font-size-link:  0.9rem;
+  --nav-font-size-logo:  1.1rem;
+  --nav-font-weight-nav: 500;
+  --nav-font-weight-logo:700;
+
+  /* Spacing */
+  --nav-gap-links:       8px;
+  --nav-gap-actions:     12px;
+
+  /* Transitions */
+  --nav-transition:      0.2s ease;
+
+  /* Z-index */
+  --nav-z-index:         1000;
+
+  /* Border radius */
+  --nav-radius-btn:      6px;
+  --nav-radius-icon:     50%;
+}
+
+
+/* ============================================================
+   2. NAVBAR CONTAINER
+   ============================================================ */
+
 .navbar {
-  background-color: var(--primary-color);
-  color: white;
-  padding: var(--spacing-md) 0;
-  box-shadow: var(--box-shadow);
   position: sticky;
   top: 0;
-  z-index: 1000;
-}
+  z-index: var(--nav-z-index);
 
-.navbar-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
+  height: var(--nav-height);
+  padding: 0 var(--nav-padding-x);
+
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+
+  font-family: var(--nav-font-family);
+
+  /* Subtle backdrop blur for a glass effect over page content */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.navbar-logo {
-  font-size: var(--font-size-lg);
-  font-weight: bold;
-  color: white;
-  text-decoration: none;
-}
 
-.nav-menu {
+/* ============================================================
+   3. LOGO / BRAND
+   ============================================================ */
+
+.navbar__brand {
   display: flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
+  color: var(--nav-text-primary);
+  font-size: var(--nav-font-size-logo);
+  font-weight: var(--nav-font-weight-logo);
+  letter-spacing: -0.02em;
+
+  flex-shrink: 0;
+  transition: opacity var(--nav-transition);
+}
+
+.navbar__brand:hover {
+  opacity: 0.85;
+}
+
+/* Logo icon wrapper */
+.navbar__brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: var(--nav-logo-size);
+  height: var(--nav-logo-size);
+
+  background-color: var(--nav-accent);
+  border-radius: var(--nav-radius-icon);
+
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+/* Brand text */
+.navbar__brand-name {
+  color: var(--nav-text-primary);
+}
+
+
+/* ============================================================
+   4. NAVIGATION LINKS
+   ============================================================ */
+
+.navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--nav-gap-links);
+
   list-style: none;
-  gap: var(--spacing-lg);
+  margin: 0;
+  padding: 0;
 }
 
-.nav-item {
-  position: relative;
+.navbar__nav-item {
+  /* Individual nav item wrapper */
 }
 
-.nav-link {
-  color: white;
+.navbar__nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+
+  color: var(--nav-text-secondary);
+  font-size: var(--nav-font-size-link);
+  font-weight: var(--nav-font-weight-nav);
   text-decoration: none;
-  transition: opacity 0.3s ease;
+  letter-spacing: 0.01em;
+
+  border-radius: var(--nav-radius-btn);
+  transition:
+    color var(--nav-transition),
+    background-color var(--nav-transition);
 }
 
-.nav-link:hover {
-  opacity: 0.8;
-  text-decoration: none;
+.navbar__nav-link:hover {
+  color: var(--nav-text-hover);
+  background-color: rgba(255, 255, 255, 0.07);
 }
+
+/* Active state — current page */
+.navbar__nav-link--active {
+  color: var(--nav-text-primary);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+
+/* ============================================================
+   5. ACTION BUTTONS (Login / Register)
+   ============================================================ */
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--nav-gap-actions);
+
+  flex-shrink: 0;
+}
+
+/* --- Shared button base --- */
+.navbar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 8px 20px;
+  height: 36px;
+
+  font-family: var(--nav-font-family);
+  font-size: var(--nav-font-size-link);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+
+  border: none;
+  border-radius: var(--nav-radius-btn);
+  cursor: pointer;
+  text-decoration: none;
+
+  transition:
+    background-color var(--nav-transition),
+    color var(--nav-transition),
+    box-shadow var(--nav-transition),
+    transform var(--nav-transition);
+}
+
+.navbar__btn:active {
+  transform: scale(0.97);
+}
+
+/* --- Ghost button (Login) --- */
+.navbar__btn--ghost {
+  background-color: transparent;
+  color: var(--nav-text-primary);
+}
+
+.navbar__btn--ghost:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* --- Primary button (Register) --- */
+.navbar__btn--primary {
+  background-color: var(--nav-accent);
+  color: #ffffff;
+}
+
+.navbar__btn--primary:hover {
+  background-color: var(--nav-accent-hover);
+  box-shadow: 0 0 16px var(--nav-accent-glow);
+}
+
+
+/* ============================================================
+   6. MOBILE TOGGLE (Hamburger)
+   ============================================================ */
+
+.navbar__toggle {
+  display: none;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar__toggle-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--nav-text-primary);
+  border-radius: 2px;
+  transition: transform var(--nav-transition), opacity var(--nav-transition);
+}
+
+/* Animated hamburger → X */
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+
+/* ============================================================
+   7. RESPONSIVE — MOBILE ( ≤ 768px )
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  .navbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 14px var(--nav-padding-x);
+  }
+
+  /* Show hamburger button */
+  .navbar__toggle {
+    display: flex;
+  }
+
+  /* Collapse nav links */
+  .navbar__nav {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+
+    width: 100%;
+    padding: 12px 0 8px;
+    border-top: 1px solid var(--nav-border);
+    margin-top: 12px;
+  }
+
+  .navbar__nav--open {
+    display: flex;
+  }
+
+  .navbar__nav-link {
+    width: 100%;
+    padding: 10px 14px;
+  }
+
+  /* Stack actions below nav */
+  .navbar__actions {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 8px;
+  }
+
+  .navbar__actions--open {
+    display: flex;
+  }
+
+  .navbar__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+/* ============================================================
+   8. ACCESSIBILITY
+   ============================================================ */
+
+/* Focus-visible ring for keyboard navigation */
+.navbar__nav-link:focus-visible,
+.navbar__btn:focus-visible,
+.navbar__brand:focus-visible,
+.navbar__toggle:focus-visible {
+  outline: 2px solid var(--nav-accent);
+  outline-offset: 3px;
+}
+
+/* Hide focus ring for mouse users */
+.navbar__nav-link:focus:not(:focus-visible),
+.navbar__btn:focus:not(:focus-visible),
+.navbar__brand:focus:not(:focus-visible),
+.navbar__toggle:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+/* ============================================================
+   END OF FILE
+   ============================================================ */

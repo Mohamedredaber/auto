@@ -1,13 +1,87 @@
+/* =============================================
+   TOKENS — COLORS
+   AutoConnect | Palette Dark Theme
+   ============================================= */
+
 :root {
+  /* === BACKGROUNDS === */
+  --color-bg-primary:       #0D0D0D;   /* fond principal */
+  --color-bg-secondary:     #141414;   /* fond sections */
+  --color-bg-card:          #1A1A1A;   /* cartes */
+  --color-bg-card-hover:    #222222;   /* cartes au survol */
+  --color-bg-input:         #1E1E1E;   /* champs formulaires */
+  --color-bg-navbar:        #0F0F0FCC; /* navbar (transparence) */
+  --color-bg-overlay:       #000000AA; /* overlay modals */
 
-  --color-primary: #e11d48;
-  --color-primary-dark: #be123c;
+  /* === ACCENT BLEU (remplace le mauve) === */
+  --color-blue-50:          #EFF6FF;
+  --color-blue-100:         #DBEAFE;
+  --color-blue-400:         #60A5FA;
+  --color-blue-500:         #3B82F6;   /* bleu principal */
+  --color-blue-600:         #2563EB;   /* bleu hover */
+  --color-blue-700:         #1D4ED8;   /* bleu actif / pressed */
+  --color-blue-900:         #1E3A8A;   /* bleu très foncé */
 
-  --color-white: #ffffff;
-  --color-black: #0f0f0f;
+  /* === ACCENT ROUGE (boutons CTA, badges) === */
+  --color-red-400:          #F87171;
+  --color-red-500:          #EF4444;   /* rouge principal */
+  --color-red-600:          #DC2626;   /* rouge hover */
+  --color-red-700:          #B91C1C;   /* rouge actif */
 
-  --color-gray-100: #f3f4f6;
-  --color-gray-300: #d1d5db;
-  --color-gray-700: #374151;
-  --color-gray-900: #111827;
+  /* === TEXTE === */
+  --color-text-primary:     #FFFFFF;   /* titres principaux */
+  --color-text-secondary:   #D1D5DB;   /* texte courant */
+  --color-text-muted:       #6B7280;   /* texte discret */
+  --color-text-disabled:    #374151;   /* désactivé */
+  --color-text-inverse:     #0D0D0D;   /* texte sur fond clair */
+
+  /* === BORDURES === */
+  --color-border:           #2A2A2A;   /* bordure standard */
+  --color-border-subtle:    #1F1F1F;   /* bordure très subtile */
+  --color-border-blue:      #2563EB44; /* bordure accent bleu */
+  --color-border-focus:     #3B82F6;   /* focus ring */
+
+  /* === ÉTATS === */
+  --color-success:          #10B981;   /* vert succès */
+  --color-success-bg:       #064E3B22;
+  --color-warning:          #F59E0B;   /* orange warning */
+  --color-warning-bg:       #78350F22;
+  --color-error:            #EF4444;   /* rouge erreur */
+  --color-error-bg:         #7F1D1D22;
+  --color-info:             #3B82F6;   /* bleu info */
+  --color-info-bg:          #1E3A8A22;
+
+  /* === BADGES DISPONIBILITÉ === */
+  --color-badge-available:  #10B981;
+  --color-badge-reserved:   #F59E0B;
+  --color-badge-unavailable:#EF4444;
+
+  /* === GRADIENTS === */
+  --gradient-blue:          linear-gradient(135deg, #2563EB, #3B82F6);
+  --gradient-red:           linear-gradient(135deg, #DC2626, #EF4444);
+  --gradient-dark:          linear-gradient(180deg, #141414 0%, #0D0D0D 100%);
+  --gradient-hero:          linear-gradient(135deg, #0D0D0D 60%, #1E3A8A22 100%);
+  --gradient-card:          linear-gradient(180deg, transparent 40%, #0D0D0DCC 100%);
+}
+
+/* === LIGHT MODE (optionnel) === */
+[data-theme="light"] {
+  --color-bg-primary:       #F9FAFB;
+  --color-bg-secondary:     #FFFFFF;
+  --color-bg-card:          #FFFFFF;
+  --color-bg-card-hover:    #F3F4F6;
+  --color-bg-input:         #F1F5F9;
+  --color-bg-navbar:        #FFFFFFCC;
+
+  --color-text-primary:     #0F172A;
+  --color-text-secondary:   #334155;
+  --color-text-muted:       #94A3B8;
+  --color-text-disabled:    #CBD5E1;
+  --color-text-inverse:     #FFFFFF;
+
+  --color-border:           #E2E8F0;
+  --color-border-subtle:    #F1F5F9;
+
+  --gradient-hero:          linear-gradient(135deg, #F9FAFB 60%, #DBEAFE 100%);
+  --gradient-dark:          linear-gradient(180deg, #F9FAFB 0%, #FFFFFF 100%);
 }
