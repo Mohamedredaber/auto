@@ -4,6 +4,7 @@ export const useForm = ({ initialValues = {}, validate = () => ({}), onSubmit })
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors]         = useState({});
   const [touched, setTouched]       = useState({});
+  const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const runValidation = useCallback(
@@ -53,11 +54,13 @@ export const useForm = ({ initialValues = {}, validate = () => ({}), onSubmit })
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
+      setLoading(true);
       try {
         setIsSubmitting(true);
         await onSubmit(values);
       } finally {
         setIsSubmitting(false);
+        setLoading(false);
       }
     }
   };
@@ -66,7 +69,7 @@ export const useForm = ({ initialValues = {}, validate = () => ({}), onSubmit })
 
   return {
     values, errors, touched,
-    isSubmitting, isValid,
+    isSubmitting, isValid,loading,
     handleChange, handleBlur, handleSubmit,
     setFieldValue, setFieldTouched,
     setErrors, resetForm,

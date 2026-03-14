@@ -1,0 +1,21 @@
+// src/components/icons/index.js
+export { default as User } from './User';
+export { default as Agency } from './Agency';
+export { default as Mail } from './Mail';
+export { default as Phone } from './Phone';
+export { default as Lock } from './Lock';
+export { default as Eye } from './Eye';
+export { default as EyeOff } from './EyeOff';
+export { default as ArrowLeft } from './ArrowLeft';
+export { default as ArrowRight } from './ArrowRight';
+export { default as Check } from './Check';
+export { default as Upload } from './Upload';
+export { default as Building } from './Building';
+export { default as MapPin } from './MapPin';
+export { default as Home } from './Home';
+export { default as Clock } from './Clock';
+export { default as Link } from './Link';
+export { default as Error } from './Error';
+export { default as Success } from './Success';
+export { default as Login } from './Login';
+export { default as Google } from './Google';
