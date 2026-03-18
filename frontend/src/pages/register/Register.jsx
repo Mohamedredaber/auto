@@ -18,7 +18,6 @@ export default function Register() {
 
   return (
     <div className="rp-root">
-      {/* PAGE */}
       <div className="rp-page">
 
 
