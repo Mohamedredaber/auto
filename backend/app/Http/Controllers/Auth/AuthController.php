@@ -14,9 +14,7 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct(private readonly AuthService $authService)
-    {
-    }
+    public function __construct(private readonly AuthService $authService) {}
 
     // ─────────────────────────────────────────────────────
     //  POST /api/auth/register
@@ -25,44 +23,57 @@ class AuthController extends Controller
     // ─────────────────────────────────────────────────────
     public function register(RegisterRequest $request): JsonResponse
     {
-        ['user' => $user, 'token' => $token] = $this->authService->register(
-            $request->validated()
-        );
+        ['user' => $user, 'token' => $token] = $this->authService->register($request->validated());
 
-        $message = $user->isClient()
-            ? 'Inscription réussie.'
-            : 'Compte agence créé. Veuillez compléter votre profil.';
+        $message = $user->isClient() ? 'Inscription réussie.' : 'Compte agence créé. Veuillez compléter votre profil.';
 
         return $this->respondWithToken($user, $token, $message, 201);
     }
+    
 
     // ─────────────────────────────────────────────────────
     //  POST /api/auth/agency/complete-profile  🔒
     //  Step 2 — uniquement pour admin_agency
     // ─────────────────────────────────────────────────────
-    public function completeAgencyProfile(CompleteAgencyProfileRequest $request): JsonResponse
+    public function registerAgency(Request $request): JsonResponse
     {
-        $agency = $this->authService->completeAgencyProfile(
-            $request->user(),
-            $request->validated(),
-            $request->file('logo')
-        );
+        $request->validate([
+            // User
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'nullable|string',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin_agency',
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Profil agence complété avec succès.',
-            'data'    => new AgencyResource($agency),
+            // Agency
+            'agency_name' => 'required|string|max:255',
+            'city' => 'required|string',
+            'address' => 'required|string',
+            'time_start' => 'required',
+            'time_end' => 'required',
+            'postal_code' => 'nullable|string',
+            'logo' => 'nullable|image|max:2048',
+            'accounts_social' => 'nullable|string',
         ]);
-    }
 
+        $result = $this->authService->registerAgency($request->validated(), $request->file('logo'));
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Compte agence créé avec succès.',
+                'data' => $result,
+            ],
+            201,
+        );
+    }
     // ─────────────────────────────────────────────────────
     //  POST /api/auth/login
     // ─────────────────────────────────────────────────────
     public function login(LoginRequest $request): JsonResponse
     {
-        ['user' => $user, 'token' => $token] = $this->authService->login(
-            $request->only('email', 'password')
-        );
+        ['user' => $user, 'token' => $token] = $this->authService->login($request->only('email', 'password'));
 
         return $this->respondWithToken($user, $token, 'Connexion réussie.');
     }
@@ -89,7 +100,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'data'    => new UserResource($user),
+            'data' => new UserResource($user),
         ]);
     }
 
@@ -98,16 +109,19 @@ class AuthController extends Controller
     // ─────────────────────────────────────────────────────
     private function respondWithToken($user, string $token, string $message, int $status = 200): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => $message,
-            'data'    => [
-                'user'         => new UserResource($user->load('agency')),
-                'access_token' => $token,
-                'token_type'   => 'Bearer',
-                // Indique au frontend si le step 2 est nécessaire
-                'needs_profile_completion' => $user->isAgencyAdmin() && is_null($user->agency_id),
+        return response()->json(
+            [
+                'success' => true,
+                'message' => $message,
+                'data' => [
+                    'user' => new UserResource($user->load('agency')),
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
+                    // Indique au frontend si le step 2 est nécessaire
+                    'needs_profile_completion' => $user->isAgencyAdmin() && is_null($user->agency_id),
+                ],
             ],
-        ], $status);
+            $status,
+        );
     }
 }

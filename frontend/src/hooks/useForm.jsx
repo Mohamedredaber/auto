@@ -25,7 +25,6 @@ export const useForm = ({ initialValues = {}, validate = () => ({}), onSubmit })
     setTouched(prev => ({ ...prev, [name]: true }));
     setErrors(runValidation(updated));
   };
-
   const setFieldValue = (field, value) => {
     const updated = { ...values, [field]: value };
     setValues(updated);
