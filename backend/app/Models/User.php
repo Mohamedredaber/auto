@@ -30,13 +30,11 @@ class User extends Authenticatable
         
         'password' => 'hashed',
     ];
-
     // ── Relations ──────────────────────────────────────────
     public function agency(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Agency::class);
     }
-
     // ── Helpers ────────────────────────────────────────────
     public function isClient(): bool
     {

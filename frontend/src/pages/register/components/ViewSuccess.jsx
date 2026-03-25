@@ -1,5 +1,4 @@
 import * as Icon from "../../../components/layout/icons";
-
 export default function ViewSuccess({ type }) {
     return (
         <div className="rp-view rp-success">
@@ -16,3 +15,4 @@ export default function ViewSuccess({ type }) {
         </div>
     );
 }
+

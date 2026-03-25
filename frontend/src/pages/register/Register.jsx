@@ -8,7 +8,6 @@ export default function Register() {
   // views: 'type' | 'client' | 'agence1' | 'agence2' | 'success'
   const [view, setView] = useState("type");
   const [successType, setSuccessType] = useState(null);
-
   const handleSuccess = type => {
     setSuccessType(type);
     setView("success");
@@ -38,15 +37,6 @@ export default function Register() {
             {view === "agence1" && <StepAgencyInfo onBack={() => setView("type")} onNext={() => setView("agence2")} />}
             {view === "agence2" && <ViewAgence2 onBack={() => setView("agence1")} onSuccess={handleSuccess} />}
             {view === "success" && <ViewSuccess type={successType} />}
-          </div>
-
-          <div className="rp-footer">
-            <div className="rp-footer-logo">AutoConnect</div>
-            <div className="rp-footer-links">
-              <a href="#">Conditions</a>
-              <a href="#">Confidentialité</a>
-              <a href="#">Support</a>
-            </div>
           </div>
         </div>
       </div>

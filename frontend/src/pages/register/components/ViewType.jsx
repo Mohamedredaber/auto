@@ -1,7 +1,9 @@
 import { useState } from "react";
 import * as Icon from "../../../components/layout/icons";
-
+import { Link } from "react-router-dom";
+import typeclient from '../../../data/typeclient'
 export default function ViewType({ onSelect }) {
+
     const [hov, setHov] = useState(null);
     return (
         <div className="rp-view">
@@ -13,10 +15,7 @@ export default function ViewType({ onSelect }) {
             </div>
 
             <div className="rp-type-grid">
-                {[
-                    { key: "client", icon: <Icon.User />, title: "Client", desc: "Réservez facilement votre voiture idéale au Maroc" },
-                    { key: "agence", icon: <Icon.Agency />, title: "Agence", desc: "Publiez et gérez votre flotte de véhicules" },
-                ].map(card => (
+                {typeclient.map(card => (
                     <div
                         key={card.key}
                         className={`rp-type-card${hov === card.key ? " sel" : ""}`}
@@ -33,7 +32,8 @@ export default function ViewType({ onSelect }) {
             </div>
 
             <div className="rp-login-link">
-                Déjà un compte ? <a href="#">Se connecter</a>
+                Déjà un compte ? 
+                <Link to='/login'>Se connecter</Link>
             </div>
         </div>
     );

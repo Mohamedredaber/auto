@@ -88,7 +88,6 @@ export function SelectField({ label, id, name, icon, value, onChange, onBlur, op
 export function UploadLogo({ file, onChange }) {
     const ref = useRef();
     const [preview, setPreview] = useState(null);
-
     const handleChange = e => {
         const f = e.target.files[0];
         if (!f) return;

@@ -7,7 +7,8 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-
+use App\Http\Resources\AgencyResource;
+use App\Http\Resources\UserResource;
 class AuthService
 {
     /**
@@ -36,31 +37,52 @@ class AuthService
      * Complétion profil agence (Step 2).
      * Crée l'agence et lie l'utilisateur via agency_id.
      */
-    public function completeAgencyProfile(User $user, array $data, ?UploadedFile $logo): Agency
-    {
-        // Upload du logo
-        $logoPath = $logo ? $logo->store('logos', 'public') : null;
+    public function registerAgency(array $data, ?UploadedFile $logo = null): array
+{
+    return DB::transaction(function () use ($data, $logo) {
 
-        // Créer l'agence
-        $agency = Agency::create([
-            'agency_name' => $data['agency_name'],
-            'city' => $data['city'],
-            'address' => $data['address'],
-            'latitude' => $data['latitude'],
-            'longitude' => $data['longitude'],
-            'time_start' => $data['time_start'],
-            'time_end' => $data['time_end'],
-            'logo' => $logoPath,
-            'accounts_social' => $data['accounts_social'] ?? null,
-            'is_verified' => false, // vérification manuelle par super_admin
+        // ── 1. Create User ───────────────────
+        $user = User::create([
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+            'email'      => $data['email'],
+            'phone'      => $data['phone'] ?? null,
+            'password'   => $data['password'],
+            'role'       => 'admin_agency',
         ]);
 
-        // Lier l'utilisateur à cette agence
+        // ── 2. Logo ──────────────────────────
+        $logoPath = $logo
+            ? $logo->store('logos', 'public')
+            : null;
+
+        // ── 3. Accounts social ───────────────
+        $accounts = null;
+        if (!empty($data['accounts_social'])) {
+            $accounts = json_decode($data['accounts_social'], true);
+        }
+
+        // ── 4. Create Agency ─────────────────
+        $agency = Agency::create([
+            'agency_name'     => $data['agency_name'],
+            'city'            => $data['city'],
+            'address'         => $data['address'],
+            'time_start'      => $data['time_start'],
+            'time_end'        => $data['time_end'],
+            'logo'            => $logoPath,
+            'accounts_social' => $accounts,
+            'is_verified'     => false,
+        ]);
+
+        // ── 5. ربط User بـ Agency ────────────
         $user->update(['agency_id' => $agency->id]);
 
-        return $agency;
-    }
-
+        return [
+            'user'   => new UserResource($user->fresh()->load('agency')),
+            'agency' => new AgencyResource($agency),
+        ];
+    });
+}
     /**
      * Connexion — retourne user + token.
      *
@@ -91,8 +113,6 @@ class AuthService
      */
     public function logout(User $user): void
     {
-        if ($token = $user->currentAccessToken()) {
-            $token->delete();
-        }
-    }
+     $user->tokens()->delete();
+    }   
 }
