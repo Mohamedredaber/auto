@@ -1,13 +1,18 @@
-import { useForm } from "../../../hooks/useForm"
-import * as Icon from "../../../components/layout/icons"
+import { useForm }         from "../../../hooks/useForm"
+import * as Icon           from "../../../components/layout/icons"
 import {
   InputField,
   PasswordInputInternal,
   PasswordStrength,
 } from "./FormComponents"
-import { Link } from "react-router-dom"
+import { Link }            from "react-router-dom"
+import { useDispatch }     from "react-redux"
+import { saveAgencyDraft } from "../../../features/auth/authSlice"
 
 export default function StepAgencyInfo({ onBack, onNext }) {
+
+  const dispatch = useDispatch()
+
   const initialValues = {
     prenom:      "",
     nom:         "",
@@ -29,9 +34,10 @@ export default function StepAgencyInfo({ onBack, onNext }) {
       e.passConfirm = "Les mots de passe ne correspondent pas"
     return e
   }
-
-  // ✅ بلا API — غير نبعثو values للـ parent
+  
   const onSubmit = async (values) => {
+    // ✅ Sauvegarde dans Redux — accessible depuis ViewAgence2 via selectAgencyDraft
+    dispatch(saveAgencyDraft(values))
     onNext(values)
   }
 

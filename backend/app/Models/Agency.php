@@ -20,6 +20,7 @@ class Agency extends Model
         'logo',
         'accounts_social',
     ];
+    
 
     protected $casts = [
         'is_verified'     => 'boolean',
@@ -27,7 +28,12 @@ class Agency extends Model
         'latitude'        => 'float',
         'longitude'       => 'float',
     ];
-
+// Dans Agency.php
+public function user()
+{
+    // Si c'est l'utilisateur qui a la clé 'agency_id'
+    return $this->belongsTo(User::class, 'id', 'agency_id');
+}
     // L'admin de cette agence
     public function admin(): \Illuminate\Database\Eloquent\Relations\HasOne
     {

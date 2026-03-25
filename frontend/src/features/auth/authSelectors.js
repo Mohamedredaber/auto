@@ -1,40 +1,45 @@
 /**
  * Auth Selectors
- * Séparation des selectors pour une meilleure maintenabilité
+ * Les noms de champs correspondent exactement à l'initialState de authSlice.js
+ *
+ * initialState = {
+ *   user, isAuth, isLoading, isInitialized,
+ *   errors, globalError, needsCompletion, agencyDraft
+ * }
  */
 
-// Sélecteur root du state d'auth
-export const selectAuthState = (state) => state.auth;
+// ── State racine ──────────────────────────────────────────────────────────
+export const selectAuthState = (state) => state.auth
 
-// Sélecteur de l'utilisateur
-export const selectUser = (state) => state.auth.user;
+// ── User ──────────────────────────────────────────────────────────────────
+export const selectUser = (state) => state.auth.user
+export const selectRole = (state) => state.auth.user?.role ?? null
 
-// Sélecteur pour check si authentifé
-export const selectIsAuth = (state) => state.auth.isAuthenticated;
+// ── Session ───────────────────────────────────────────────────────────────
+// ✅ FIX : isAuthenticated → isAuth        (nom dans authSlice)
+export const selectIsAuth = (state) => state.auth.isAuth
 
-// Sélecteur pour le state de chargement
-export const selectIsLoading = (state) => state.auth.loading;
+// ✅ FIX : loading → isLoading             (nom dans authSlice)
+export const selectIsLoading = (state) => state.auth.isLoading
 
-// Sélecteur pour vérifier si l'app est initialisée (check initial de l'user)
-export const selectIsInitialized = (state) => state.auth.initialized;
+// ✅ FIX : initialized → isInitialized     (nom dans authSlice)
+export const selectIsInitialized = (state) => state.auth.isInitialized
 
-// Sélecteur des erreurs de formulaire (field errors)
-export const selectErrors = (state) => state.auth.errors;
+// ── Erreurs ───────────────────────────────────────────────────────────────
+export const selectErrors      = (state) => state.auth.errors
+export const selectGlobalError = (state) => state.auth.globalError
 
-// Sélecteur de l'erreur globale
-export const selectGlobalError = (state) => state.auth.globalError;
+// ── Profil agence ─────────────────────────────────────────────────────────
+// ✅ FIX : needsCompletion est dans le root du state, PAS dans user
+export const selectNeedsCompletion = (state) => state.auth.needsCompletion
 
-// Sélecteur du rôle de l'utilisateur
-export const selectRole = (state) => state.auth.user?.role;
+// ✅ Ajouté — utilisé par ViewAgence2 pour lire le brouillon du step 1
+export const selectAgencyDraft = (state) => state.auth.agencyDraft
 
-// Sélecteur pour vérifier si l'utilisateur doit compléter son profil
-export const selectNeedsCompletion = (state) =>
-  state.auth.user?.needsCompletion || false;
-
-// Sélecteur composite pour infos utilisateur complètes
+// ── Sélecteur composite ───────────────────────────────────────────────────
 export const selectUserInfo = (state) => ({
-  user: state.auth.user,
-  role: state.auth.user?.role,
-  isAuth: state.auth.isAuthenticated,
-  needsCompletion: state.auth.user?.needsCompletion || false,
-});
+  user:            state.auth.user,
+  role:            state.auth.user?.role ?? null,
+  isAuth:          state.auth.isAuth,          // ✅ FIX
+  needsCompletion: state.auth.needsCompletion, // ✅ FIX — root, pas user
+})

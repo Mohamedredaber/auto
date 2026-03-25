@@ -1,13 +1,14 @@
-import { useForm } from "../../../hooks/useForm"
-import * as Icon from "../../../components/layout/icons"
+import { useForm }         from "../../../hooks/useForm"
+import * as Icon           from "../../../components/layout/icons"
 import { InputField, SelectField, UploadLogo } from "./FormComponents"
-import { useDispatch, useSelector } from "react-redux"           // ✅ زيد
-import { registerAgencyThunk } from "../../../features/auth/authThunks" // ✅ زيد
+import { useDispatch, useSelector } from "react-redux"
+import { registerAgencyThunk } from "../../../features/auth/authThunks"
 import {
   selectErrors,
   selectGlobalError,
-} from "../../../features/auth/authSelectors"                    // ✅ زيد
-import socialaccountlabel from "../../../data/socialaccountlabel"
+} from "../../../features/auth/authSelectors"
+import { clearAgencyDraft } from "../../../features/auth/authSlice"
+import socialaccountlabel   from "../../../data/socialaccountlabel"
 
 const VILLES = [
   "Casablanca", "Rabat", "Marrakech", "Fès", "Tanger",
@@ -15,7 +16,7 @@ const VILLES = [
   "El Jadida", "Dakhla", "Laâyoune", "Béni Mellal",
 ]
 
-export default function ViewAgence2({ onBack, onSuccess, agencyDraft }) { // ✅ زيد agencyDraft
+export default function ViewAgence2({ onBack, onSuccess }) {
 
   const dispatch    = useDispatch()
   const apiErrors   = useSelector(selectErrors)
@@ -36,21 +37,12 @@ export default function ViewAgence2({ onBack, onSuccess, agencyDraft }) { // ✅
     return e
   }
 
-  // ✅ onSubmit حقيقي — بدل setTimeout
   const onSubmit = async (values) => {
+    // ✅ Uniquement les données agence — registerThunk a déjà été appelé dans StepAgencyInfo
+    // L'user est authentifié via cookie Sanctum → /agency/complete-profile est accessible
 
     const formData = new FormData()
 
-    // ── Step 1 — من agencyDraft ──────────
-    formData.append("first_name",            agencyDraft.prenom)
-    formData.append("last_name",             agencyDraft.nom)
-    formData.append("email",                 agencyDraft.email)
-    formData.append("phone",                 agencyDraft.tel)
-    formData.append("password",              agencyDraft.pass)
-    formData.append("password_confirmation", agencyDraft.passConfirm)
-    formData.append("role",                  "admin_agency")
-
-    // ── Step 2 ───────────────────────────
     formData.append("agency_name", values.nom)
     formData.append("city",        values.ville)
     formData.append("address",     values.adresse)
@@ -58,7 +50,7 @@ export default function ViewAgence2({ onBack, onSuccess, agencyDraft }) { // ✅
     formData.append("time_end",    values.close)
     if (values.cp) formData.append("postal_code", values.cp)
 
-    // ── Réseaux sociaux ──────────────────
+    // Réseaux sociaux — JSON stringifié, décodé par AuthService::registerAgency()
     const accounts = {}
     if (values.fb)  accounts.facebook  = values.fb
     if (values.ig)  accounts.instagram = values.ig
@@ -68,13 +60,12 @@ export default function ViewAgence2({ onBack, onSuccess, agencyDraft }) { // ✅
       formData.append("accounts_social", JSON.stringify(accounts))
     }
 
-    // ── Logo ─────────────────────────────
     if (values.logo) formData.append("logo", values.logo)
 
-    // ✅ Call واحد فقط
     const result = await dispatch(registerAgencyThunk(formData))
 
     if (registerAgencyThunk.fulfilled.match(result)) {
+      dispatch(clearAgencyDraft())
       onSuccess("agence")
     }
   }
@@ -98,7 +89,6 @@ export default function ViewAgence2({ onBack, onSuccess, agencyDraft }) { // ✅
         </p>
       </div>
 
-      {/* ✅ Global error */}
       {globalError && (
         <div className="rp-global-error">
           <Icon.Error /> {globalError}

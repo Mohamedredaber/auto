@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import {
   registerThunk,
   loginThunk,
@@ -8,118 +7,160 @@ import {
   registerAgencyThunk,
 } from "./authThunks";
 
-/* ══════════════════════════════════════════
-   INITIAL STATE
-══════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════
+   TYPES (documentation interne)
+
+   AuthState {
+     user              : object | null   — utilisateur connecté
+     isAuth            : boolean         — session active
+     isLoading         : boolean         — requête en cours
+     isInitialized     : boolean         — bootstrap terminé (fetchMe appelé)
+     errors            : object          — erreurs de champ { field: [message] }
+     globalError       : string | null   — message d'erreur global
+     needsCompletion   : boolean         — profil agence à compléter (step 2)
+     agencyDraft       : object | null   — données step 1 agence (prenom, nom, email...)
+   }
+══════════════════════════════════════════════════════════════════ */
+
 const initialState = {
-  user: null,
-  isAuth: false,
-  isLoading: false,
-  isInitialized: false,
-  errors: {},
-  globalError: null,
+  user:            null,
+  isAuth:          false,
+  isLoading:       false,
+  isInitialized:   false,
+  errors:          {},
+  globalError:     null,
   needsCompletion: false,
-  agencyDraft: null,
-};
+  agencyDraft:     null,
+}
 
-/* ══════════════════════════════════════════
-   HELPERS
-══════════════════════════════════════════ */
-const pendingState = (state) => {
-  state.isLoading = true;
-  state.errors = {};
-  state.globalError = null;
-};
+/* ── Helpers de mutation ──────────────────────────────────────────── */
 
-const rejectedState = (state, action) => {
-  state.isLoading = false;
-  state.errors = action.payload?.errors ?? {};
-  state.globalError = action.payload?.message ?? "Une erreur est survenue";
-};
+/** Appelé sur le pending de toute requête standard (login, register, agency) */
+const setPending = (state) => {
+  state.isLoading  = true
+  state.errors     = {}
+  state.globalError = null
+}
 
-const authSuccess = (state, action) => {
-  state.isLoading = false;
-  state.isAuth = true;
-  state.user = action.payload.user;
-  state.needsCompletion = action.payload.needs_profile_completion ?? false;
-};
+/** Appelé sur le rejected de toute requête standard */
+const setRejected = (state, action) => {
+  state.isLoading   = false
+  state.errors      = action.payload?.errors ?? {}
+  state.globalError = action.payload?.message ?? "Une erreur est survenue"
+}
+
+/**
+ * Appelé sur le fulfilled de login et register.
+ * Attend un payload normalisé : { user, needs_profile_completion }
+ * Garanti par normalizeAuthPayload() dans authThunks.js
+ */
+const setAuthSuccess = (state, action) => {
+  state.isLoading        = false
+  state.isAuth           = true
+  state.user             = action.payload.user
+  state.needsCompletion  = action.payload.needs_profile_completion ?? false
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SLICE
+══════════════════════════════════════════════════════════════════ */
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
 
   reducers: {
+    /** Efface les erreurs affichées dans les formulaires */
     clearErrors: (state) => {
-      state.errors = {};
-      state.globalError = null;
+      state.errors      = {}
+      state.globalError = null
     },
+
+    /**
+     * Sauvegarde temporaire des données du formulaire agence step 1.
+     * Permet à ViewAgence2 de les récupérer via selectAgencyDraft.
+     */
     saveAgencyDraft: (state, action) => {
-      state.agencyDraft = action.payload;
+      state.agencyDraft = action.payload
     },
+
+    /** Supprime le brouillon agence après soumission réussie ou abandon */
     clearAgencyDraft: (state) => {
-      state.agencyDraft = null;
+      state.agencyDraft = null
     },
 
-    resetAuth: () => initialState,
-
+    /**
+     * Mise à jour manuelle de l'utilisateur.
+     * Ex : après édition de profil sans thunk dédié.
+     */
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload
     },
+
+    /** Remet le store auth à son état initial (usage interne ou tests) */
+    resetAuth: () => initialState,
   },
 
   extraReducers: (builder) => {
-    /* ── REGISTER ── */
+    /* ── REGISTER ──────────────────────────────────────────────────── */
     builder
-      .addCase(registerThunk.pending, pendingState)
-      .addCase(registerThunk.fulfilled, authSuccess)
-      .addCase(registerThunk.rejected, rejectedState);
+      .addCase(registerThunk.pending,   setPending)
+      .addCase(registerThunk.fulfilled, setAuthSuccess)
+      .addCase(registerThunk.rejected,  setRejected)
 
-    /* ── LOGIN ── */
+    /* ── LOGIN ─────────────────────────────────────────────────────── */
     builder
-      .addCase(loginThunk.pending, pendingState)
-      .addCase(loginThunk.fulfilled, authSuccess)
-      .addCase(loginThunk.rejected, rejectedState);
+      .addCase(loginThunk.pending,   setPending)
+      .addCase(loginThunk.fulfilled, setAuthSuccess)
+      .addCase(loginThunk.rejected,  setRejected)
 
-    /* ── LOGOUT ── */
+    /* ── LOGOUT ────────────────────────────────────────────────────── */
     builder
-      .addCase(logoutThunk.pending, (state) => {
-        state.isLoading = true;
-      })
+      .addCase(logoutThunk.pending,   setPending)
+      // Reset complet du store dans tous les cas (succès ou erreur serveur)
       .addCase(logoutThunk.fulfilled, () => initialState)
-      .addCase(logoutThunk.rejected, () => {
-        // حتى إلا فشل — نمسحو locally
-        return initialState;
-      });
+      .addCase(logoutThunk.rejected,  () => initialState)
 
-    /* ── FETCH ME ── */
+    /* ── FETCH ME (bootstrap) ──────────────────────────────────────── */
     builder
       .addCase(fetchMeThunk.pending, (state) => {
-        state.isLoading = true;
+        state.isLoading = true
+        // Pas de reset des erreurs : le bootstrap n'est pas déclenché par l'user
       })
       .addCase(fetchMeThunk.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isAuth = true;
-        state.user = action.payload;
-        state.isInitialized = true;
+        state.isLoading      = false
+        state.isInitialized  = true
+        state.isAuth         = true
+        state.user           = action.payload
       })
       .addCase(fetchMeThunk.rejected, (state) => {
-        state.isLoading = false;
-        state.isAuth = false;
-        state.user = null;
-        state.isInitialized = true;
-      });
-
-    /* ── COMPLETE PROFILE ── */
-    builder
-      .addCase(registerAgencyThunk.pending, pendingState)
-      .addCase(registerAgencyThunk.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-        state.needsCompletion = false;
+        state.isLoading     = false
+        state.isInitialized = true
+        state.isAuth        = false
+        state.user          = null
       })
-      .addCase(registerAgencyThunk.rejected, rejectedState);
-  },
-});
 
-export const { clearErrors, resetAuth, setUser } = authSlice.actions;
-export default authSlice.reducer;
+    /* ── COMPLETE AGENCY PROFILE ───────────────────────────────────── */
+    builder
+      .addCase(registerAgencyThunk.pending,   setPending)
+      .addCase(registerAgencyThunk.fulfilled, (state, action) => {
+        state.isLoading       = false
+        state.isAuth          = true  // explicite : garantit la cohérence quel que soit le flux
+        state.user            = action.payload.user
+        state.needsCompletion = false
+        state.agencyDraft     = null  // nettoyage automatique après succès
+      })
+      .addCase(registerAgencyThunk.rejected, setRejected)
+  },
+})
+
+/* ── Exports ─────────────────────────────────────────────────────── */
+export const {
+  clearErrors,
+  saveAgencyDraft,
+  clearAgencyDraft,
+  setUser,
+  resetAuth,
+} = authSlice.actions
+
+export default authSlice.reducer

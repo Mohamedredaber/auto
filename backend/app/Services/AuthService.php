@@ -4,18 +4,17 @@ namespace App\Services;
 
 use App\Models\Agency;
 use App\Models\User;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use App\Http\Resources\AgencyResource;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+
 class AuthService
 {
     /**
-     * ✅ Register (Client ou Step 1 Agency)
+     * Register (Client ou Step 1 Agency)
+     * Crée uniquement le User — pas d'agence ici.
      */
     public function register(array $data): array
     {
@@ -34,21 +33,22 @@ class AuthService
     }
 
     /**
-     * ✅ Step 2: Compléter profil agence
+     * Step 2 : Compléter profil agence.
+     * L'user est déjà authentifié via Sanctum (cookie).
+     * Cette méthode reçoit UNIQUEMENT les données agence — pas first_name, email, etc.
      */
     public function registerAgency(array $data, ?UploadedFile $logo = null): array
     {
         /** @var User $user */
         $user = Auth::user();
 
-        // 🔒 Sécurité
+        // Sécurité : seul un admin_agency sans agence peut compléter
         if (!$user || !$user->isAgencyAdmin()) {
             throw ValidationException::withMessages([
                 'user' => ['Non autorisé.'],
             ]);
         }
 
-        // 🔒 Empêcher double création
         if ($user->agency_id !== null) {
             throw ValidationException::withMessages([
                 'agency' => ['Profil déjà complété.'],
@@ -57,15 +57,15 @@ class AuthService
 
         return DB::transaction(function () use ($data, $logo, $user) {
 
-            // 📁 Upload logo
             $logoPath = $logo
                 ? $logo->store('logos', 'public')
                 : null;
 
-            // 🌐 Accounts social
-            $accounts = $data['accounts_social'] ?? null;
+            // accounts_social est envoyé en JSON stringifié depuis le FormData frontend
+            $accounts = isset($data['accounts_social'])
+                ? json_decode($data['accounts_social'], true)
+                : null;
 
-            // 🏢 Create Agency
             $agency = Agency::create([
                 'agency_name'     => $data['agency_name'],
                 'city'            => $data['city'],
@@ -73,29 +73,26 @@ class AuthService
                 'time_start'      => $data['time_start'],
                 'time_end'        => $data['time_end'],
                 'logo'            => $logoPath,
-                'latitude'        => $data['latitude'],
-                'longitude'       => $data['longitude'],
+                'latitude'        => $data['latitude']  ?? null,
+                'longitude'       => $data['longitude'] ?? null,
                 'accounts_social' => $accounts,
                 'is_verified'     => false,
             ]);
 
-            // 🔗 Lier user existant
-            $user->update([
-                'agency_id' => $agency->id
-            ]);
+            $user->update(['agency_id' => $agency->id]);
 
             return [
-                'user'   => new UserResource($user->fresh()->load('agency')),
-                // 'agency' => new AgencyResource($agency),
+                'user' => new UserResource($user->fresh()->load('agency')),
             ];
         });
     }
 
     /**
-     * ✅ Login
+     * Login
      */
     public function login(array $credentials): array
     {
+        // Auth::attempt() retourne un bool — récupérer l'user APRÈS via Auth::user()
         if (!Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['Email ou mot de passe incorrect.'],
@@ -103,18 +100,20 @@ class AuthService
         }
 
         /** @var User $user */
-        $user->load('agency');
+        $user = Auth::user(); // ✅ FIX : était appelé avant cette ligne dans la version originale
 
-        // 🔒 Supprimer anciens tokens
+        // Une session à la fois : révoquer les anciens tokens
         $user->tokens()->delete();
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        $user->load('agency');
 
         return compact('user', 'token');
     }
 
     /**
-     * ✅ Logout
+     * Logout
      */
     public function logout(User $user): void
     {
