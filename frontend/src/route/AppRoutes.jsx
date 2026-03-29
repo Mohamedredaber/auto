@@ -1,130 +1,81 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom"
 
-// Guards
-import ProtectedRoute from "./ProtectedRoute";
-import GuestRoute from "./GuestRoute";
-import RoleRoute from "./RoleRoute";
+import ProtectedRoute  from "./ProtectedRoute"
+import GuestRoute      from "./GuestRoute"
+import RoleRoute       from "./RoleRoute"
 
-import Layout from "../components/layout/Layout";
-import ClientLayout from "../components/layout/ClientLayout";
-import AgencyLayout from "../components/layout/AgencyLayout";
-import AdminLayout from "../components/layout/AdminLayout";
+import Layout          from "../components/layout/Layout"
+import ClientLayout    from "../components/layout/ClientLayout"
+import AgencyLayout    from "../components/layout/AgencyLayout"
+import AdminLayout     from "../components/layout/AdminLayout"
 
-import Home from "../pages/home/Home";
-import Contact from "../pages/contact/Contact";
-import Cars from "../pages/cars/Cars";
-import Login from "../pages/login/login";
-import Register from "../pages/register/Register";
+import Home            from "../pages/home/Home"
+import Contact         from "../pages/contact/Contact"
+import Cars            from "../pages/cars/Cars"
+import Login           from "../pages/login/login"
+import Register        from "../pages/register/Register"
 
-// Client pages
-import ClientDashboard from "../pages/client/Dashboard";
-// import ClientBookings from "../pages/client/Bookings";
-// import ClientProfile from "../pages/client/Profile";
+import ClientDashboard from "../pages/client/Dashboard"
+import AgencyDashboard from "../pages/agency/Dashboard"
+import AdminDashboard  from "../pages/admin/Dashboard"
 
-// Agency pages
-import AgencyDashboard from "../pages/agency/Dashboard";
-// import AgencyCars from "../pages/agency/Cars";
-// import AgencyCarCreate from "../pages/agency/CarCreate";
-// import AgencyCarEdit from "../pages/agency/CarEdit";
-// import AgencyBookings from "../pages/agency/Bookings";
-import CompleteProfile from "../pages/agency/CompleteProfile";
+import NotFound        from "../pages/errors/NotFound"
+import Unauthorized    from "../pages/errors/Unauthorized"
+import { ROLES }       from "../constants/roles"
 
-// Admin pages
-import AdminDashboard from "../pages/admin/Dashboard";
-// import AdminAgencies from "../pages/admin/Agencies";
-// import AdminUsers from "../pages/admin/Users";
-
-// Errors
-import NotFound from "../pages/errors/NotFound";
-import Unauthorized from "../pages/errors/Unauthorized";
-import { ROLES } from "../constants/roles";
-
-function AppRoutes() {
+export default function AppRoutes() {
   return (
     <Routes>
-      {/* ════════════════════════════
-          PUBLIC — Layout عام
-          header + footer
-          ════════════════════════════ */}
-      <Route path="/client/dashboard" element={<ClientDashboard />} />
-      <Route path="/dashboard/admin" element={<AdminDashboard />} />
-      <Route path="/dashboard/agency" element={<AgencyDashboard />} />
+
+      {/* ══════════════════════════
+          PUBLIC
+      ══════════════════════════ */}
       <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/"        element={<Home />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/cars" element={<Cars />} />
-      <Route path="/register/agency" element={<CompleteProfile />} />
+        <Route path="/cars"    element={<Cars />} />
+
+        {/* Guests uniquement (non connectés) */}
         <Route element={<GuestRoute />}>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login"    element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
       </Route>
-      {/* ════════════════════════════
-          PROTECTED
-          خاص يكون logged in
-      ════════════════════════════ */}
-      <Route element={<ProtectedRoute />}>
-        {/* Complete profile */}
-        <Route path="/dashboard/admin" element={<AdminDashboard />} />
-        <Route path="/dashboard/agency" element={<AgencyDashboard />} />
 
-        {/* ──────────────────────────
-            CLIENT
-        ────────────────────────── */}
+      {/* ══════════════════════════
+          PROTECTED (connecté)
+      ══════════════════════════ */}
+      <Route element={<ProtectedRoute />}>
+
+        {/* CLIENT */}
         <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
           <Route element={<ClientLayout />}>
-            {/* <Route
-              path="/dashboard/client/bookings"
-              element={<ClientBookings />}
-              /> */}
-            {/* <Route
-              path="/dashboard/client/profile"
-              element={<ClientProfile />}
-            /> */}
+            <Route path="/dashboard/client" element={<ClientDashboard />} />
           </Route>
         </Route>
 
-        {/* ──────────────────────────
-            AGENCY
-        ────────────────────────── */}
+        {/* AGENCY */}
         <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN_AGENCY]} />}>
           <Route element={<AgencyLayout />}>
-            {/* <Route path="/dashboard/agency/cars" element={<AgencyCars />} />
-            <Route
-              path="/dashboard/agency/cars/create"
-              element={<AgencyCarCreate />}
-            />
-            <Route
-              path="/dashboard/agency/cars/:id/edit"
-              element={<AgencyCarEdit />}
-            />
-            <Route
-              path="/dashboard/agency/bookings"
-              element={<AgencyBookings />}
-            /> */}
+            <Route path="/dashboard/agency" element={<AgencyDashboard />} />
           </Route>
         </Route>
 
-        {/* ──────────────────────────
-            ADMIN
-        ────────────────────────── */}
+        {/* ADMIN */}
         <Route element={<RoleRoute allowedRoles={[ROLES.SUPER_ADMIN]} />}>
           <Route element={<AdminLayout />}>
-            {/* <Route
-              path="/dashboard/admin/agencies"
-              element={<AdminAgencies />}
-            />
-            <Route path="/dashboard/admin/users" element={<AdminUsers />} /> */}
+            <Route path="/dashboard/admin" element={<AdminDashboard />} />
           </Route>
         </Route>
+
       </Route>
 
-      {/* ════════════════════════════
+      {/* ══════════════════════════
           ERRORS
-      ════════════════════════════ */}
+      ══════════════════════════ */}
       <Route path="/unauthorized" element={<Unauthorized />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path="*"             element={<NotFound />} />
+
     </Routes>
-  );
+  )
 }
-export default AppRoutes;

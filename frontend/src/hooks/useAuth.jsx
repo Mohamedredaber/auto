@@ -7,7 +7,6 @@ import {
   selectErrors,
   selectGlobalError,
   selectRole,
-  selectNeedsCompletion,
 } from '../features/auth/authSelectors'
 import {
   loginThunk,
@@ -29,7 +28,6 @@ export default function useAuth() {
     errors:          useSelector(selectErrors),
     globalError:     useSelector(selectGlobalError),
     role:            useSelector(selectRole),
-    needsCompletion: useSelector(selectNeedsCompletion),
 
     // ── ACTIONS ───────────────────────
     login:       (data) => dispatch(loginThunk(data)),

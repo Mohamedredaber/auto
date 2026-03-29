@@ -29,8 +29,6 @@ const initialState = {
   isInitialized:   false,
   errors:          {},
   globalError:     null,
-  needsCompletion: false,
-  agencyDraft:     null,
 }
 
 /* ── Helpers de mutation ──────────────────────────────────────────── */
@@ -147,8 +145,7 @@ const authSlice = createSlice({
         state.isLoading       = false
         state.isAuth          = true  // explicite : garantit la cohérence quel que soit le flux
         state.user            = action.payload.user
-        state.needsCompletion = false
-        state.agencyDraft     = null  // nettoyage automatique après succès
+// nettoyage automatique après succès
       })
       .addCase(registerAgencyThunk.rejected, setRejected)
   },

@@ -8,42 +8,28 @@ class RegisterAgencyRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user() && $this->user()->isAgencyAdmin();
+        return true;
     }
-
-    protected function prepareForValidation()
-    {
-        if ($this->has('accounts_social') && is_string($this->accounts_social)) {
-            $this->merge([
-                'accounts_social' => json_decode($this->accounts_social, true)
-            ]);
-        }
-    }
-
     public function rules(): array
     {
         return [
-            'agency_name'    => ['required', 'string', 'max:150'],
-            'city'           => ['required', 'string', 'max:100'],
-            'address'        => ['required', 'string', 'max:255'],
-            'time_start'     => ['required', 'date_format:H:i'],
-            'time_end'       => ['required', 'date_format:H:i', 'after:time_start'],
-            'logo'           => ['required', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'latitude'       => ['nullable', 'numeric', 'between:-90,90'],
-            'longitude'      => ['nullable', 'numeric', 'between:-180,180'],
-            'accounts_social'=> ['nullable', 'array'],
-            'accounts_social.facebook'  => ['nullable', 'url'],
-            'accounts_social.instagram' => ['nullable', 'url'],
-            'accounts_social.whatsapp'  => ['nullable', 'string'],
-            'accounts_social.website'   => ['nullable', 'url'],
-        ];
-    }
+            // Infos user
+            'first_name'            => ['required', 'string', 'max:255'],
+            'last_name'             => ['required', 'string', 'max:255'],
+            'email'                 => ['required', 'email', 'unique:users,email'],
+            'phone'                 => ['required', 'string', 'max:20'],
+            'password'              => ['required', 'string', 'min:8', 'confirmed'],
 
-    public function messages(): array
-    {
-        return [
-            'time_end.after'       => "L'heure de fermeture doit être après l'heure d'ouverture.",
-            'authorize'            => "Seul un admin d'agence peut compléter ce profil.",
+            // Infos agence
+            'agency_name'           => ['required', 'string', 'max:255'],
+            'city'                  => ['required', 'string', 'max:100'],
+            'address'               => ['required', 'string', 'max:500'],
+            'time_start'            => ['required', 'date_format:H:i'],
+            'time_end'              => ['required', 'date_format:H:i', 'after:time_start'],
+            'logo'                  => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:2048'],
+            'latitude'              => ['nullable', 'numeric'],
+            'longitude'             => ['nullable', 'numeric'],
+            'accounts_social'       => ['nullable', 'string'],
         ];
     }
 }

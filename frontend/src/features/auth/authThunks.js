@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { login, register, logout, me, registerAgencyProfile } from "../../api/auth";
+import { login, register, logout, me, registerAgency } from "../../api/auth";
 
 /**
  * Normalise la réponse API en un objet AuthPayload cohérent.
@@ -11,10 +11,8 @@ import { login, register, logout, me, registerAgencyProfile } from "../../api/au
  */
 const normalizeAuthPayload = (data) => ({
   user:                     data.user ?? null,
-  needs_profile_completion: data.needs_profile_completion ?? false,
 })
 
-// ── LOGIN ──────────────────────────────────────────────────────────────────
 export const loginThunk = createAsyncThunk(
   "auth/login",
   async (credentials, { rejectWithValue }) => {
@@ -55,7 +53,6 @@ export const fetchMeThunk = createAsyncThunk(
   }
 )
 
-// ── LOGOUT ─────────────────────────────────────────────────────────────────
 export const logoutThunk = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
@@ -72,14 +69,16 @@ export const logoutThunk = createAsyncThunk(
 // ── COMPLETE AGENCY PROFILE (STEP 2) ──────────────────────────────────────
 // Appelé après registerThunk — l'user est déjà authentifié via Sanctum.
 // Reçoit un FormData (multipart/form-data) avec uniquement les données agence.
+// ✅ Nouveau flow — User + Agence en une seule requête
 export const registerAgencyThunk = createAsyncThunk(
   "auth/registerAgency",
-  async (agencyData, { rejectWithValue }) => {
+  async (formData, { rejectWithValue }) => {
     try {
-      const { data } = await registerAgencyProfile(agencyData)
-      return data.data // API : { success, data: { user } }
+      const { data } = await registerAgency(formData) // ← nouvelle fonction API
+      return normalizeAuthPayload(data.data)           // ← retourne { user, agency }
     } catch (error) {
       return rejectWithValue(error.response?.data ?? { message: error.message })
     }
   }
+
 )

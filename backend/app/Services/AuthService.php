@@ -13,10 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
-    /**
-     * Register (Client ou Step 1 Agency)
-     * Crée uniquement le User — pas d'agence ici.
-     */
+    // ✅ Register Client uniquement
     public function register(array $data): array
     {
         $user = User::create([
@@ -24,34 +21,30 @@ class AuthService
             'last_name'  => $data['last_name'],
             'email'      => $data['email'],
             'phone'      => $data['phone'],
-            'password'   => bcrypt($data['password']),
-            'role'       => $data['role'],
+            'password'   => $data['password'], // ✅ cast hashed dans User
+            'role'       => 'client',           // ✅ forcé côté service
         ]);
 
         return compact('user');
     }
 
-    /**
-     * Step 2 : Compléter profil agence.
-     * L'utilisateur est déjà authentifié via Sanctum (cookie).
-     */
+    // ✅ Register Agency — User + Agence en une seule transaction
     public function registerAgency(array $data, ?UploadedFile $logo = null): array
     {
         return DB::transaction(function () use ($data, $logo) {
 
-            // 1️⃣ Création de l'utilisateur
+            // 1️⃣ Création du user
             $user = User::create([
                 'first_name' => $data['first_name'],
                 'last_name'  => $data['last_name'],
                 'email'      => $data['email'],
                 'phone'      => $data['phone'],
-                'password'   => bcrypt($data['password']),
-                'role'       => $data['role'],
+                'password'   => $data['password'], // ✅ cast hashed dans User
+                'role'       => 'admin_agency',     // ✅ forcé côté service
             ]);
 
             // 2️⃣ Création de l'agence
             $logoPath = $logo ? $logo->store('logos', 'public') : null;
-            $accounts = $data['accounts_social'] ?? null;
 
             $agency = Agency::create([
                 'agency_name'     => $data['agency_name'],
@@ -60,9 +53,9 @@ class AuthService
                 'time_start'      => $data['time_start'],
                 'time_end'        => $data['time_end'],
                 'logo'            => $logoPath,
-                'latitude'        => $data['latitude'] ?? null,
-                'longitude'       => $data['longitude'] ?? null,
-                'accounts_social' => $accounts,
+                'latitude'        => $data['latitude'] ?? 0,
+                'longitude'       => $data['longitude']      ?? 0,
+                'accounts_social' => $data['accounts_social'] ?? null,
                 'is_verified'     => false,
             ]);
 
@@ -72,17 +65,15 @@ class AuthService
             // 4️⃣ Login automatique
             Auth::login($user);
 
-            // 5️⃣ Retour JSON Resource prêt pour le front
+            // 5️⃣ Retour
             return [
-                'user'   => new UserResource($user->fresh()->load('agency')), // ✅ fresh() pour garantir un modèle
+                'user'   => new UserResource($user->load('agency')),
                 'agency' => new AgencyResource($agency),
             ];
         });
     }
 
-    /**
-     * Login
-     */
+    // ✅ Login
     public function login(array $credentials): array
     {
         if (!Auth::attempt($credentials)) {
@@ -91,16 +82,15 @@ class AuthService
             ]);
         }
 
-        $user = Auth::user()->fresh(); // ✅ fresh() pour avoir un modèle complet
+        /** @var \App\Models\User $user */
+        $user = User::find(Auth::id());
         $user->load('agency');
 
         return compact('user');
     }
 
-    /**
-     * Logout
-     */
-    public function logout(User $user): void
+    // ✅ Logout — sans paramètre inutile
+    public function logout(): void
     {
         Auth::logout();
     }
