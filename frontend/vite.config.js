@@ -15,7 +15,7 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"), // ← دابا كيخدم ✅
+      "@": path.resolve(__dirname, "src"), 
     },
   },
 
@@ -23,14 +23,16 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/sanctum": {
-        target: "http://localhost:8000",
+        target: "http://127.0.0.1:8000",
         changeOrigin: true,
         secure: false,
+          cookieDomainRewrite: "localhost",
       },
       "/api": {
-        target: "http://localhost:8000",
+        target: "http://127.0.0.1:8000",
         changeOrigin: true,
         secure: false,
+          cookieDomainRewrite: "localhost",
       },
     },
   },

@@ -27,9 +27,9 @@ class AuthService
             'role'       => $data['role'],
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return compact('user', 'token');
+  
+        
+        return compact('user');
     }
 
     /**

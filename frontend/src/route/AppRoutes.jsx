@@ -45,11 +45,15 @@ function AppRoutes() {
       {/* ════════════════════════════
           PUBLIC — Layout عام
           header + footer
-      ════════════════════════════ */}
+          ════════════════════════════ */}
+      <Route path="/client/dashboard" element={<ClientDashboard />} />
+      <Route path="/dashboard/admin" element={<AdminDashboard />} />
+      <Route path="/dashboard/agency" element={<AgencyDashboard />} />
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cars" element={<Cars />} />
+      <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route element={<GuestRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -61,18 +65,18 @@ function AppRoutes() {
       ════════════════════════════ */}
       <Route element={<ProtectedRoute />}>
         {/* Complete profile */}
-        <Route path="/complete-profile" element={<CompleteProfile />} />
+        <Route path="/dashboard/admin" element={<AdminDashboard />} />
+        <Route path="/dashboard/agency" element={<AgencyDashboard />} />
 
         {/* ──────────────────────────
             CLIENT
         ────────────────────────── */}
         <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
           <Route element={<ClientLayout />}>
-            <Route path="/dashboard/client" element={<ClientDashboard />} />
             {/* <Route
               path="/dashboard/client/bookings"
               element={<ClientBookings />}
-            /> */}
+              /> */}
             {/* <Route
               path="/dashboard/client/profile"
               element={<ClientProfile />}
@@ -85,7 +89,6 @@ function AppRoutes() {
         ────────────────────────── */}
         <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN_AGENCY]} />}>
           <Route element={<AgencyLayout />}>
-            <Route path="/dashboard/agency" element={<AgencyDashboard />} />
             {/* <Route path="/dashboard/agency/cars" element={<AgencyCars />} />
             <Route
               path="/dashboard/agency/cars/create"
@@ -107,7 +110,6 @@ function AppRoutes() {
         ────────────────────────── */}
         <Route element={<RoleRoute allowedRoles={[ROLES.SUPER_ADMIN]} />}>
           <Route element={<AdminLayout />}>
-            <Route path="/dashboard/admin" element={<AdminDashboard />} />
             {/* <Route
               path="/dashboard/admin/agencies"
               element={<AdminAgencies />}

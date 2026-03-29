@@ -21,20 +21,19 @@ class AuthController extends Controller
     // ✅ Register (Client ou Step1 Agency)
     public function register(RegisterRequest $request): JsonResponse
     {
-        ['user' => $user, 'token' => $token] =
+        ['user' => $user] =
             $this->authService->register($request->validated());
-
-        return $this->respondWithToken(
+        auth()->login($user);
+        return $this->respondWithUser(
             $user,
-            $token,
             $user->isClient()
                 ? 'Inscription réussie.'
-                : 'Compte agence créé. Complétez votre profil.',
+                : 'Complétez votre profil.',
             201
         );
+        
     }
 
-    // ✅ Step 2 Agency
     public function completeAgencyProfile(CompleteAgencyProfileRequest $request): JsonResponse
     {
         $result = $this->authService->registerAgency(
@@ -55,7 +54,7 @@ class AuthController extends Controller
         ['user' => $user, 'token' => $token] =
             $this->authService->login($request->only('email', 'password'));
 
-        return $this->respondWithToken($user, $token, 'Connexion réussie.');
+        return $this->respondWithUser($user, $token, 'Connexion réussie.');
     }
 
     // ✅ Logout
@@ -81,15 +80,13 @@ class AuthController extends Controller
     }
 
     // ✅ Helper
-    private function respondWithToken($user, string $token, string $message, int $status = 200): JsonResponse
+    private function respondWithUser($user, string $message, int $status = 200): JsonResponse
     {
         return response()->json([
             'success' => true,
             'message' => $message,
             'data' => [
                 'user' => new UserResource($user->load('agency')),
-                'access_token' => $token,
-                'token_type' => 'Bearer',
                 'needs_profile_completion' =>
                     $user->isAgencyAdmin() && is_null($user->agency_id),
             ],

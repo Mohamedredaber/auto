@@ -7,6 +7,5 @@ export default function ProtectedRoute() {
 
   if (!isInitialized) return <Spinner fullscreen />
   if (!isAuth)        return <Navigate to="/login" replace />
-
   return <Outlet />
 }
