@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { login, register, logout, me, completeAgencyProfile } from "../../api/auth";
+import { login, register, logout, me, registerAgencyProfile } from "../../api/auth";
 
 /**
  * Normalise la réponse API en un objet AuthPayload cohérent.
@@ -76,7 +76,7 @@ export const registerAgencyThunk = createAsyncThunk(
   "auth/registerAgency",
   async (agencyData, { rejectWithValue }) => {
     try {
-      const { data } = await completeAgencyProfile(agencyData)
+      const { data } = await registerAgencyProfile(agencyData)
       return data.data // API : { success, data: { user } }
     } catch (error) {
       return rejectWithValue(error.response?.data ?? { message: error.message })

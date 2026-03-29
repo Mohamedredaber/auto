@@ -53,7 +53,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cars" element={<Cars />} />
-      <Route path="/complete-profile" element={<CompleteProfile />} />
+      <Route path="/register/agency" element={<CompleteProfile />} />
         <Route element={<GuestRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
