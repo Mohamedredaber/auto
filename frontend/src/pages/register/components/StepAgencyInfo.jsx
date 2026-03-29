@@ -6,12 +6,19 @@ import {
   PasswordStrength,
 } from "./FormComponents"
 import { Link }            from "react-router-dom"
-import { useDispatch }     from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { saveAgencyDraft } from "../../../features/auth/authSlice"
+import { registerThunk }   from "../../../features/auth/authThunks"
+import {
+  selectErrors,
+  selectGlobalError,
+} from "../../../features/auth/authSelectors"
 
 export default function StepAgencyInfo({ onBack, onNext }) {
 
   const dispatch = useDispatch()
+  const apiErrors   = useSelector(selectErrors)
+  const globalError = useSelector(selectGlobalError)
 
   const initialValues = {
     prenom:      "",
@@ -36,12 +43,26 @@ export default function StepAgencyInfo({ onBack, onNext }) {
   }
   
   const onSubmit = async (values) => {
-    // ✅ Sauvegarde dans Redux — accessible depuis ViewAgence2 via selectAgencyDraft
-    dispatch(saveAgencyDraft(values))
-    onNext(values)
+    const data = {
+      first_name:            values.prenom,
+      last_name:             values.nom,
+      email:                 values.email,
+      phone:                 values.tel,
+      password:              values.pass,
+      password_confirmation: values.passConfirm,
+      role:                  "admin_agency",
+    }
+
+    const result = await dispatch(registerThunk(data))
+
+    if (registerThunk.fulfilled.match(result)) {
+      // ✅ Sauvegarde dans Redux pour Step 2
+      dispatch(saveAgencyDraft(values))
+      onNext(values)
+    }
   }
 
-  const { values, errors, handleChange, handleSubmit } = useForm({
+  const { values, errors, isSubmitting, handleChange, handleSubmit } = useForm({
     initialValues,
     validate,
     onSubmit,
@@ -62,19 +83,25 @@ export default function StepAgencyInfo({ onBack, onNext }) {
         </p>
       </div>
 
+      {globalError && (
+        <div className="rp-global-error">
+          <Icon.Error /> {globalError}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} noValidate>
         <div className="rp-row">
           <InputField
             label="Prénom" id="aPrenom" name="prenom"
             placeholder="Mohammed" icon={<Icon.User />}
             value={values.prenom} onChange={handleChange}
-            error={errors.prenom}
+            error={errors.prenom || apiErrors?.first_name?.[0]}
           />
           <InputField
             label="Nom" id="aNom" name="nom"
             placeholder="El Fassi" icon={<Icon.User />}
             value={values.nom} onChange={handleChange}
-            error={errors.nom}
+            error={errors.nom || apiErrors?.last_name?.[0]}
           />
         </div>
 
@@ -82,13 +109,14 @@ export default function StepAgencyInfo({ onBack, onNext }) {
           label="Email" id="aEmail" name="email" type="email"
           placeholder="contact@agence.ma" icon={<Icon.Mail />}
           value={values.email} onChange={handleChange}
-          error={errors.email}
+          error={errors.email || apiErrors?.email?.[0]}
         />
 
         <InputField
           label="Téléphone" id="aTel" name="tel" type="tel"
           placeholder="+212 06 00 00 00" icon={<Icon.Phone />}
           value={values.tel} onChange={handleChange}
+          error={apiErrors?.phone?.[0]}
         />
 
         <div className="rp-group">
@@ -102,9 +130,9 @@ export default function StepAgencyInfo({ onBack, onNext }) {
             />
           </div>
           <PasswordStrength password={values.pass} />
-          {errors.pass && (
+          {(errors.pass || apiErrors?.password?.[0]) && (
             <span className="rp-errmsg show">
-              <Icon.Error /> {errors.pass}
+              <Icon.Error /> {errors.pass || apiErrors?.password?.[0]}
             </span>
           )}
         </div>
@@ -118,8 +146,16 @@ export default function StepAgencyInfo({ onBack, onNext }) {
         />
 
         <div className="rp-btn-actions">
-          <button type="submit" className="rp-btn rp-btn-primary">
-            Suivant <Icon.ArrowRight />
+          <button
+            type="submit"
+            className="rp-btn rp-btn-primary"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <><div className="rp-spin" /> Vérification…</>
+            ) : (
+              <>Suivant <Icon.ArrowRight /></>
+            )}
           </button>
         </div>
       </form>

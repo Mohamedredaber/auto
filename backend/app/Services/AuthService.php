@@ -61,10 +61,8 @@ class AuthService
                 ? $logo->store('logos', 'public')
                 : null;
 
-            // accounts_social est envoyé en JSON stringifié depuis le FormData frontend
-            $accounts = isset($data['accounts_social'])
-                ? json_decode($data['accounts_social'], true)
-                : null;
+            // accounts_social est déjà décodé par CompleteAgencyProfileRequest
+            $accounts = $data['accounts_social'] ?? null;
 
             $agency = Agency::create([
                 'agency_name'     => $data['agency_name'],

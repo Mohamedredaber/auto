@@ -15,10 +15,10 @@ return new class extends Migration {
         $table->string('city');
         $table->string('address');
 
-        // Localisation GPS (obligatoire)
+        // Localisation GPS (optionnel)
         // decimal(10,7) ~ précision GPS (7 chiffres après virgule)
-        $table->decimal('latitude', 10, 7);
-        $table->decimal('longitude', 10, 7);
+        $table->decimal('latitude', 10, 7)->nullable();
+        $table->decimal('longitude', 10, 7)->nullable();
 
         // Heures de travail (obligatoire)
         $table->time('time_start');

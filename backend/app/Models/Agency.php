@@ -29,10 +29,9 @@ class Agency extends Model
         'longitude'       => 'float',
     ];
 // Dans Agency.php
-public function user()
+public function users()
 {
-    // Si c'est l'utilisateur qui a la clé 'agency_id'
-    return $this->belongsTo(User::class, 'id', 'agency_id');
+    return $this->hasMany(User::class, 'agency_id');
 }
     // L'admin de cette agence
     public function admin(): \Illuminate\Database\Eloquent\Relations\HasOne

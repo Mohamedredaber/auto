@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\RegisterAgencyRequest;
+use App\Http\Requests\Auth\CompleteAgencyProfileRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\AgencyResource;
@@ -35,7 +35,7 @@ class AuthController extends Controller
     }
 
     // ✅ Step 2 Agency
-    public function registerAgency(RegisterAgencyRequest $request): JsonResponse
+    public function completeAgencyProfile(CompleteAgencyProfileRequest $request): JsonResponse
     {
         $result = $this->authService->registerAgency(
             $request->validated(),

@@ -27,7 +27,7 @@ import AgencyDashboard from "../pages/agency/Dashboard";
 // import AgencyCarCreate from "../pages/agency/CarCreate";
 // import AgencyCarEdit from "../pages/agency/CarEdit";
 // import AgencyBookings from "../pages/agency/Bookings";
-// import CompleteProfile from "../pages/agency/CompleteProfile";
+import CompleteProfile from "../pages/agency/CompleteProfile";
 
 // Admin pages
 import AdminDashboard from "../pages/admin/Dashboard";
@@ -61,7 +61,7 @@ function AppRoutes() {
       ════════════════════════════ */}
       <Route element={<ProtectedRoute />}>
         {/* Complete profile */}
-        {/* <Route path="/complete-profile" element={<CompleteProfile />} /> */}
+        <Route path="/complete-profile" element={<CompleteProfile />} />
 
         {/* ──────────────────────────
             CLIENT
