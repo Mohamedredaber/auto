@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AutoConnect — Guide Mentor Dashboard Agence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0a0b;
+    --bg2: #111114;
+    --bg3: #18181d;
+    --border: #2a2a32;
+    --red: #e63946;
+    --red-dim: rgba(230,57,70,0.12);
+    --red-glow: rgba(230,57,70,0.25);
+    --text: #e8e8f0;
+    --muted: #6b6b7a;
+    --green: #2ecc71;
+    --amber: #f39c12;
+    --blue: #3b82f6;
+    --purple: #8b5cf6;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 260px; height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--red);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+  }
+
+  .logo-text { font-size: 15px; font-weight: 700; color: var(--text); }
+  .logo-sub  { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 2px; }
+
+  .sidebar-nav { padding: 16px 12px; flex: 1; }
+
+  .nav-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em;
+    color: var(--muted); text-transform: uppercase;
+    padding: 0 8px; margin-bottom: 8px; margin-top: 16px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 8px;
+    cursor: pointer; transition: all .15s;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    border: none; background: none; width: 100%; text-align: left;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+  .nav-item.active { background: var(--red-dim); color: var(--red); }
+
+  .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-done    { background: var(--green); }
+  .dot-active  { background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .dot-locked  { background: var(--border); }
+  .dot-pending { background: var(--amber); }
+
+  .nav-badge {
+    margin-left: auto;
+    font-size: 10px; font-family: var(--mono);
+    padding: 2px 6px; border-radius: 4px;
+    background: var(--bg3); color: var(--muted);
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 260px;
+    padding: 40px 48px;
+    max-width: 900px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px; color: var(--red);
+    background: var(--red-dim); border: 1px solid var(--red-glow);
+    padding: 4px 10px; border-radius: 4px; margin-bottom: 16px;
+  }
+
+  .page-title {
+    font-size: 36px; font-weight: 800; line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .page-title span { color: var(--red); }
+
+  .page-desc {
+    font-size: 15px; color: var(--muted); line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+
+  .progress-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .progress-label { font-size: 13px; font-weight: 600; }
+
+  .progress-count { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+  .progress-bar-bg {
+    height: 4px; background: var(--border); border-radius: 2px;
+  }
+
+  .progress-bar-fill {
+    height: 4px; background: var(--red); border-radius: 2px;
+    width: 10%; transition: width .5s ease;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 56px; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section-num {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--red-dim); border: 1px solid var(--red-glow);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--red);
+    flex-shrink: 0;
+  }
+
+  .section-title { font-size: 22px; font-weight: 700; }
+  .section-sub   { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* ── EXERCISE CARD ── */
+  .exercise-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    transition: border-color .2s;
+  }
+
+  .exercise-card:hover { border-color: #3a3a45; }
+
+  .exercise-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .exercise-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+
+  .icon-reflection { background: rgba(139,92,246,.15); color: var(--purple); }
+  .icon-exercise   { background: rgba(230,57,70,.12); color: var(--red); }
+  .icon-hint       { background: rgba(243,156,18,.12); color: var(--amber); }
+  .icon-structure  { background: rgba(59,130,246,.12); color: var(--blue); }
+  .icon-check      { background: rgba(46,204,113,.12); color: var(--green); }
+
+  .exercise-title {
+    flex: 1; font-size: 14px; font-weight: 600;
+  }
+
+  .exercise-badge {
+    font-family: var(--mono); font-size: 10px;
+    padding: 3px 8px; border-radius: 4px; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .badge-reflection { background: rgba(139,92,246,.15); color: var(--purple); }
+  .badge-exercise   { background: rgba(230,57,70,.12); color: var(--red); }
+  .badge-hint       { background: rgba(243,156,18,.12); color: var(--amber); }
+  .badge-structure  { background: rgba(59,130,246,.12); color: var(--blue); }
+  .badge-check      { background: rgba(46,204,113,.12); color: var(--green); }
+
+  .exercise-chevron {
+    color: var(--muted); font-size: 12px; transition: transform .2s;
+  }
+
+  .exercise-card.open .exercise-chevron { transform: rotate(90deg); }
+
+  .exercise-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .exercise-card.open .exercise-body { display: block; }
+
+  .exercise-body p {
+    font-size: 14px; color: #b0b0c0; line-height: 1.8;
+    margin-top: 16px;
+  }
+
+  .exercise-body ul, .exercise-body ol {
+    margin-top: 12px; padding-left: 20px;
+  }
+
+  .exercise-body li {
+    font-size: 14px; color: #b0b0c0; line-height: 2;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #0d0d10;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.8;
+    overflow-x: auto;
+    color: #c9c9d9;
+  }
+
+  .code-block .c-red    { color: #e63946; }
+  .code-block .c-green  { color: #2ecc71; }
+  .code-block .c-amber  { color: #f39c12; }
+  .code-block .c-blue   { color: #60a5fa; }
+  .code-block .c-purple { color: #a78bfa; }
+  .code-block .c-muted  { color: #555568; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 8px; padding: 14px 16px;
+    margin-top: 14px; font-size: 13px; line-height: 1.7;
+  }
+
+  .callout-warn {
+    background: rgba(243,156,18,.08);
+    border-left: 3px solid var(--amber);
+    color: #c9a050;
+  }
+
+  .callout-info {
+    background: rgba(59,130,246,.08);
+    border-left: 3px solid var(--blue);
+    color: #7ab3f0;
+  }
+
+  .callout-success {
+    background: rgba(46,204,113,.08);
+    border-left: 3px solid var(--green);
+    color: #5dbf85;
+  }
+
+  .callout-danger {
+    background: rgba(230,57,70,.08);
+    border-left: 3px solid var(--red);
+    color: #c06070;
+  }
+
+  /* ── STEP OVERVIEW ── */
+  .steps-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 40px;
+  }
+
+  .step-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+
+  .step-card.current { border-color: var(--red); background: var(--red-dim); }
+  .step-card.done    { border-color: #1e3a2a; background: rgba(46,204,113,.05); }
+  .step-card.locked  { opacity: .5; }
+
+  .step-num {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--muted); flex-shrink: 0; padding-top: 2px;
+  }
+
+  .step-card.current .step-num { color: var(--red); }
+  .step-card.done    .step-num { color: var(--green); }
+
+  .step-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .step-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px; background: var(--border);
+    margin: 32px 0;
+  }
+
+  /* ── TECH STACK ── */
+  .tech-row {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;
+  }
+
+  .tech-tag {
+    font-family: var(--mono); font-size: 11px;
+    padding: 4px 10px; border-radius: 4px;
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* ── CHECKBOX ── */
+  .check-list { margin-top: 12px; }
+
+  .check-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px; color: var(--muted);
+    cursor: pointer;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-item input[type="checkbox"] {
+    accent-color: var(--red); width: 15px; height: 15px; cursor: pointer;
+  }
+
+  .check-item.checked { color: var(--text); text-decoration: none; }
+  .check-item input:checked + span { color: var(--muted); text-decoration: line-through; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 24px; }
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">A</div>
+    <div>
+      <div class="logo-text">AutoConnect</div>
+      <div class="logo-sub">mentor guide v1.0</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-label">Parcours</div>
+
+    <a class="nav-item active" href="#overview">
+      <span class="nav-dot dot-active"></span>
+      Vue d'ensemble
+    </a>
+
+    <a class="nav-item" href="#etape1">
+      <span class="nav-dot dot-active"></span>
+      Étape 1 — Architecture
+      <span class="nav-badge">actif</span>
+    </a>
+
+    <a class="nav-item" href="#etape2">
+      <span class="nav-dot dot-locked"></span>
+      Étape 2 — Modèle Car
+    </a>
+
+    <a class="nav-item" href="#etape3">
+      <span class="nav-dot dot-locked"></span>
+      Étape 3 — API Laravel
+    </a>
+
+    <a class="nav-item" href="#etape4">
+      <span class="nav-dot dot-locked"></span>
+      Étape 4 — Service Layer
+    </a>
+
+    <a class="nav-item" href="#etape5">
+      <span class="nav-dot dot-locked"></span>
+      Étape 5 — Request & Resource
+    </a>
+
+    <a class="nav-item" href="#etape6">
+      <span class="nav-dot dot-locked"></span>
+      Étape 6 — Redux Store
+    </a>
+
+    <a class="nav-item" href="#etape7">
+      <span class="nav-dot dot-locked"></span>
+      Étape 7 — API Frontend
+    </a>
+
+    <a class="nav-item" href="#etape8">
+      <span class="nav-dot dot-locked"></span>
+      Étape 8 — Composants React
+    </a>
+
+    <a class="nav-item" href="#etape9">
+      <span class="nav-dot dot-locked"></span>
+      Étape 9 — Images
+    </a>
+
+    <a class="nav-item" href="#etape10">
+      <span class="nav-dot dot-locked"></span>
+      Étape 10 — Filtres & Pagination
+    </a>
+
+    <div class="nav-label" style="margin-top:24px">Bonus</div>
+
+    <a class="nav-item" href="#bonus1">
+      <span class="nav-dot dot-locked"></span>
+      Réservations
+    </a>
+
+    <a class="nav-item" href="#bonus2">
+      <span class="nav-dot dot-locked"></span>
+      Statistiques
+    </a>
+
+    <a class="nav-item" href="#bonus3">
+      <span class="nav-dot dot-locked"></span>
+      Profil Agence
+    </a>
+  </nav>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main class="main">
+
+  <!-- HEADER -->
+  <div class="page-header" id="overview">
+    <div class="header-tag">📋 AutoConnect · Dashboard Agence</div>
+    <h1 class="page-title">Guide Mentor<br><span>Dashboard Agence</span></h1>
+    <p class="page-desc">
+      Ton parcours complet pour construire le dashboard agence de A à Z.
+      Chaque étape contient des questions de réflexion, des exercices et des hints.
+      Ne regarde pas les hints avant d'avoir essayé !
+    </p>
+    <div class="tech-row">
+      <span class="tech-tag">Laravel 10</span>
+      <span class="tech-tag">React 18</span>
+      <span class="tech-tag">Redux Toolkit</span>
+      <span class="tech-tag">Sanctum</span>
+      <span class="tech-tag">MySQL</span>
+      <span class="tech-tag">Axios</span>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-block">
+    <div class="progress-header">
+      <span class="progress-label">Progression globale</span>
+      <span class="progress-count">0 / 10 étapes</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- STEPS OVERVIEW -->
+  <div class="steps-grid">
+    <div class="step-card current">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-name">Architecture fichiers</div>
+        <div class="step-desc">Structure pro backend + frontend</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-name">Modèle Car</div>
+        <div class="step-desc">Migration + Eloquent + relations</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-name">API Laravel</div>
+        <div class="step-desc">CarController + routes REST</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">04</div>
+      <div>
+        <div class="step-name">Service Layer</div>
+        <div class="step-desc">CarService — logique métier</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">05</div>
+      <div>
+        <div class="step-name">Request & Resource</div>
+        <div class="step-desc">Validation + transformation JSON</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">06</div>
+      <div>
+        <div class="step-name">Redux Store</div>
+        <div class="step-desc">carSlice + carThunks</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">07</div>
+      <div>
+        <div class="step-name">API Frontend</div>
+        <div class="step-desc">cars.js — fonctions Axios</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">08</div>
+      <div>
+        <div class="step-name">Composants React</div>
+        <div class="step-desc">Liste + Formulaire + Carte voiture</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">09</div>
+      <div>
+        <div class="step-name">Gestion des images</div>
+        <div class="step-desc">Upload + preview + storage Laravel</div>
+      </div>
+    </div>
+    <div class="step-card locked">
+      <div class="step-num">10</div>
+      <div>
+        <div class="step-name">Filtres & Pagination</div>
+        <div class="step-desc">Recherche + filtre statut + pages</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ ÉTAPE 1 ══════════ -->
+  <div class="section" id="etape1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-title">Architecture des fichiers</div>
+        <div class="section-sub">Construire une structure professionnelle avant d'écrire du code</div>
+      </div>
+    </div>
+
+    <!-- Réflexion -->
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-reflection">🤔</div>
+        <div class="exercise-title">Questions de réflexion — À faire AVANT</div>
+        <span class="exercise-badge badge-reflection">RÉFLEXION</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Réponds à ces questions dans ta tête avant de continuer :</p>
+        <ol>
+          <li>Dans Laravel, si tu as une feature "Cars", quels dossiers sont impactés ?</li>
+          <li>Dans React, tu organises par <strong>type</strong> (<code>components/</code>, <code>pages/</code>) ou par <strong>feature</strong> (<code>features/cars/</code>) ? Pourquoi ?</li>
+          <li>Quelle est la différence entre un <strong>Controller</strong> et un <strong>Service</strong> dans Laravel ? Pourquoi les séparer ?</li>
+          <li>Qu'est-ce qu'une <strong>FormRequest</strong> ? Qu'est-ce qu'une <strong>Resource</strong> ?</li>
+        </ol>
+        <div class="callout callout-warn">
+          ⚠️ Ne regarde pas les hints avant d'avoir essayé de proposer ta propre structure !
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercice -->
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — Propose ta structure de fichiers</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Sans regarder les hints, propose une structure de fichiers pour les deux projets.</p>
+        <p>Pour <strong>Cars</strong>, tu as besoin de :</p>
+        <ul>
+          <li>Backend : Model, Migration, Controller, Service, Request, Resource, Route</li>
+          <li>Frontend : page, composants, store (slice + thunks), api layer</li>
+        </ul>
+        <p>Écris ta réponse sur papier ou dans un éditeur, puis compare avec le hint.</p>
+        <div class="callout callout-info">
+          💡 Pense à ce qu'on a fait pour Auth — même logique, applique-la à Cars.
+        </div>
+      </div>
+    </div>
+
+    <!-- Hint Backend -->
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — Structure Backend Laravel</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="callout callout-warn">⚠️ Ouvre seulement si tu as déjà proposé ta solution !</div>
+        <div class="code-block">
+<span class="c-muted"># Backend Laravel</span>
+app/
+  Http/
+    Controllers/
+      <span class="c-blue">Car/</span>
+        <span class="c-green">CarController.php</span>       <span class="c-muted"># index, store, show, update, destroy</span>
+    Requests/
+      <span class="c-blue">Car/</span>
+        <span class="c-green">StoreCarRequest.php</span>      <span class="c-muted"># validation création</span>
+        <span class="c-green">UpdateCarRequest.php</span>     <span class="c-muted"># validation modification</span>
+    Resources/
+      <span class="c-green">CarResource.php</span>           <span class="c-muted"># transformation JSON</span>
+      <span class="c-green">CarCollection.php</span>         <span class="c-muted"># liste paginée</span>
+  Models/
+    <span class="c-green">Car.php</span>
+  Services/
+    <span class="c-green">CarService.php</span>             <span class="c-muted"># logique métier isolée</span>
+
+database/
+  migrations/
+    <span class="c-green">2024_xx_xx_create_cars_table.php</span>
+
+routes/
+  <span class="c-green">api.php</span>                      <span class="c-muted"># Route::apiResource('cars', CarController)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hint Frontend -->
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — Structure Frontend React</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="code-block">
+<span class="c-muted"># Frontend React — organisation par feature</span>
+src/
+  api/
+    <span class="c-green">cars.js</span>                    <span class="c-muted"># getCars, createCar, updateCar, deleteCar</span>
+
+  features/
+    cars/
+      <span class="c-green">carSlice.js</span>              <span class="c-muted"># state, reducers</span>
+      <span class="c-green">carThunks.js</span>             <span class="c-muted"># fetchCarsThunk, createCarThunk...</span>
+      <span class="c-green">carSelectors.js</span>          <span class="c-muted"># selectCars, selectCarById...</span>
+
+  pages/
+    agency/
+      <span class="c-green">MyCars.jsx</span>               <span class="c-muted"># page principale "Gestion de la Flotte"</span>
+
+  components/
+    cars/
+      <span class="c-green">CarList.jsx</span>              <span class="c-muted"># tableau des voitures</span>
+      <span class="c-green">CarCard.jsx</span>              <span class="c-muted"># ligne dans le tableau</span>
+      <span class="c-green">CarForm.jsx</span>              <span class="c-muted"># formulaire création/édition</span>
+      <span class="c-green">CarFilters.jsx</span>           <span class="c-muted"># barre de recherche + filtres</span>
+      <span class="c-green">CarModal.jsx</span>             <span class="c-muted"># modal détail voiture</span>
+        </div>
+        <div class="callout callout-info">
+          💡 Organisation par <strong>feature</strong> (pas par type) — tout ce qui concerne "cars" est regroupé ensemble. Plus facile à maintenir.
+        </div>
+      </div>
+    </div>
+
+    <!-- Check -->
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 1</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Avant de passer à l'étape 2, vérifie que tu as :</p>
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Créé les dossiers backend (Car/ dans Controllers, Requests)</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Créé les dossiers frontend (features/cars/, components/cars/)</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Compris la différence Controller vs Service</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Compris pourquoi on organise par feature côté React</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 2 ══════════ -->
+  <div class="section" id="etape2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-title">Modèle Car + Migration</div>
+        <div class="section-sub">Définir la structure de données d'une voiture</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-reflection">🤔</div>
+        <div class="exercise-title">Questions de réflexion</div>
+        <span class="exercise-badge badge-reflection">RÉFLEXION</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ol>
+          <li>En regardant le prototype "Gestion de la Flotte", quels champs vois-tu dans le tableau ?</li>
+          <li>Quels champs sont <strong>obligatoires</strong> vs <strong>optionnels</strong> ?</li>
+          <li>Une voiture appartient à une agence — comment modéliser cette relation en base de données ?</li>
+          <li>Qu'est-ce que le statut d'une voiture ? Quelles valeurs possibles vois-tu ?</li>
+          <li>Où stocker les images ? Dans la DB (chemin) ou dans la DB (base64) ?</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — Écrire la migration</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>En regardant le prototype, identifie tous les champs nécessaires pour une voiture et écris la migration Laravel.</p>
+        <p>Champs visibles dans l'interface :</p>
+        <ul>
+          <li>Image, Marque, Modèle, Ville, Prix/Jour, Statut</li>
+          <li>Pense aussi aux champs non visibles mais nécessaires (agency_id, timestamps...)</li>
+        </ul>
+        <div class="callout callout-warn">
+          ⚠️ Pour le statut, utilise un <code>enum</code> ou une <code>string</code> avec des valeurs définies. Réfléchis aux valeurs possibles en regardant le prototype.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — Champs de la migration</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="code-block">
+<span class="c-muted">// Migration cars</span>
+Schema::create(<span class="c-amber">'cars'</span>, function (Blueprint $table) {
+    $table->id();
+    $table->foreignId(<span class="c-amber">'agency_id'</span>)->constrained()->cascadeOnDelete();
+    $table->string(<span class="c-amber">'brand'</span>);                  <span class="c-muted">// BMW, Porsche...</span>
+    $table->string(<span class="c-amber">'model'</span>);                  <span class="c-muted">// Série 5, 911...</span>
+    $table->string(<span class="c-amber">'city'</span>);
+    $table->decimal(<span class="c-amber">'price_per_day'</span>, 8, 2);
+    $table->enum(<span class="c-amber">'status'</span>, [<span class="c-green">'available'</span>, <span class="c-green">'rented'</span>, <span class="c-green">'maintenance'</span>])
+          ->default(<span class="c-green">'available'</span>);
+    $table->string(<span class="c-amber">'image'</span>)->nullable();
+    $table->integer(<span class="c-amber">'year'</span>)->nullable();
+    $table->string(<span class="c-amber">'fuel_type'</span>)->nullable();      <span class="c-muted">// essence, diesel, électrique</span>
+    $table->string(<span class="c-amber">'transmission'</span>)->nullable();   <span class="c-muted">// manuelle, automatique</span>
+    $table->integer(<span class="c-amber">'seats'</span>)->nullable();
+    $table->text(<span class="c-amber">'description'</span>)->nullable();
+    $table->timestamps();
+});
+        </div>
+        <div class="callout callout-success">
+          ✅ N'oublie pas de définir la relation dans <code>Car.php</code> : <code>belongsTo(Agency::class)</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-structure">📐</div>
+        <div class="exercise-title">Exercice — Écrire le Model Car.php</div>
+        <span class="exercise-badge badge-structure">MODÈLE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Après la migration, écris le model <code>Car.php</code>. Pense à :</p>
+        <ul>
+          <li>Le <code>$fillable</code> avec tous les champs</li>
+          <li>Les <code>$casts</code> appropriés (price_per_day en float...)</li>
+          <li>La relation <code>agency()</code></li>
+          <li>Un accessor pour l'URL de l'image (<code>getImageUrlAttribute</code>)</li>
+          <li>Un scope pour filtrer par statut (<code>scopeAvailable</code>)</li>
+        </ul>
+        <div class="callout callout-info">
+          💡 Regarde comment Agency.php a <code>getLogoUrlAttribute()</code> — fais pareil pour l'image de la voiture.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 2</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Migration créée avec tous les champs</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span><code>php artisan migrate</code> sans erreur</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Model Car.php avec fillable + casts + relation agency()</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Accessor image_url fonctionnel</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 3 ══════════ -->
+  <div class="section" id="etape3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-title">API REST Laravel</div>
+        <div class="section-sub">CarController + routes — 5 endpoints CRUD</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-reflection">🤔</div>
+        <div class="exercise-title">Questions de réflexion</div>
+        <span class="exercise-badge badge-reflection">RÉFLEXION</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ol>
+          <li>Quels sont les 5 endpoints d'un CRUD standard pour "cars" ?</li>
+          <li>Pour récupérer les voitures, doit-on retourner <strong>toutes</strong> les voitures ou seulement celles de l'agence connectée ? Comment vérifier ça ?</li>
+          <li>Quelle méthode HTTP pour créer ? Modifier ? Supprimer ?</li>
+          <li>Qu'est-ce que <code>Route::apiResource</code> ? Qu'est-ce qu'il génère automatiquement ?</li>
+          <li>Comment sécuriser ces routes — seul un <code>admin_agency</code> doit pouvoir y accéder.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — Définir les routes</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Dans <code>api.php</code>, ajoute les routes pour les voitures. Contraintes :</p>
+        <ul>
+          <li>Préfixe : <code>/agency</code></li>
+          <li>Protégées par Sanctum</li>
+          <li>Un middleware qui vérifie le rôle <code>admin_agency</code></li>
+        </ul>
+        <div class="callout callout-info">
+          💡 <code>Route::apiResource</code> génère automatiquement : index, store, show, update, destroy.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — Routes + Controller skeleton</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="code-block">
+<span class="c-muted">// api.php</span>
+Route::prefix(<span class="c-amber">'agency'</span>)
+     ->middleware([<span class="c-amber">'auth:sanctum'</span>, <span class="c-amber">'role:admin_agency'</span>])
+     ->group(function () {
+         Route::apiResource(<span class="c-amber">'cars'</span>, CarController::class);
+         <span class="c-muted">// Génère automatiquement :</span>
+         <span class="c-muted">// GET    /agency/cars          → index()</span>
+         <span class="c-muted">// POST   /agency/cars          → store()</span>
+         <span class="c-muted">// GET    /agency/cars/{car}    → show()</span>
+         <span class="c-muted">// PUT    /agency/cars/{car}    → update()</span>
+         <span class="c-muted">// DELETE /agency/cars/{car}    → destroy()</span>
+     });
+        </div>
+        <div class="callout callout-warn">
+          ⚠️ Le middleware <code>role:admin_agency</code> n'existe pas encore — tu devras le créer ou utiliser une Gate/Policy. C'est un exercice bonus de l'étape 3.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — Écrire CarController::index()</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>La méthode <code>index()</code> doit :</p>
+        <ul>
+          <li>Récupérer uniquement les voitures de l'agence connectée</li>
+          <li>Paginer les résultats (10 par page)</li>
+          <li>Retourner un <code>CarResource</code></li>
+        </ul>
+        <p>Comment récupérer l'agence de l'utilisateur connecté ?</p>
+        <div class="callout callout-info">
+          💡 <code>auth()->user()->agency_id</code> — puis <code>Car::where('agency_id', ...)</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 3</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Routes définies dans api.php avec middleware</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>CarController avec index, store, show, update, destroy</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>index() retourne seulement les voitures de l'agence connectée</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Testé avec Postman ou Insomnia</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 4 ══════════ -->
+  <div class="section" id="etape4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div>
+        <div class="section-title">Service Layer — CarService</div>
+        <div class="section-sub">Séparer la logique métier du Controller</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-reflection">🤔</div>
+        <div class="exercise-title">Questions de réflexion</div>
+        <span class="exercise-badge badge-reflection">RÉFLEXION</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ol>
+          <li>Pourquoi ne pas mettre toute la logique directement dans le Controller ?</li>
+          <li>Le Controller doit être "mince" (thin controller). Que veut dire ça concrètement ?</li>
+          <li>Dans <code>AuthService</code>, qu'est-ce qu'on a mis ? Applique la même logique à Cars.</li>
+          <li>Qui gère le stockage de l'image — le Controller ou le Service ?</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — Écrire CarService</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Crée <code>app/Services/CarService.php</code> avec ces méthodes :</p>
+        <ul>
+          <li><code>getAgencyCars(int $agencyId)</code> — liste paginée</li>
+          <li><code>createCar(array $data, ?UploadedFile $image)</code> — création avec upload image</li>
+          <li><code>updateCar(Car $car, array $data, ?UploadedFile $image)</code> — mise à jour</li>
+          <li><code>deleteCar(Car $car)</code> — suppression + suppression image du storage</li>
+        </ul>
+        <div class="callout callout-danger">
+          ❌ Le Service ne doit PAS retourner de JsonResponse. Il retourne des modèles Eloquent ou des arrays.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — Gérer l'image dans createCar()</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="code-block">
+<span class="c-muted">// CarService.php</span>
+public function createCar(array $data, ?UploadedFile $image = <span class="c-purple">null</span>): Car
+{
+    $imagePath = $image
+        ? $image->store(<span class="c-amber">'cars'</span>, <span class="c-amber">'public'</span>)
+        : <span class="c-purple">null</span>;
+
+    return Car::create([
+        ...$data,
+        <span class="c-amber">'image'</span>     => $imagePath,
+        <span class="c-amber">'agency_id'</span> => auth()->user()->agency_id,
+    ]);
+}
+        </div>
+        <div class="callout callout-info">
+          💡 Pour <code>updateCar</code>, si une nouvelle image est fournie, supprime l'ancienne avec <code>Storage::disk('public')->delete($car->image)</code> avant d'uploader.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 4</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>CarService.php créé avec les 4 méthodes</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>CarController injecte CarService via constructor</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Upload image fonctionnel (vérifie dans storage/app/public/cars)</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Suppression image lors du delete</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 5 ══════════ -->
+  <div class="section" id="etape5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div>
+        <div class="section-title">Request & Resource</div>
+        <div class="section-sub">Validation des données + transformation JSON propre</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — StoreCarRequest</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Crée <code>StoreCarRequest.php</code> avec les règles de validation pour :</p>
+        <ul>
+          <li>brand, model — obligatoires, string</li>
+          <li>city — obligatoire</li>
+          <li>price_per_day — obligatoire, numérique, min:0</li>
+          <li>status — enum parmi les valeurs autorisées</li>
+          <li>image — nullable, fichier image, max 2Mo</li>
+          <li>year — nullable, integer, between:1990,2025</li>
+        </ul>
+        <div class="callout callout-info">
+          💡 Pour valider un enum : <code>'status' => ['required', Rule::in(['available', 'rented', 'maintenance'])]</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — CarResource</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Crée <code>CarResource.php</code> qui retourne un objet JSON propre avec :</p>
+        <ul>
+          <li>Tous les champs de la voiture</li>
+          <li><code>image_url</code> — URL complète (pas juste le chemin)</li>
+          <li><code>agency</code> — relation chargée conditionnellement avec <code>whenLoaded</code></li>
+        </ul>
+        <div class="callout callout-warn">
+          ⚠️ N'expose jamais <code>agency_id</code> brut — utilise la relation chargée à la place.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 5</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>StoreCarRequest avec toutes les règles</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>UpdateCarRequest (souvent les mêmes règles mais en "sometimes")</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>CarResource retourne image_url correcte</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Erreurs de validation retournées en JSON (422)</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 6 ══════════ -->
+  <div class="section" id="etape6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div>
+        <div class="section-title">Redux Store — carSlice + carThunks</div>
+        <div class="section-sub">Gérer l'état des voitures côté frontend</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-reflection">🤔</div>
+        <div class="exercise-title">Questions de réflexion</div>
+        <span class="exercise-badge badge-reflection">RÉFLEXION</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ol>
+          <li>Quel est le <strong>state shape</strong> d'un slice "cars" ? Qu'est-ce qu'on a besoin de stocker ?</li>
+          <li>Regarde <code>authSlice.js</code> — même structure, adapte-la pour Cars.</li>
+          <li>Quels thunks ont besoin d'exister ? (un par endpoint API)</li>
+          <li>Qu'est-ce qu'un <strong>selector</strong> ? Pourquoi ne pas accéder directement à <code>state.cars.items</code> depuis les composants ?</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — Définir le state shape</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Avant d'écrire le slice, définis le <strong>state initial</strong>. Qu'est-ce qu'on a besoin de stocker pour gérer une liste de voitures avec pagination et filtres ?</p>
+        <div class="code-block">
+<span class="c-muted">// Propose ta version de l'initialState ici</span>
+const initialState = {
+    <span class="c-muted">// ???</span>
+}
+        </div>
+        <div class="callout callout-info">
+          💡 Pense à : la liste des voitures, le loading, les erreurs, la pagination (page courante, total, par page), les filtres actifs (search, status, city), la voiture sélectionnée pour le modal.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — State shape + thunks</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="code-block">
+<span class="c-muted">// carSlice.js — initialState</span>
+const initialState = {
+    items:        [],         <span class="c-muted">// liste des voitures</span>
+    selectedCar:  <span class="c-purple">null</span>,       <span class="c-muted">// voiture du modal</span>
+    isLoading:    <span class="c-purple">false</span>,
+    error:        <span class="c-purple">null</span>,
+    pagination: {
+        currentPage: <span class="c-blue">1</span>,
+        lastPage:    <span class="c-blue">1</span>,
+        total:       <span class="c-blue">0</span>,
+        perPage:     <span class="c-blue">10</span>,
+    },
+    filters: {
+        search: <span class="c-amber">''</span>,
+        status: <span class="c-amber">''</span>,
+        city:   <span class="c-amber">''</span>,
+    },
+}
+
+<span class="c-muted">// Thunks nécessaires :</span>
+<span class="c-muted">// fetchCarsThunk  → GET /agency/cars</span>
+<span class="c-muted">// createCarThunk  → POST /agency/cars</span>
+<span class="c-muted">// updateCarThunk  → PUT /agency/cars/:id</span>
+<span class="c-muted">// deleteCarThunk  → DELETE /agency/cars/:id</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 6</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>carSlice.js avec initialState + reducers (setFilters, setPage...)</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>4 thunks créés (fetch, create, update, delete)</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>carSelectors.js avec selectCars, selectIsLoading, selectPagination</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Slice ajouté au store Redux (store.js)</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 7 ══════════ -->
+  <div class="section" id="etape7">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div>
+        <div class="section-title">API Frontend — cars.js</div>
+        <div class="section-sub">Fonctions Axios pour chaque endpoint</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — Écrire cars.js</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Crée <code>src/api/cars.js</code> avec les fonctions suivantes :</p>
+        <ul>
+          <li><code>getCars(params)</code> — avec filtres et pagination en query params</li>
+          <li><code>getCar(id)</code> — une seule voiture</li>
+          <li><code>createCar(formData)</code> — multipart/form-data (image !)</li>
+          <li><code>updateCar(id, formData)</code> — attention : PUT ne supporte pas multipart, utilise POST + <code>_method=PUT</code></li>
+          <li><code>deleteCar(id)</code></li>
+        </ul>
+        <div class="callout callout-danger">
+          ❌ Piège classique : <code>PUT</code> avec FormData ne fonctionne pas pour les fichiers. Utilise <code>POST</code> avec <code>formData.append('_method', 'PUT')</code> et Laravel comprend.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — updateCar avec _method</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="code-block">
+<span class="c-muted">// api/cars.js</span>
+export const updateCar = (id, formData) => {
+    formData.append(<span class="c-amber">'_method'</span>, <span class="c-amber">'PUT'</span>)  <span class="c-muted">// ← Laravel method spoofing</span>
+    return api.post(<span class="c-amber">`/agency/cars/${id}`</span>, formData, {
+        headers: { <span class="c-amber">'Content-Type'</span>: <span class="c-amber">'multipart/form-data'</span> }
+    })
+}
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 7</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>5 fonctions API créées dans cars.js</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>updateCar utilise POST + _method=PUT</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>getCars passe les filtres en query params</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Thunks utilisent ces fonctions (pas Axios directement)</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 8 ══════════ -->
+  <div class="section" id="etape8">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div>
+        <div class="section-title">Composants React</div>
+        <div class="section-sub">MyCars page + CarList + CarForm + CarCard</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-reflection">🤔</div>
+        <div class="exercise-title">Questions de réflexion</div>
+        <span class="exercise-badge badge-reflection">RÉFLEXION</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ol>
+          <li>En regardant le prototype "Gestion de la Flotte", décompose l'interface en composants. Qu'est-ce qui est réutilisable ?</li>
+          <li>Qui fait le <code>dispatch(fetchCarsThunk())</code> — la page ou le composant liste ?</li>
+          <li>Comment gérer le modal de création/édition ? State local ou Redux ?</li>
+          <li>Quand l'utilisateur clique "Supprimer", que doit-il se passer UX avant l'appel API ?</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — MyCars.jsx (page principale)</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>La page <code>MyCars.jsx</code> doit :</p>
+        <ul>
+          <li>Appeler <code>fetchCarsThunk</code> au mount (<code>useEffect</code>)</li>
+          <li>Afficher un bouton "+ Ajouter un nouveau véhicule"</li>
+          <li>Gérer l'état du modal (ouvert/fermé, voiture en édition)</li>
+          <li>Passer les bons props à <code>CarList</code>, <code>CarFilters</code>, <code>CarForm</code></li>
+        </ul>
+        <div class="callout callout-info">
+          💡 La page est le "chef d'orchestre" — elle ne fait pas le rendu des détails, elle délègue aux sous-composants.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — CarForm.jsx (création + édition)</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Le formulaire <code>CarForm.jsx</code> sert pour la <strong>création ET l'édition</strong>. Réflexion :</p>
+        <ul>
+          <li>Comment le composant sait s'il est en mode "création" ou "édition" ?</li>
+          <li>Comment pré-remplir les champs en mode édition ?</li>
+          <li>Comment gérer le preview de l'image avant upload ?</li>
+          <li>Quel thunk dispatcher selon le mode ?</li>
+        </ul>
+        <div class="callout callout-warn">
+          ⚠️ Un seul composant CarForm pour les deux modes — pas deux composants séparés !
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 8</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>MyCars.jsx charge les voitures au mount</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>CarList.jsx affiche le tableau avec les données Redux</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>CarForm.jsx fonctionne en mode création ET édition</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Suppression avec confirmation avant appel API</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 9 ══════════ -->
+  <div class="section" id="etape9">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div>
+        <div class="section-title">Gestion des images</div>
+        <div class="section-sub">Upload + preview + storage Laravel</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-reflection">🤔</div>
+        <div class="exercise-title">Questions de réflexion</div>
+        <span class="exercise-badge badge-reflection">RÉFLEXION</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ol>
+          <li>Qu'est-ce que <code>php artisan storage:link</code> ? Pourquoi c'est nécessaire ?</li>
+          <li>Quelle est la différence entre <code>storage/app/public</code> et <code>public/storage</code> ?</li>
+          <li>Comment faire un preview d'image côté React avant l'upload ?</li>
+          <li>Que faire de l'ancienne image quand on en upload une nouvelle ?</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — Preview image React</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="code-block">
+<span class="c-muted">// Preview avant upload</span>
+const [preview, setPreview] = useState(<span class="c-purple">null</span>)
+
+const handleImageChange = (e) => {
+    const file = e.target.files[<span class="c-blue">0</span>]
+    if (!file) return
+    setFieldValue(<span class="c-amber">'image'</span>, file)
+    setPreview(URL.createObjectURL(file))  <span class="c-muted">// ← URL locale</span>
+}
+
+<span class="c-muted">// Cleanup pour éviter les memory leaks</span>
+useEffect(() => {
+    return () => { if (preview) URL.revokeObjectURL(preview) }
+}, [preview])
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 9</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span><code>php artisan storage:link</code> exécuté</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Preview image fonctionnel avant upload</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Image sauvegardée dans storage/app/public/cars</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>image_url retournée par l'API pointe vers la bonne URL</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Ancienne image supprimée lors de la mise à jour</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉTAPE 10 ══════════ -->
+  <div class="section" id="etape10">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div>
+        <div class="section-title">Filtres & Pagination</div>
+        <div class="section-sub">Recherche + filtre statut/ville + navigation entre pages</div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-reflection">🤔</div>
+        <div class="exercise-title">Questions de réflexion</div>
+        <span class="exercise-badge badge-reflection">RÉFLEXION</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ol>
+          <li>Les filtres sont-ils gérés <strong>côté frontend</strong> (filter le tableau local) ou <strong>côté backend</strong> (nouvel appel API) ? Pourquoi ?</li>
+          <li>En regardant le prototype, quels filtres sont disponibles ?</li>
+          <li>Comment éviter de spammer l'API quand l'utilisateur tape dans le champ de recherche ?</li>
+          <li>Comment Laravel gère la pagination ? Que retourne <code>->paginate(10)</code> ?</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-exercise">🎯</div>
+        <div class="exercise-title">Exercice — Filtres côté Laravel</div>
+        <span class="exercise-badge badge-exercise">EXERCICE</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>Dans <code>CarService::getAgencyCars()</code>, gère les filtres :</p>
+        <ul>
+          <li><code>?search=BMW</code> → filtre sur brand ou model</li>
+          <li><code>?status=available</code> → filtre sur le statut</li>
+          <li><code>?city=Casablanca</code> → filtre sur la ville</li>
+          <li><code>?page=2</code> → pagination Laravel</li>
+        </ul>
+        <div class="callout callout-info">
+          💡 Utilise les <strong>query scopes</strong> Eloquent ou simplement des <code>when()</code> conditionnels sur la query builder.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">💡</div>
+        <div class="exercise-title">Hint — Filtres avec when() + debounce</div>
+        <span class="exercise-badge badge-hint">HINT</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="code-block">
+<span class="c-muted">// CarService.php</span>
+public function getAgencyCars(int $agencyId, array $filters = []): LengthAwarePaginator
+{
+    return Car::where(<span class="c-amber">'agency_id'</span>, $agencyId)
+        ->when($filters[<span class="c-amber">'search'</span>] ?? <span class="c-purple">null</span>, function ($q, $search) {
+            $q->where(<span class="c-amber">'brand'</span>, <span class="c-amber">'like'</span>, <span class="c-amber">"%{$search}%"</span>)
+              ->orWhere(<span class="c-amber">'model'</span>, <span class="c-amber">'like'</span>, <span class="c-amber">"%{$search}%"</span>);
+        })
+        ->when($filters[<span class="c-amber">'status'</span>] ?? <span class="c-purple">null</span>, fn($q, $s) => $q->where(<span class="c-amber">'status'</span>, $s))
+        ->when($filters[<span class="c-amber">'city'</span>] ?? <span class="c-purple">null</span>, fn($q, $c) => $q->where(<span class="c-amber">'city'</span>, $c))
+        ->paginate(<span class="c-blue">10</span>);
+}
+
+<span class="c-muted">// React — debounce pour la recherche</span>
+<span class="c-muted">// npm install use-debounce</span>
+import { useDebouncedCallback } from <span class="c-amber">'use-debounce'</span>
+
+const handleSearch = useDebouncedCallback((value) => {
+    dispatch(setFilters({ search: value }))
+    dispatch(fetchCarsThunk())
+}, <span class="c-blue">400</span>)  <span class="c-muted">// ← attendre 400ms après la dernière frappe</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-check">✅</div>
+        <div class="exercise-title">Checklist — Valider l'étape 10</div>
+        <span class="exercise-badge badge-check">CHECKLIST</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <div class="check-list">
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Filtres search + status + city fonctionnels côté Laravel</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Pagination Laravel retourne currentPage, lastPage, total</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Composant Pagination React avec boutons Précédent/Suivant</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Debounce sur le champ de recherche (400ms)</span></label>
+          <label class="check-item"><input type="checkbox" onchange="updateProgress()"> <span>Filtres remis à zéro quand on change de page</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ BONUS ══════════ -->
+  <div class="divider"></div>
+
+  <div class="section" id="bonus1">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(243,156,18,.15);border-color:rgba(243,156,18,.3);color:var(--amber)">B1</div>
+      <div>
+        <div class="section-title">Bonus — Gestion des Réservations</div>
+        <div class="section-sub">CRUD réservations + changement de statut</div>
+      </div>
+    </div>
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">📋</div>
+        <div class="exercise-title">Fonctionnalités à implémenter</div>
+        <span class="exercise-badge badge-hint">BONUS</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <p>En suivant exactement la même logique que Cars :</p>
+        <ul>
+          <li>Model <code>Reservation</code> avec : car_id, client_id, date_start, date_end, total_price, status</li>
+          <li>Statuts : pending, confirmed, cancelled, completed</li>
+          <li>API : liste + changer statut (confirm / cancel)</li>
+          <li>Frontend : tableau des réservations + filtres par statut + période</li>
+          <li>Empêcher une réservation si la voiture est déjà louée sur cette période</li>
+        </ul>
+        <div class="callout callout-info">
+          💡 La logique de vérification de disponibilité est dans <code>ReservationService</code>, pas dans le Controller.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="bonus2">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(243,156,18,.15);border-color:rgba(243,156,18,.3);color:var(--amber)">B2</div>
+      <div>
+        <div class="section-title">Bonus — Statistiques</div>
+        <div class="section-sub">Dashboard avec graphiques et KPIs</div>
+      </div>
+    </div>
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">📊</div>
+        <div class="exercise-title">Fonctionnalités à implémenter</div>
+        <span class="exercise-badge badge-hint">BONUS</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ul>
+          <li>Endpoint <code>GET /agency/stats</code> → total voitures, disponibles, réservations actives, revenu mensuel</li>
+          <li>Graphique Volume Mensuel → <code>recharts</code> (LineChart ou AreaChart)</li>
+          <li>Tableau "Réservations Récentes" (les 5 dernières)</li>
+          <li>Cartes KPI avec variation % par rapport au mois dernier</li>
+        </ul>
+        <div class="callout callout-warn">
+          ⚠️ Les stats sont calculées côté Laravel (pas côté frontend) — SQL agrégations avec <code>sum()</code>, <code>count()</code>, <code>groupBy()</code>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="bonus3">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(243,156,18,.15);border-color:rgba(243,156,18,.3);color:var(--amber)">B3</div>
+      <div>
+        <div class="section-title">Bonus — Profil Agence</div>
+        <div class="section-sub">Modifier les infos agence + logo + réseaux sociaux</div>
+      </div>
+    </div>
+    <div class="exercise-card" onclick="toggleCard(this)">
+      <div class="exercise-header">
+        <div class="exercise-icon icon-hint">🏢</div>
+        <div class="exercise-title">Fonctionnalités à implémenter</div>
+        <span class="exercise-badge badge-hint">BONUS</span>
+        <span class="exercise-chevron">▶</span>
+      </div>
+      <div class="exercise-body">
+        <ul>
+          <li>Endpoint <code>PUT /agency/profile</code> — modifier infos agence</li>
+          <li>Upload nouveau logo avec preview</li>
+          <li>Modifier réseaux sociaux (accounts_social JSON)</li>
+          <li>Afficher statut de vérification (is_verified)</li>
+          <li>Afficher les stats de performance (vues du profil)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function toggleCard(card) {
+  card.classList.toggle('open')
+}
+
+function updateProgress() {
+  const checkboxes = document.querySelectorAll('.check-list input[type="checkbox"]')
+  const total    = checkboxes.length
+  const checked  = [...checkboxes].filter(c => c.checked).length
+  const pct      = Math.round((checked / total) * 100)
+
+  document.getElementById('progressFill').style.width = pct + '%'
+
+  const countEl = document.querySelector('.progress-count')
+  const stepsDone = Math.floor(checked / (total / 10))
+  countEl.textContent = stepsDone + ' / 10 étapes'
+}
+
+// Smooth scroll pour les liens sidebar
+document.querySelectorAll('.nav-item').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const href = this.getAttribute('href')
+    if (href && href.startsWith('#')) {
+      e.preventDefault()
+      const target = document.querySelector(href)
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'))
+      this.classList.add('active')
+    }
+  })
+})
+
+// Ouvrir automatiquement les premiers éléments
+document.querySelectorAll('.exercise-card')[0]?.classList.add('open')
+</script>
+</body>
+</html>
