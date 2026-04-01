@@ -9,7 +9,6 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useAuth();
-
   const handleLogout = async () => {
     await dispatch(logoutThunk());
     navigate("/", { replace: true });

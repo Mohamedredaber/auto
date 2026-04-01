@@ -35,9 +35,9 @@ const setRejected = (state, action) => {
 const setAuthSuccess = (state, action) => {
   state.isLoading = false;
   state.isAuth = true;
+  state.isInitialized = true
   state.user = action.payload.user;
   state.role = action.payload.role; // 🔥 ajouté
-  state.needsCompletion = action.payload.needs_profile_completion ?? false;
 };
 
 /* ── Slice ───────────────────────── */
@@ -51,13 +51,7 @@ const authSlice = createSlice({
       state.globalError = null;
     },
 
-    saveAgencyDraft: (state, action) => {
-      state.agencyDraft = action.payload;
-    },
 
-    clearAgencyDraft: (state) => {
-      state.agencyDraft = null;
-    },
 
     setUser: (state, action) => {
       state.user = action.payload;
