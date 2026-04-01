@@ -10,6 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
@@ -67,7 +68,6 @@ class AuthService
             Auth::login($user);
             request()->session()->regenerate();
 
-            // 5️⃣ Retour
             return [
                 'user'   => new UserResource($user->load('agency')),
                 'agency' => new AgencyResource($agency),
@@ -78,29 +78,31 @@ class AuthService
     // ✅ Login
     public function login(array $credentials): array
     {
-        if (!Auth::attempt($credentials, true)) {
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user || $user->password !== $credentials['password']) {
             throw ValidationException::withMessages([
                 'email' => ['Email ou mot de passe incorrect.'],
             ]);
         }
 
+        Auth::login($user);
+
         // 🔐 Regénérer l'ID de session après login (sécurité fixation de session)
         request()->session()->regenerate();
 
-        /** @var \App\Models\User $user */
-        $user = User::find(Auth::id());
         $user->load('agency');
 
         return compact('user');
     }
 
-    // ✅ Logout — invalide la session complètement
-    public function logout(): void
-    {
-        Auth::logout();
+    // ✅ Logout — invalide le token d'accès actuel
+  public function logout(Request $request): void
+{
+    $token = $request->user()?->currentAccessToken();
 
-        // 🔐 Invalider la session + regénérer le token CSRF
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+    if ($token instanceof \Laravel\Sanctum\PersonalAccessToken) {
+        $token->delete();
     }
+}
 }

@@ -27,8 +27,6 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        
-        'password' => 'hashed',
     ];
     // ── Relations ──────────────────────────────────────────
     public function agency(): \Illuminate\Database\Eloquent\Relations\BelongsTo

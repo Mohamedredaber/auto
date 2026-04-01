@@ -25,10 +25,10 @@ export const loginThunk = createAsyncThunk(
       return normalizeUser(data.data);
     } catch (error) {
       return rejectWithValue(
-        error.response?.data ?? { message: error.message }
+        error.response?.data ?? { message: error.message },
       );
     }
-  }
+  },
 );
 
 /* ── REGISTER CLIENT ─────────────────────────────── */
@@ -45,10 +45,10 @@ export const registerThunk = createAsyncThunk(
       return normalizeUser(data.data);
     } catch (error) {
       return rejectWithValue(
-        error.response?.data ?? { message: error.message }
+        error.response?.data ?? { message: error.message },
       );
     }
-  }
+  },
 );
 
 /* ── FETCH ME (bootstrap au démarrage) ──────────── */
@@ -61,10 +61,10 @@ export const fetchMeThunk = createAsyncThunk(
       return data.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data ?? { message: error.message }
+        error.response?.data ?? { message: error.message },
       );
     }
-  }
+  },
 );
 
 /* ── LOGOUT ─────────────────────────────────────── */
@@ -73,14 +73,15 @@ export const logoutThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await logout();
-      return {};
+      // Ne retourne rien, le slice gère la réinitialisation
+      return;
     } catch (error) {
-      // Même en cas d'erreur réseau, on réinitialise le state local
+      // Même en cas d'erreur réseau, on considère le logout réussi côté client
       return rejectWithValue(
-        error.response?.data ?? { message: error.message }
+        error.response?.data ?? { message: error.message },
       );
     }
-  }
+  },
 );
 
 /* ── REGISTER AGENCY ────────────────────────────── */
@@ -95,8 +96,8 @@ export const registerAgencyThunk = createAsyncThunk(
       return normalizeUser(payload.user ?? payload);
     } catch (error) {
       return rejectWithValue(
-        error.response?.data ?? { message: error.message }
+        error.response?.data ?? { message: error.message },
       );
     }
-  }
+  },
 );

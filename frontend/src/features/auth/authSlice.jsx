@@ -29,8 +29,7 @@ const setPending = (state) => {
 const setRejected = (state, action) => {
   state.isLoading = false;
   state.errors = action.payload?.errors ?? {};
-  state.globalError =
-    action.payload?.message ?? "Une erreur est survenue";
+  state.globalError = action.payload?.message ?? "Une erreur est survenue";
 };
 
 const setAuthSuccess = (state, action) => {
@@ -38,8 +37,7 @@ const setAuthSuccess = (state, action) => {
   state.isAuth = true;
   state.user = action.payload.user;
   state.role = action.payload.role; // 🔥 ajouté
-  state.needsCompletion =
-    action.payload.needs_profile_completion ?? false;
+  state.needsCompletion = action.payload.needs_profile_completion ?? false;
 };
 
 /* ── Slice ───────────────────────── */
@@ -88,12 +86,7 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(logoutThunk.fulfilled, () => initialState)
-      .addCase(logoutThunk.rejected, (state) => {
-        // Erreur serveur : on réinitialise quand même localement
-        // (la session est peut-être déjà invalide côté serveur)
-        state.isLoading = false;
-        return initialState;
-      });
+      .addCase(logoutThunk.rejected, () => initialState);
 
     builder
       .addCase(fetchMeThunk.pending, (state) => {

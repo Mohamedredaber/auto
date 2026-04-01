@@ -67,9 +67,9 @@ class AuthController extends Controller
     }
 
     // ✅ Logout
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-        $this->authService->logout();
+        $this->authService->logout($request);
 
         return response()->json([
             'success' => true,
