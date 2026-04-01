@@ -40,7 +40,6 @@ export default function useAuth() {
   const role            = useSelector(selectRole)
   const needsCompletion = useSelector(selectNeedsCompletion)
 
-  /* ── Redirection selon rôle ─────────────────── */
   const redirectByRole = (resolvedRole) => {
     switch (resolvedRole) {
       case ROLES.SUPER_ADMIN:  navigate('/dashboard/admin',   { replace: true }); break
