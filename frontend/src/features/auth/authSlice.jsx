@@ -33,11 +33,7 @@ const setRejected = (state, action) => {
 const setAuthSuccess = (state, action) => {
   state.isLoading = false;
   state.isAuth = true;
-<<<<<<< HEAD
-  state.isInitialized = true
-=======
   state.isInitialized = true;
->>>>>>> auth
   state.user = action.payload.user;
   state.role = action.payload.role; // 🔥 ajouté
 };
@@ -53,11 +49,6 @@ const authSlice = createSlice({
       state.globalError = null;
     },
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> auth
     setUser: (state, action) => {
       state.user = action.payload;
       state.role = action.payload?.role ?? null;
