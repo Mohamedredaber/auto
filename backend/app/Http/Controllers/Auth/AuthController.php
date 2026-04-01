@@ -24,6 +24,7 @@ class AuthController extends Controller
         ['user' => $user] = $this->authService->register($request->validated());
 
         auth()->login($user);
+        request()->session()->regenerate(); // 🔐 fixation de session
 
         return response()->json([
             'success' => true,

@@ -9,6 +9,7 @@ use App\Http\Resources\AgencyResource;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
@@ -64,6 +65,7 @@ class AuthService
 
             // 4️⃣ Login automatique
             Auth::login($user);
+            request()->session()->regenerate();
 
             // 5️⃣ Retour
             return [
@@ -76,11 +78,14 @@ class AuthService
     // ✅ Login
     public function login(array $credentials): array
     {
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials, true)) {
             throw ValidationException::withMessages([
                 'email' => ['Email ou mot de passe incorrect.'],
             ]);
         }
+
+        // 🔐 Regénérer l'ID de session après login (sécurité fixation de session)
+        request()->session()->regenerate();
 
         /** @var \App\Models\User $user */
         $user = User::find(Auth::id());
@@ -89,9 +94,13 @@ class AuthService
         return compact('user');
     }
 
-    // ✅ Logout — sans paramètre inutile
+    // ✅ Logout — invalide la session complètement
     public function logout(): void
     {
         Auth::logout();
+
+        // 🔐 Invalider la session + regénérer le token CSRF
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
     }
 }

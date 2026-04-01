@@ -1,43 +1,38 @@
-import axios from 'axios';
+import axios from "axios";
 
+// Instance principale pour toutes les requêtes API
 const api = axios.create({
-  baseURL: '/api',          // ✅ Garde le proxy (parfait pour le dev)
-  withCredentials: true,    // ✅ Indispensable pour les cookies de session Sanctum
+  baseURL: "/api", // ✅ via proxy React
+  withCredentials: true, // 🔥 obligatoire pour Sanctum (cookies)
   headers: {
-    'Accept': 'application/json',
-    // ❌ 'Content-Type': 'application/json' est supprimé ici.
-    // Axios détectera automatiquement s'il doit envoyer du JSON 
-    // ou du Multipart (pour le logo) et ajoutera la "boundary" nécessaire.
-  }
+    Accept: "application/json",
+  },
 });
 
 /**
- * Récupère le cookie CSRF initial de Laravel
- * À appeler avant la première requête de login ou register
+ * 🔐 Récupérer le cookie CSRF (Sanctum)
  */
 export const getCsrfToken = () =>
-  axios.get('/sanctum/csrf-cookie', {
-    withCredentials: true
+  axios.get("/sanctum/csrf-cookie", {
+    withCredentials: true,
   });
 
 /**
- * Intercepteur pour gérer les erreurs globales
+ * 🌐 Intercepteur global (gestion erreurs + session expirée)
  */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Log plus précis pour le debugging en console
     const errorData = error.response?.data || error.message;
-    console.error('API Error Details:', errorData);
+    console.error("API Error:", errorData);
 
-    // Redirection automatique si la session expire (401 Unauthorized)
+    // 🔥 Si session expirée → redirection login
     if (error.response?.status === 401) {
-      // On évite la redirection en boucle si on est déjà sur /login
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
+      if (!window.location.pathname.includes("/login")) {
+        window.location.href = "/login";
       }
     }
-    
+
     return Promise.reject(error);
   }
 );

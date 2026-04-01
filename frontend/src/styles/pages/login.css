@@ -1,0 +1,490 @@
+/* ================================================================
+   LOGIN PAGE — css partagé avec register.css (mêmes variables)
+   AutoConnect | Dark Premium Design
+   ================================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap");
+
+/* ── On réutilise les variables de register.css ── */
+/* Si register.css est déjà importé, ces :root ne font que confirmer */
+:root {
+  --lp-bg:         #0c0c0e;
+  --lp-bg2:        #141418;
+  --lp-bg3:        #1a1a20;
+  --lp-bg4:        #1e1e26;
+  --lp-border:     #2a2a35;
+  --lp-border2:    #1f1f28;
+  --lp-blue:       #2563eb;
+  --lp-blue2:      #3b82f6;
+  --lp-blue-glow:  rgba(37, 99, 235, 0.35);
+  --lp-blue-faint: rgba(37, 99, 235, 0.08);
+  --lp-red:        #dc2626;
+  --lp-red2:       #ef4444;
+  --lp-green:      #10b981;
+  --lp-text:       #ffffff;
+  --lp-text2:      #cbd5e1;
+  --lp-muted:      #64748b;
+}
+
+/* ── ROOT ── */
+.lp-root {
+  font-family: "DM Sans", sans-serif;
+  color: var(--lp-text);
+  background: var(--lp-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.lp-root *,
+.lp-root *::before,
+.lp-root *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.lp-root button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+.lp-root a {
+  color: inherit;
+  text-decoration: none;
+}
+.lp-root input {
+  font: inherit;
+  color: inherit;
+}
+.lp-root ::-webkit-scrollbar { width: 4px; }
+.lp-root ::-webkit-scrollbar-thumb {
+  background: var(--lp-border);
+  border-radius: 99px;
+}
+
+/* ── PAGE LAYOUT ── */
+.lp-page {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* ── LEFT PANEL (décoratif) ── */
+.lp-left {
+  position: relative;
+  background: var(--lp-bg2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 56px;
+  border-right: 1px solid var(--lp-border);
+}
+
+/* Grille en arrière-plan */
+.lp-left::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--lp-border2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lp-border2) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.2) 100%);
+  opacity: 0.5;
+}
+
+/* Gradient lumineux bleu centré */
+.lp-left::after {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.lp-left-content {
+  position: relative;
+  z-index: 2;
+}
+
+.lp-brand {
+  position: absolute;
+  top: 40px;
+  left: 56px;
+  z-index: 3;
+}
+
+.lp-brand-logo {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lp-brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lp-blue2);
+  box-shadow: 0 0 10px var(--lp-blue-glow);
+}
+
+/* Testimonial / Citation */
+.lp-quote {
+  position: relative;
+  z-index: 2;
+}
+
+.lp-quote-marks {
+  font-size: 64px;
+  line-height: 1;
+  color: var(--lp-blue);
+  opacity: 0.4;
+  font-family: "Sora", sans-serif;
+  margin-bottom: -12px;
+}
+
+.lp-quote-text {
+  font-size: 20px;
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--lp-text);
+  margin-bottom: 20px;
+  max-width: 360px;
+}
+
+.lp-quote-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lp-quote-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--lp-blue), var(--lp-blue2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.lp-quote-info-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lp-text);
+}
+
+.lp-quote-info-role {
+  font-size: 12px;
+  color: var(--lp-muted);
+}
+
+/* Stats flottantes */
+.lp-stats {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 220px;
+}
+
+.lp-stat-card {
+  background: rgba(20, 20, 24, 0.85);
+  border: 1px solid var(--lp-border);
+  border-radius: 14px;
+  padding: 14px 18px;
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: lp-float 6s ease-in-out infinite;
+}
+
+.lp-stat-card:nth-child(2) { animation-delay: -2s; }
+.lp-stat-card:nth-child(3) { animation-delay: -4s; }
+@keyframes lp-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.lp-stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--lp-blue-faint);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lp-blue2);
+  flex-shrink: 0;
+}
+
+.lp-stat-val {
+  font-family: "Sora", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--lp-text);
+  line-height: 1;
+}
+
+.lp-stat-lbl {
+  font-size: 11px;
+  color: var(--lp-muted);
+  margin-top: 2px;
+}
+
+/* ── RIGHT PANEL (formulaire) ── */
+.lp-right {
+  background: var(--lp-bg2);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--lp-border);
+  overflow-y: auto;
+}
+
+.lp-form-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px;
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── FORM HEADER ── */
+.lp-fheader {
+  margin-bottom: 36px;
+}
+
+.lp-ftitle {
+  font-family: "Sora", sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.lp-ftitle-accent { color: var(--lp-blue2); }
+
+.lp-fsub {
+  font-size: 14px;
+  color: var(--lp-muted);
+  line-height: 1.6;
+}
+
+/* ── FORM FIELDS (réutilise les classes rp-* de register) ─ */
+/* Les composants InputField utilisent rp-group / rp-label / rp-input etc.
+   On importe register.css pour l'avoir, mais on met ici ce qui diffère */
+
+/* ── REMEMBER ME ── */
+.lp-remember {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.lp-checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.lp-checkbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--lp-border);
+  background: var(--lp-bg3);
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.lp-checkbox:checked {
+  background: var(--lp-blue);
+  border-color: var(--lp-blue);
+}
+
+.lp-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 5px;
+  height: 8px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.lp-checkbox-lbl {
+  font-size: 13px;
+  color: var(--lp-text2);
+}
+
+.lp-forgot {
+  font-size: 13px;
+  color: var(--lp-blue2);
+  transition: color 0.2s;
+}
+
+.lp-forgot:hover { color: var(--lp-blue); }
+
+/* ── BUTTONS ── */
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  width: 100%;
+  letter-spacing: 0.02em;
+}
+
+.lp-btn-primary {
+  background: linear-gradient(135deg, var(--lp-blue), var(--lp-blue2));
+  color: #fff;
+  box-shadow: 0 4px 16px var(--lp-blue-glow);
+}
+.lp-btn-primary:hover {
+  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.5);
+  transform: translateY(-1px);
+}
+.lp-btn-primary:active { transform: translateY(0); }
+.lp-btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.lp-btn-google {
+  background: var(--lp-bg3);
+  color: var(--lp-text2);
+  border: 1px solid var(--lp-border);
+}
+.lp-btn-google:hover {
+  background: var(--lp-bg4);
+  border-color: #3a3a48;
+  color: var(--lp-text);
+}
+
+.lp-btn-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lp-or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.lp-or::before,
+.lp-or::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--lp-border);
+}
+.lp-or span {
+  font-size: 12px;
+  color: var(--lp-muted);
+}
+
+/* ── GLOBAL ERROR ── */
+.lp-global-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--lp-red2);
+  margin-bottom: 20px;
+  animation: lp-fadeup 0.3s ease both;
+}
+
+/* ── REGISTER LINK ── */
+.lp-register-link {
+  text-align: center;
+  font-size: 13px;
+  color: var(--lp-muted);
+  margin-top: 20px;
+}
+.lp-register-link a {
+  color: var(--lp-blue2);
+  font-weight: 600;
+}
+.lp-register-link a:hover { color: var(--lp-blue); }
+
+/* ── SPINNER ── */
+.lp-spin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: lp-spinr 0.6s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes lp-spinr { to { transform: rotate(360deg); } }
+
+/* ── ANIMATION D'ENTRÉE ── */
+.lp-view {
+  animation: lp-fadeup 0.35s ease both;
+}
+@keyframes lp-fadeup {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .lp-page {
+    grid-template-columns: 1fr;
+  }
+  .lp-left {
+    display: none;
+  }
+  .lp-form-wrap {
+    padding: 36px 24px;
+  }
+}
+@media (max-width: 480px) {
+  .lp-form-wrap {
+    padding: 28px 18px;
+  }
+}

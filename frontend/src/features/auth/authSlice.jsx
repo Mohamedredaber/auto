@@ -7,157 +7,133 @@ import {
   registerAgencyThunk,
 } from "./authThunks";
 
-/* ══════════════════════════════════════════════════════════════════
-   TYPES (documentation interne)
-
-   AuthState {
-     user              : object | null   — utilisateur connecté
-     isAuth            : boolean         — session active
-     isLoading         : boolean         — requête en cours
-     isInitialized     : boolean         — bootstrap terminé (fetchMe appelé)
-     errors            : object          — erreurs de champ { field: [message] }
-     globalError       : string | null   — message d'erreur global
-     needsCompletion   : boolean         — profil agence à compléter (step 2)
-     agencyDraft       : object | null   — données step 1 agence (prenom, nom, email...)
-   }
-══════════════════════════════════════════════════════════════════ */
-
 const initialState = {
-  user:            null,
-  isAuth:          false,
-  isLoading:       false,
-  isInitialized:   false,
-  errors:          {},
-  globalError:     null,
-}
+  user: null,
+  role: null, // 🔥 ajouté
+  isAuth: false,
+  isLoading: false,
+  isInitialized: false,
+  errors: {},
+  globalError: null,
+  needsCompletion: false,
+  agencyDraft: null,
+};
 
-/* ── Helpers de mutation ──────────────────────────────────────────── */
-
-/** Appelé sur le pending de toute requête standard (login, register, agency) */
+/* ── Helpers ───────────────────────── */
 const setPending = (state) => {
-  state.isLoading  = true
-  state.errors     = {}
-  state.globalError = null
-}
+  state.isLoading = true;
+  state.errors = {};
+  state.globalError = null;
+};
 
-/** Appelé sur le rejected de toute requête standard */
 const setRejected = (state, action) => {
-  state.isLoading   = false
-  state.errors      = action.payload?.errors ?? {}
-  state.globalError = action.payload?.message ?? "Une erreur est survenue"
-}
+  state.isLoading = false;
+  state.errors = action.payload?.errors ?? {};
+  state.globalError =
+    action.payload?.message ?? "Une erreur est survenue";
+};
 
-/**
- * Appelé sur le fulfilled de login et register.
- * Attend un payload normalisé : { user, needs_profile_completion }
- * Garanti par normalizeAuthPayload() dans authThunks.js
- */
 const setAuthSuccess = (state, action) => {
-  state.isLoading        = false
-  state.isAuth           = true
-  state.user             = action.payload.user
-  state.needsCompletion  = action.payload.needs_profile_completion ?? false
-}
+  state.isLoading = false;
+  state.isAuth = true;
+  state.user = action.payload.user;
+  state.role = action.payload.role; // 🔥 ajouté
+  state.needsCompletion =
+    action.payload.needs_profile_completion ?? false;
+};
 
-/* ══════════════════════════════════════════════════════════════════
-   SLICE
-══════════════════════════════════════════════════════════════════ */
-
+/* ── Slice ───────────────────────── */
 const authSlice = createSlice({
   name: "auth",
   initialState,
 
   reducers: {
-    /** Efface les erreurs affichées dans les formulaires */
     clearErrors: (state) => {
-      state.errors      = {}
-      state.globalError = null
+      state.errors = {};
+      state.globalError = null;
     },
 
-    /**
-     * Sauvegarde temporaire des données du formulaire agence step 1.
-     * Permet à ViewAgence2 de les récupérer via selectAgencyDraft.
-     */
     saveAgencyDraft: (state, action) => {
-      state.agencyDraft = action.payload
+      state.agencyDraft = action.payload;
     },
 
-    /** Supprime le brouillon agence après soumission réussie ou abandon */
     clearAgencyDraft: (state) => {
-      state.agencyDraft = null
+      state.agencyDraft = null;
     },
 
-    /**
-     * Mise à jour manuelle de l'utilisateur.
-     * Ex : après édition de profil sans thunk dédié.
-     */
     setUser: (state, action) => {
-      state.user = action.payload
+      state.user = action.payload;
+      state.role = action.payload?.role ?? null;
     },
 
-    /** Remet le store auth à son état initial (usage interne ou tests) */
     resetAuth: () => initialState,
   },
 
   extraReducers: (builder) => {
-    /* ── REGISTER ──────────────────────────────────────────────────── */
+    /* REGISTER */
     builder
-      .addCase(registerThunk.pending,   setPending)
+      .addCase(registerThunk.pending, setPending)
       .addCase(registerThunk.fulfilled, setAuthSuccess)
-      .addCase(registerThunk.rejected,  setRejected)
+      .addCase(registerThunk.rejected, setRejected);
 
-    /* ── LOGIN ─────────────────────────────────────────────────────── */
+    /* LOGIN */
     builder
-      .addCase(loginThunk.pending,   setPending)
+      .addCase(loginThunk.pending, setPending)
       .addCase(loginThunk.fulfilled, setAuthSuccess)
-      .addCase(loginThunk.rejected,  setRejected)
+      .addCase(loginThunk.rejected, setRejected);
 
-    /* ── LOGOUT ────────────────────────────────────────────────────── */
+    /* LOGOUT */
     builder
-      .addCase(logoutThunk.pending,   setPending)
-      // Reset complet du store dans tous les cas (succès ou erreur serveur)
+      .addCase(logoutThunk.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(logoutThunk.fulfilled, () => initialState)
-      .addCase(logoutThunk.rejected,  () => initialState)
+      .addCase(logoutThunk.rejected, (state) => {
+        // Erreur serveur : on réinitialise quand même localement
+        // (la session est peut-être déjà invalide côté serveur)
+        state.isLoading = false;
+        return initialState;
+      });
 
-    /* ── FETCH ME (bootstrap) ──────────────────────────────────────── */
     builder
       .addCase(fetchMeThunk.pending, (state) => {
-        state.isLoading = true
-        // Pas de reset des erreurs : le bootstrap n'est pas déclenché par l'user
+        state.isLoading = true;
       })
       .addCase(fetchMeThunk.fulfilled, (state, action) => {
-        state.isLoading      = false
-        state.isInitialized  = true
-        state.isAuth         = true
-        state.user           = action.payload
+        state.isLoading = false;
+        state.isInitialized = true;
+        state.isAuth = true;
+        state.user = action.payload;
+        state.role = action.payload?.role ?? null; // 🔥 ajouté
       })
       .addCase(fetchMeThunk.rejected, (state) => {
-        state.isLoading     = false
-        state.isInitialized = true
-        state.isAuth        = false
-        state.user          = null
-      })
+        state.isLoading = false;
+        state.isInitialized = true;
+        state.isAuth = false;
+        state.user = null;
+        state.role = null;
+      });
 
-    /* ── COMPLETE AGENCY PROFILE ───────────────────────────────────── */
+    /* REGISTER AGENCY */
     builder
-      .addCase(registerAgencyThunk.pending,   setPending)
+      .addCase(registerAgencyThunk.pending, setPending)
       .addCase(registerAgencyThunk.fulfilled, (state, action) => {
-        state.isLoading       = false
-        state.isAuth          = true  // explicite : garantit la cohérence quel que soit le flux
-        state.user            = action.payload.user
-// nettoyage automatique après succès
+        state.isLoading = false;
+        state.isAuth = true;
+        state.user = action.payload.user;
+        state.role = action.payload.role;
+        state.agencyDraft = null;
       })
-      .addCase(registerAgencyThunk.rejected, setRejected)
+      .addCase(registerAgencyThunk.rejected, setRejected);
   },
-})
+});
 
-/* ── Exports ─────────────────────────────────────────────────────── */
 export const {
   clearErrors,
   saveAgencyDraft,
   clearAgencyDraft,
   setUser,
   resetAuth,
-} = authSlice.actions
+} = authSlice.actions;
 
-export default authSlice.reducer
+export default authSlice.reducer;
