@@ -48,7 +48,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // ✅ Login
     public function login(LoginRequest $request): JsonResponse
     {
         ['user' => $user] = $this->authService->login(

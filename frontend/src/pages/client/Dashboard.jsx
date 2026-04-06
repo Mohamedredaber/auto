@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutThunk } from "../../features/auth/authThunks";
 import useAuth from "../../hooks/useAuth";
-import "../../styles/dashboard.css";
+// import "../../styles/dashboard.css";
 
 const Dashboard = () => {
   const dispatch = useDispatch();

@@ -8,7 +8,6 @@ import {
   selectErrors,
   selectGlobalError,
   selectRole,
-  selectNeedsCompletion,
 } from '../features/auth/authSelectors'
 import {
   loginThunk,
@@ -20,12 +19,7 @@ import {
 import { clearErrors } from '../features/auth/authSlice'
 import { ROLES }       from '../constants/roles'
 
-/**
- * useAuth — Hook principal pour toute interaction auth
- *
- * Usage:
- *   const { user, role, isAuth, login, logout, fetchMe } = useAuth()
- */
+
 export default function useAuth() {
   const dispatch   = useDispatch()
   const navigate   = useNavigate()
@@ -38,7 +32,6 @@ export default function useAuth() {
   const errors          = useSelector(selectErrors)
   const globalError     = useSelector(selectGlobalError)
   const role            = useSelector(selectRole)
-  const needsCompletion = useSelector(selectNeedsCompletion)
 
   const redirectByRole = (resolvedRole) => {
     switch (resolvedRole) {
@@ -100,7 +93,7 @@ export default function useAuth() {
     errors,
     globalError,
     role,
-    needsCompletion,
+
 
     /* Actions */
     login,

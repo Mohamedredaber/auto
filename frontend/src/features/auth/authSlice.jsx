@@ -38,7 +38,6 @@ const setAuthSuccess = (state, action) => {
   state.role = action.payload.role; // 🔥 ajouté
 };
 
-/* ── Slice ───────────────────────── */
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -58,7 +57,6 @@ const authSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    /* REGISTER */
     builder
       .addCase(registerThunk.pending, setPending)
       .addCase(registerThunk.fulfilled, setAuthSuccess)

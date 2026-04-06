@@ -73,7 +73,6 @@ export const logoutThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await logout();
-      // Ne retourne rien, le slice gère la réinitialisation
       return;
     } catch (error) {
       // Même en cas d'erreur réseau, on considère le logout réussi côté client

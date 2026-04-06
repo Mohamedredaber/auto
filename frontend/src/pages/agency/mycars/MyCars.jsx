@@ -1,9 +1,8 @@
 import React from 'react'
 
-function Cars() {
+function MyCars() {
   return (
     <div>Cars</div>
   )
 }
-
-export default Cars
+export default MyCars;
