@@ -17,22 +17,19 @@ export const getCsrfToken = () =>
     withCredentials: true,
   });
 
-/**
- * 🌐 Intercepteur global (gestion erreurs + session expirée)
- */
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const errorData = error.response?.data || error.message;
-    console.error("API Error:", errorData);
-
-    // 🔥 Si session expirée → redirection login
+    // Si c'est une erreur 401 (Unauthorized)
     if (error.response?.status === 401) {
-      if (!window.location.pathname.includes("/login")) {
+      const isLoginPath = window.location.pathname.includes("/login");
+      const isLogoutRequest = error.config.url.includes("/logout");
+
+      if (!isLoginPath && !isLogoutRequest) {
         window.location.href = "/login";
       }
     }
-
     return Promise.reject(error);
   }
 );

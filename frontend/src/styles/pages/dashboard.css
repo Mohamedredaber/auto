@@ -125,3 +125,91 @@
 .content-padding {
   padding: var(--space-8);
 }
+/* Container Principal */
+.top-bar {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-8);
+  background-color: #0d0d0d; /* Dark theme bhal l-image */
+  border-bottom: 1px solid var(--color-border);
+  z-index: 10;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* User & Agency Section */
+.user-info-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.user-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.user-role {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Avatar Style (Square bhal l-image) */
+.agency-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px; /* Radius sghir machi circle */
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Vertical Divider */
+.divider-v {
+  width: 1px;
+  height: 20px;
+  background-color: var(--color-border);
+}
+
+/* Notification Button */
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.notification-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  background-color: #ff4d4d; /* Red dot */
+  border-radius: 50%;
+  border: 1.5px solid #0d0d0d;
+}

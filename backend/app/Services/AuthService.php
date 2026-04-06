@@ -88,7 +88,6 @@ class AuthService
 
         Auth::login($user);
 
-        // 🔐 Regénérer l'ID de session après login (sécurité fixation de session)
         request()->session()->regenerate();
 
         $user->load('agency');
@@ -97,12 +96,15 @@ class AuthService
     }
 
     // ✅ Logout — invalide le token d'accès actuel
-  public function logout(Request $request): void
+public function logout(Request $request): void
 {
-    $token = $request->user()?->currentAccessToken();
+    // 1. Déconnecter l'utilisateur du Guard Web (Session/Cookie)
+    Auth::guard('web')->logout();
 
-    if ($token instanceof \Laravel\Sanctum\PersonalAccessToken) {
-        $token->delete();
-    }
+    // 2. Invalider la session actuelle pour que le cookie ne soit plus utilisable
+    $request->session()->invalidate();
+
+    // 3. Régénérer le token CSRF (Sécurité contre les attaques de fixation de session)
+    $request->session()->regenerateToken();
 }
 }

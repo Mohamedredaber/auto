@@ -5,7 +5,6 @@ import BellIcon from '../icons/BellIcon';
 import '../../../styles/pages/dashboard.css'; 
 
 const TopBar = () => {
-  // Kan-jbdou l-user m-connecti (fih full_name o agency)
   const user = useSelector(selectUser);
   const agency = user?.agency;
 
@@ -16,7 +15,6 @@ const TopBar = () => {
       </div>
 
       <div className="top-bar-right">
-        {/* Notification Button avec l'icône Bell li drna */}
         <button className="icon-btn" title="Notifications">
           <BellIcon width={20} height={20} stroke="var(--color-text-muted)" />
           <span className="notification-dot"></span>

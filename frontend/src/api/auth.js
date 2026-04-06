@@ -32,7 +32,7 @@ export const login = async (data) => {
  * 🚪 Logout
  */
 export const logout = async () => {
-  await getCsrfToken(); // 🔥 recommandé avec Sanctum
+  await getCsrfToken(); 
   return api.post("/auth/logout");
 };
 
