@@ -1,43 +1,41 @@
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import ProtectedRoute  from "./ProtectedRoute"
-import GuestRoute      from "./GuestRoute"
-import RoleRoute       from "./RoleRoute"
+import ProtectedRoute from "./ProtectedRoute";
+import GuestRoute from "./GuestRoute";
+import RoleRoute from "./RoleRoute";
 
-import Layout          from "../components/layout/Layout"
-import ClientLayout    from "../components/layout/ClientLayout"
-import AgencyLayout    from "../components/layout/AgencyLayout"
-import AdminLayout     from "../components/layout/AdminLayout"
+import Layout from "../components/layout/Layout";
+import ClientLayout from "../components/layout/ClientLayout";
+import AgencyLayout from "../components/layout/AgencyLayout";
+import AdminLayout from "../components/layout/AdminLayout";
 
-import Home            from "../pages/home/Home"
-import Contact         from "../pages/contact/Contact"
-import Cars            from "../pages/cars/Cars"
-import Login           from "../pages/login/login"
-import Register        from "../pages/register/Register"
+import Home from "../pages/home/Home";
+import Contact from "../pages/contact/Contact";
+import Cars from "../pages/cars/Cars";
+import Login from "../pages/login/login";
+import Register from "../pages/register/Register";
+import ClientDashboard from "../pages/client/Dashboard";
+import AgencyDashboard from "../pages/agency/dashboard/Dashboard";
+import AdminDashboard from "../pages/admin/Dashboard";
 
-import ClientDashboard from "../pages/client/Dashboard"
-import AgencyDashboard from "../pages/agency/Dashboard"
-import AdminDashboard  from "../pages/admin/Dashboard"
-
-import NotFound        from "../pages/errors/NotFound"
-import Unauthorized    from "../pages/errors/Unauthorized"
-import { ROLES }       from "../constants/roles"
+import NotFound from "../pages/errors/NotFound";
+import Unauthorized from "../pages/errors/Unauthorized";
+import { ROLES } from "../constants/roles";
 
 export default function AppRoutes() {
   return (
     <Routes>
-
       {/* ══════════════════════════
           PUBLIC
       ══════════════════════════ */}
       <Route element={<Layout />}>
-        <Route path="/"        element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/cars"    element={<Cars />} />
+        <Route path="/cars" element={<Cars />} />
 
         {/* Guests uniquement (non connectés) */}
         <Route element={<GuestRoute />}>
-          <Route path="/login"    element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
       </Route>
@@ -46,7 +44,6 @@ export default function AppRoutes() {
           PROTECTED (connecté)
       ══════════════════════════ */}
       <Route element={<ProtectedRoute />}>
-
         {/* CLIENT */}
         <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
           <Route element={<ClientLayout />}>
@@ -67,15 +64,13 @@ export default function AppRoutes() {
             <Route path="/dashboard/admin" element={<AdminDashboard />} />
           </Route>
         </Route>
-
       </Route>
 
       {/* ══════════════════════════
           ERRORS
       ══════════════════════════ */}
       <Route path="/unauthorized" element={<Unauthorized />} />
-      <Route path="*"             element={<NotFound />} />
-
+      <Route path="*" element={<NotFound />} />
     </Routes>
-  )
+  );
 }

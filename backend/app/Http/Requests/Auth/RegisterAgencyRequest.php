@@ -32,4 +32,10 @@ class RegisterAgencyRequest extends FormRequest
             'accounts_social'       => ['nullable', 'string'],
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'time_end.after' => 'L\'heure de fin doit être après l\'heure de début.',
+        ];
+    }
 }

@@ -18,13 +18,12 @@ class AuthController extends Controller
         private readonly AuthService $authService
     ) {}
 
-    // ✅ Register Client
     public function register(RegisterRequest $request): JsonResponse
     {
         ['user' => $user] = $this->authService->register($request->validated());
 
         auth()->login($user);
-        request()->session()->regenerate(); // 🔐 fixation de session
+        request()->session()->regenerate(); 
 
         return response()->json([
             'success' => true,
@@ -35,7 +34,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // ✅ Register Agency (User + Agence en une seule transaction)
     public function registerAgency(RegisterAgencyRequest $request): JsonResponse
     {
         $result = $this->authService->registerAgency(

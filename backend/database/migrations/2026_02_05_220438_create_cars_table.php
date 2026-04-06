@@ -17,17 +17,15 @@ return new class extends Migration {
             // Informations voiture
             $table->string('category');          
             $table->string('brand');             // Toyota, BMW...
-            $table->string('model');             // Corolla, X5...
+            $table->string('model');         
             $table->year('year');
-            // Enums
+       
             $table->enum('transmission', ['manual', 'automatic']);
             $table->enum('fuel', ['diesel', 'gasoline', 'hybrid', 'electric']);
             $table->unsignedTinyInteger('seats');
             $table->unsignedTinyInteger('doors');
 
-            // Prix
             $table->decimal('price_per_day', 8, 2);
-            // Statut
             $table->enum('status', ['available', 'reserved', 'maintenance'])
                   ->default('reserved');
             // Disponibilité 
