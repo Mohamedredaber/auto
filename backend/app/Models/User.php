@@ -37,6 +37,10 @@ class User extends Authenticatable
         return $this->belongsTo(Agency::class);
     }
     // ── Helpers ────────────────────────────────────────────
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
     public function isClient(): bool
     {
         return $this->role === 'client';

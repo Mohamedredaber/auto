@@ -28,12 +28,15 @@ class Agency extends Model
         'latitude'        => 'float',
         'longitude'       => 'float',
     ];
-// Dans Agency.php
-public function users()
-{
-    return $this->hasMany(User::class, 'agency_id');
-}
-    // L'admin de cette agence
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
+    public function users()
+    {
+        return $this->hasMany(User::class, 'agency_id');
+    }
+        // L'admin de cette agence
     public function admin(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(User::class, 'agency_id');

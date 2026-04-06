@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
             Schema::create('car_images', function (Blueprint $table) {
-            $table->id(); // id_image
+            $table->id();
 
             $table->foreignId('car_id')
                 ->constrained('cars')
                 ->cascadeOnDelete();
 
-            $table->string('url');        // chemin ou URL image
+            $table->string('url');        
             $table->boolean('is_cover')->default(false); // image principale
 
             $table->timestamps();
@@ -28,11 +28,8 @@ return new class extends Migration
 
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('imagescar');
+        Schema::dropIfExists('car_images');
     }
 };

@@ -2,7 +2,7 @@ function Cars() {
     return (
         <>
             < div>
-                <h1>Cars</h1>
+                <h1>cars principal page</h1>
             </div>
         </>
     )
