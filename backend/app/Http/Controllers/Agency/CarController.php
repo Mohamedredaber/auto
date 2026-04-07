@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Car;
 use App\Http\Resources\Agency\CarResource;
+use App\Http\Requests\Agency\StoreCarRequest;
 class CarController extends Controller
 {
     /**
@@ -26,10 +27,36 @@ class CarController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        //
+ public function store(StoreCarRequest $request)
+{
+    // 1. Validation automatique via StoreCarRequest
+    $validated = $request->validated();
+    
+    // 2. Zid l-agency_id d l-user li m-connecter
+    $validated['agency_id'] = auth()->user()->agency_id;
+
+    // 3. Création d'l-voiture (bla tsawer f l-wel)
+    $car = Car::create($validated);
+
+    // 4. Traitement dyal l-images (ila jaw f l-request)
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            // Khzen l-image f storage/app/public/cars
+            $path = $image->store('cars', 'public');
+
+            // Zid l-entry f la table 'car_images' (ou la table li m-lyiya m3a Car)
+            $car->images()->create([
+                'path' => $path,
+                // t-qder t-حدد hna ina wa7da hiya l-cover
+            ]);
+        }
     }
+
+    return (new CarResource($car->load('images')))->additional([
+        'success' => true,
+        'message' => 'Voiture et images créées avec succès.',
+    ]);
+}
 
     /**
      * Display the specified resource.

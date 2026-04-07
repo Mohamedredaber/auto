@@ -1,75 +1,131 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchAgencyCarsThunk } from '../../../features/agency/carThunks';
-
-
+import '../../../styles/pages/MyCars.css';
 function MyCars() {
   const dispatch = useDispatch();
-  const cars = useSelector(state => state.car.cars);
-  // const loading = useSelector(selectCarLoading);
-  // const errors = useSelector(selectCarErrors);
+  const navigate = useNavigate();
+  const cars = useSelector(state => state.car.cars) || [];
 
   useEffect(() => {
     dispatch(fetchAgencyCarsThunk());
   }, [dispatch]);
 
+  // Calculs pour les stats
+  const totalFleet = cars.length;
+  const availableCount = cars.filter(c => c.status === 'disponible').length;
+  const totalValue = cars.reduce((acc, c) => acc + Number(c.price_per_day), 0);
+  const handlenavigate = ()=>{
+     navigate('/dashboard/agency/cars/add')
+
+  }
   return (
-   <div className="overflow-x-auto">
-    <table className="w-full text-left border-separate border-spacing-y-3">
-        <thead>
-            <tr className="text-gray-400 text-sm">
-                <th className="pb-4">Image</th>
-                <th className="pb-4">Véhicule</th>
-                <th className="pb-4">Ville</th>
-                <th className="pb-4">Prix/Jour</th>
-                <th className="pb-4">Statut</th>
-                <th className="pb-4">Actions</th>
+    <div className="dashboard-wrapper">
+      
+      {/* 1. HEADER SECTION */}
+      <header className="fleet-header">
+        <div className="title-group">
+          <h1>Gestion de la Flotte</h1>
+          <p>Gérez vos véhicules, suivez leur disponibilité et mettez à jour les tarifs.</p>
+        </div>
+        <button className="btn-add-main"
+            onClick={handlenavigate}
+        >
+          <span>+</span> AJOUTER UN NOUVEAU VÉHICULE
+        </button>
+      </header>
+
+      {/* 2. FILTERS SECTION */}
+      <div className="filters-container">
+        <div className="search-box">
+          <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}>🔍</span>
+          <input type="text" placeholder="Rechercher par marque ou modèle..." />
+        </div>
+        <div className="filter-select-group">
+          <span style={{ color: 'var(--color-text-muted)', fontSize: '12px' }}>Filtrer par :</span>
+          <select className="custom-select"><option>Toutes les villes</option></select>
+          <select className="custom-select"><option>Tous les statuts</option></select>
+          <select className="custom-select"><option>Prix décroissant</option></select>
+        </div>
+      </div>
+
+      {/* 3. TABLE SECTION */}
+      <div className="table-container">
+        <table className="fleet-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Véhicule</th>
+              <th>Ville</th>
+              <th>Prix/Jour</th>
+              <th style={{ textAlign: 'center' }}>Statut</th>
+              <th style={{ textAlign: 'right' }}>Actions</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {cars.map((car) => (
-                <tr key={car.id} className="bg-[#1a1d24] rounded-lg">
-                    <td className="p-4 first:rounded-l-lg">
-                        <img 
-                            src={car.cover_image_url} 
-                            alt={car.brand} 
-                            className="w-16 h-12 object-cover rounded-md"
-                        />
-                    </td>
-                    <td className="p-4 font-semibold">
-                        {car.brand} <br />
-                        <span className="text-gray-400 text-xs font-normal">{car.model}</span>
-                    </td>
-                    <td className="p-4 text-sm">
-                        <span className="flex items-center text-red-500">
-                             📍 {car.city || 'Tanger'}
-                        </span>
-                    </td>
-                    <td className="p-4 font-bold">{car.price_per_day} MAD</td>
-                    <td className="p-4">
-                        <span className={`px-3 py-1 rounded-full text-xs ${
-                            car.status === 'disponible' ? 'bg-green-900/30 text-green-500' : 'bg-red-900/30 text-red-500'
-                        }`}>
-                            {car.status}
-                        </span>
-                    </td>
-                    <td className="p-4 last:rounded-r-lg">
-                        <div className="flex space-x-3">
-                            <button className="text-gray-400 hover:text-white">👁️</button>
-                            <button className="text-gray-400 hover:text-blue-500">✏️</button>
-                            <button 
-                                // onClick={() => handleDelete(car.id)}
-                                className="text-gray-400 hover:text-red-500"
-                            >
-                                🗑️
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+              <tr key={car.id} className="car-row">
+                <td>
+                  <img src={car.cover_image_url} alt={car.brand} className="car-img-box" />
+                </td>
+                <td>
+                  <span className="brand-name uppercase">{car.brand}</span>
+                  <span className="model-name">{car.model}</span>
+                </td>
+                <td>
+                  <span style={{ color: 'var(--color-red-500)', fontStyle: 'italic', fontSize: '14px' }}>
+                    📍 {car.city || 'Tanger'}
+                  </span>
+                </td>
+                <td>
+                  <span className="price-text">{car.price_per_day}</span>
+                  <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginLeft: '4px' }}>MAD</span>
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  <span className={`badge-status ${car.status === 'disponible' ? 'available' : 'unavailable'}`}>
+                    {car.status}
+                  </span>
+                </td>
+                <td>
+                  <div className="action-btns">
+                    <button className="btn-ui">👁️</button>
+                    <button className="btn-ui">✏️</button>
+                    <button className="btn-ui" style={{ color: 'var(--color-red-500)' }}>🗑️</button>
+                  </div>
+                </td>
+              </tr>
             ))}
-        </tbody>
-    </table>
-</div>
-  )
+          </tbody>
+        </table>
+      </div>
+
+      {/* 4. STATS FOOTER SECTION */}
+      <footer className="stats-footer">
+        <div className="stat-item">
+          <div style={{ background: 'var(--color-error-bg)', padding: '10px', borderRadius: '10px' }}>🚗</div>
+          <div className="stat-info">
+            <span>Flotte Totale</span>
+            <h2>{totalFleet}</h2>
+          </div>
+        </div>
+        <div className="stat-item">
+          <div style={{ background: 'var(--color-success-bg)', padding: '10px', borderRadius: '10px' }}>✅</div>
+          <div className="stat-info">
+            <span>Disponibles</span>
+            <h2>{availableCount}</h2>
+          </div>
+        </div>
+        <div className="stat-item">
+          <div style={{ background: 'var(--color-info-bg)', padding: '10px', borderRadius: '10px' }}>💰</div>
+          <div className="stat-info">
+            <span>Revenu Estimé</span>
+            <h2>{totalValue.toLocaleString()} <small style={{ fontSize: '12px' }}>MAD</small></h2>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 }
+
 export default MyCars;

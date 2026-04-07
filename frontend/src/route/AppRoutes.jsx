@@ -24,6 +24,7 @@ import Unauthorized from "../pages/errors/Unauthorized";
 import { ROLES } from "../constants/roles";
 import Reservations from "../pages/agency/reservations/Reservations";
 import MyCars from "../pages/agency/mycars/Mycars";
+import CarForm from "../pages/agency/mycars/CarForm";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -58,6 +59,7 @@ export default function AppRoutes() {
           <Route element={<AgencyLayout />}>
             <Route path="/dashboard/agency" element={<AgencyDashboard />} />
             <Route path="/dashboard/agency/cars" element={<MyCars />} />
+            <Route path="/dashboard/agency/cars/add" element={<CarForm />} />
             <Route
               path="/dashboard/agency/clients"
               element={<AgencyClient />}
