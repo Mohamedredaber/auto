@@ -1,131 +1,152 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { fetchAgencyCarsThunk } from '../../../features/agency/carThunks';
-import '../../../styles/pages/MyCars.css';
-function MyCars() {
+"use client";
+
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectAllCars,
+  selectCarLoading,
+  selectIsFormOpen,
+  selectFormMode,
+} from "../../../features/agency/carSelectors";
+import {
+  fetchAgencyCarsThunk,
+  deleteCarThunk,
+} from "../../../features/agency/carThunks";
+import {
+  openAddForm,
+  openEditForm,
+  closeModals,
+} from "../../../features/agency/carSlice";
+import CarFormModal from "./CarFormModal/CarFormModal";
+import "./MyCars.css";
+
+const MyCars = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const cars = useSelector(state => state.car.cars) || [];
+  
+  // Sélecteurs Redux
+  const cars = useSelector(selectAllCars);
+  const isLoading = useSelector(selectCarLoading);
+  const isFormOpen = useSelector(selectIsFormOpen);
+  const formMode = useSelector(selectFormMode);
+
+  // États locaux pour les filtres et pagination
+  const [searchTerm, setSearchTerm] = useState("");
+  const [cityFilter, setCityFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const carsPerPage = 5;
 
   useEffect(() => {
     dispatch(fetchAgencyCarsThunk());
   }, [dispatch]);
 
-  // Calculs pour les stats
-  const totalFleet = cars.length;
-  const availableCount = cars.filter(c => c.status === 'disponible').length;
-  const totalValue = cars.reduce((acc, c) => acc + Number(c.price_per_day), 0);
-  const handlenavigate = ()=>{
-     navigate('/dashboard/agency/cars/add')
+  // --- LOGIQUE DE FILTRAGE ET TRI ---
+  const filteredCars = cars.filter((car) => {
+    const matchesSearch =
+      car.brand?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      car.model?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCity = !cityFilter || car.city === cityFilter;
+    const matchesStatus = !statusFilter || car.status === statusFilter;
+    return matchesSearch && matchesCity && matchesStatus;
+  });
 
-  }
+  const sortedCars = [...filteredCars].sort((a, b) => {
+    if (sortOrder === "asc") return a.price_per_day - b.price_per_day;
+    if (sortOrder === "desc") return b.price_per_day - a.price_per_day;
+    return 0;
+  });
+
+  // --- PAGINATION ---
+  const indexOfLastCar = currentPage * carsPerPage;
+  const indexOfFirstCar = indexOfLastCar - carsPerPage;
+  const currentCars = sortedCars.slice(indexOfFirstCar, indexOfLastCar);
+  const totalPages = Math.ceil(sortedCars.length / carsPerPage);
+
+  // --- STATISTIQUES ---
+  const totalCars = cars.length;
+  const availableCars = cars.filter(c => c.status === "disponible").length;
+  const estimatedRevenue = cars.reduce((acc, c) => acc + (Number(c.price_per_day) || 0), 0);
+
+  const handleCloseForm = () => dispatch(closeModals());
+
   return (
-    <div className="dashboard-wrapper">
-      
-      {/* 1. HEADER SECTION */}
-      <header className="fleet-header">
-        <div className="title-group">
-          <h1>Gestion de la Flotte</h1>
-          <p>Gérez vos véhicules, suivez leur disponibilité et mettez à jour les tarifs.</p>
+    <div className="mycars-container">
+      {/* Header */}
+      <div className="mycars-header">
+        <div className="header-content">
+          <div className="header-icon">🚗</div>
+          <div className="header-text">
+            <h1>Gestion de la Flotte</h1>
+            <p>Gérez vos véhicules et suivez leur disponibilité.</p>
+          </div>
         </div>
-        <button className="btn-add-main"
-            onClick={handlenavigate}
-        >
-          <span>+</span> AJOUTER UN NOUVEAU VÉHICULE
+        <button className="btn-add" onClick={() => dispatch(openAddForm())}>
+          + Ajouter un véhicule
         </button>
-      </header>
-
-      {/* 2. FILTERS SECTION */}
-      <div className="filters-container">
-        <div className="search-box">
-          <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}>🔍</span>
-          <input type="text" placeholder="Rechercher par marque ou modèle..." />
-        </div>
-        <div className="filter-select-group">
-          <span style={{ color: 'var(--color-text-muted)', fontSize: '12px' }}>Filtrer par :</span>
-          <select className="custom-select"><option>Toutes les villes</option></select>
-          <select className="custom-select"><option>Tous les statuts</option></select>
-          <select className="custom-select"><option>Prix décroissant</option></select>
-        </div>
       </div>
 
-      {/* 3. TABLE SECTION */}
-      <div className="table-container">
-        <table className="fleet-table">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Véhicule</th>
-              <th>Ville</th>
-              <th>Prix/Jour</th>
-              <th style={{ textAlign: 'center' }}>Statut</th>
-              <th style={{ textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cars.map((car) => (
-              <tr key={car.id} className="car-row">
-                <td>
-                  <img src={car.cover_image_url} alt={car.brand} className="car-img-box" />
-                </td>
-                <td>
-                  <span className="brand-name uppercase">{car.brand}</span>
-                  <span className="model-name">{car.model}</span>
-                </td>
-                <td>
-                  <span style={{ color: 'var(--color-red-500)', fontStyle: 'italic', fontSize: '14px' }}>
-                    📍 {car.city || 'Tanger'}
-                  </span>
-                </td>
-                <td>
-                  <span className="price-text">{car.price_per_day}</span>
-                  <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginLeft: '4px' }}>MAD</span>
-                </td>
-                <td style={{ textAlign: 'center' }}>
-                  <span className={`badge-status ${car.status === 'disponible' ? 'available' : 'unavailable'}`}>
-                    {car.status}
-                  </span>
-                </td>
-                <td>
-                  <div className="action-btns">
-                    <button className="btn-ui">👁️</button>
-                    <button className="btn-ui">✏️</button>
-                    <button className="btn-ui" style={{ color: 'var(--color-red-500)' }}>🗑️</button>
-                  </div>
-                </td>
+      {/* Filtres UI... (Garder le code de dashagency ici) */}
+      
+      {/* Table Section */}
+      <div className="mycars-table-container">
+        {isLoading ? (
+          <div className="loading">Chargement...</div>
+        ) : (
+          <table className="mycars-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Véhicule</th>
+                <th>Ville</th>
+                <th>Prix / Jour</th>
+                <th>Statut</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentCars.map((car) => (
+                <tr key={car.id}>
+                  <td>
+                    <img src={car.cover_image_url || car.images?.[0]} alt={car.brand} className="car-image-thumb" />
+                  </td>
+                  <td>{car.brand} {car.model}</td>
+                  <td>{car.city || 'Tanger'}</td>
+                  <td>{car.price_per_day} MAD</td>
+                  <td>
+                    <span className={`status-badge ${car.status}`}>
+                      {car.status}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="actions">
+                      <button onClick={() => dispatch(openEditForm(car))}>✏️</button>
+                      <button onClick={() => {
+                        if(window.confirm("Supprimer ?")) dispatch(deleteCarThunk(car.id))
+                      }}>🗑️</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
-      {/* 4. STATS FOOTER SECTION */}
-      <footer className="stats-footer">
-        <div className="stat-item">
-          <div style={{ background: 'var(--color-error-bg)', padding: '10px', borderRadius: '10px' }}>🚗</div>
-          <div className="stat-info">
-            <span>Flotte Totale</span>
-            <h2>{totalFleet}</h2>
+      {/* Modal Form */}
+      {isFormOpen && (
+        <div className="modal-overlay" onClick={handleCloseForm}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>{formMode === "add" ? "Ajouter" : "Modifier"}</h2>
+              <button onClick={handleCloseForm}>×</button>
+            </div>
+            <CarFormModal />
           </div>
         </div>
-        <div className="stat-item">
-          <div style={{ background: 'var(--color-success-bg)', padding: '10px', borderRadius: '10px' }}>✅</div>
-          <div className="stat-info">
-            <span>Disponibles</span>
-            <h2>{availableCount}</h2>
-          </div>
-        </div>
-        <div className="stat-item">
-          <div style={{ background: 'var(--color-info-bg)', padding: '10px', borderRadius: '10px' }}>💰</div>
-          <div className="stat-info">
-            <span>Revenu Estimé</span>
-            <h2>{totalValue.toLocaleString()} <small style={{ fontSize: '12px' }}>MAD</small></h2>
-          </div>
-        </div>
-      </footer>
+      )}
     </div>
   );
-}
+};
 
 export default MyCars;

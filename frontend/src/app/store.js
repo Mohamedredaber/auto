@@ -5,6 +5,6 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     
-    car: carReducer,
+    cars: carReducer,
   },
 });
