@@ -11,12 +11,36 @@ const initialState = {
   singleCar: null,
   isLoading: false,
   errors: null,
+  isFormOpen: false,
+  isDetailsOpen: false,
+  formMode: "add",
 };
 const carSlice = createSlice({
   name: "car",
   initialState,
   reducers: {
     clearErrors: (state) => {
+      state.errors = null;
+    },
+    openAddForm: (state) => {
+      state.isFormOpen = true;
+      state.formMode = "add";
+      state.singleCar = null;
+    },
+    // Ouvrir le formulaire pour l'édition
+    openEditForm: (state, action) => {
+      state.isFormOpen = true;
+      state.formMode = "edit";
+      state.singleCar = action.payload; // On stocke la voiture à modifier
+    },
+    openDetails: (state, action) => {
+      state.isDetailsOpen = true;
+      state.singleCar = action.payload;
+    },
+    closeModals: (state) => {
+      state.isFormOpen = false;
+      state.isDetailsOpen = false;
+      state.singleCar = null;
       state.errors = null;
     },
   },
@@ -101,5 +125,11 @@ const carSlice = createSlice({
   },
 });
 
-export const { clearErrors } = carSlice.actions;
+export const {
+  clearErrors,
+  openAddForm,
+  openEditForm,
+  openDetails,
+  closeModals,
+} = carSlice.actions;
 export default carSlice.reducer;

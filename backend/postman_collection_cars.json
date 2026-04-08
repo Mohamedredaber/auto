@@ -1,0 +1,377 @@
+{
+    "info": {
+        "name": "AutoConnect - Car Management API",
+        "description": "Complete CRUD API for managing agency vehicles",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Cars Management",
+            "item": [
+                {
+                    "name": "1. List All Cars",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer YOUR_TOKEN_HERE",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/agency/cars?page=1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "agency", "cars"],
+                            "query": [{ "key": "page", "value": "1" }]
+                        },
+                        "description": "Fetches paginated list of cars for authenticated user's agency.\nPage: 1\nPer page: 10"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "2. Create Car (with image)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer YOUR_TOKEN_HERE",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "brand",
+                                    "value": "BMW",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "model",
+                                    "value": "X5",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "SUV",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "year",
+                                    "value": "2024",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "transmission",
+                                    "value": "automatic",
+                                    "type": "text",
+                                    "description": "manual or automatic"
+                                },
+                                {
+                                    "key": "fuel",
+                                    "value": "diesel",
+                                    "type": "text",
+                                    "description": "diesel, gasoline, hybrid, electric"
+                                },
+                                {
+                                    "key": "seats",
+                                    "value": "5",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "doors",
+                                    "value": "4",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price_per_day",
+                                    "value": "450.50",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "available",
+                                    "type": "text",
+                                    "description": "available, reserved, maintenance"
+                                },
+                                {
+                                    "key": "cover_image_url",
+                                    "type": "file",
+                                    "src": "/path/to/image.jpg",
+                                    "description": "JPEG, PNG, JPG, or WEBP. Max 5MB"
+                                },
+                                {
+                                    "key": "additional_information",
+                                    "value": "Leather seats, panoramic roof, backup camera",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "available_from",
+                                    "value": "2026-04-10",
+                                    "type": "text",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "available_to",
+                                    "value": "2026-12-31",
+                                    "type": "text",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/agency/cars",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "agency", "cars"]
+                        },
+                        "description": "Create a new car with cover image. Image is required.\nNote: agency_id is automatically set from authenticated user."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "3. Get Car Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer YOUR_TOKEN_HERE",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/agency/cars/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "agency", "cars", "1"]
+                        },
+                        "description": "Retrieve full details of a specific car including all images.\nYou can only view cars from your own agency."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "4. Update Car (partial)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer YOUR_TOKEN_HERE",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "price_per_day",
+                                    "value": "500.00",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "reserved",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/agency/cars/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "agency", "cars", "1"]
+                        },
+                        "description": "Update specific fields of a car. All fields are optional.\nYou can only update cars from your own agency."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "5. Update Car Cover Image",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer YOUR_TOKEN_HERE",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "cover_image_url",
+                                    "type": "file",
+                                    "src": "/path/to/new-image.jpg"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/agency/cars/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "agency", "cars", "1"]
+                        },
+                        "description": "Replace the cover image of a car. The old image is automatically deleted from storage."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "6. Update Car (all fields)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer YOUR_TOKEN_HERE",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "brand",
+                                    "value": "Mercedes",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "model",
+                                    "value": "GLE",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "Luxury SUV",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "year",
+                                    "value": "2024",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "transmission",
+                                    "value": "automatic",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "fuel",
+                                    "value": "hybrid",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "seats",
+                                    "value": "5",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "doors",
+                                    "value": "4",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price_per_day",
+                                    "value": "600.00",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "available",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "additional_information",
+                                    "value": "Premium leather, AI assistant",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/agency/cars/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "agency", "cars", "1"]
+                        },
+                        "description": "Update multiple fields of a car. All fields are optional in the request."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "7. Delete Car",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer YOUR_TOKEN_HERE",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/agency/cars/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "agency", "cars", "1"]
+                        },
+                        "description": "Delete a car and all associated images. The images are automatically deleted from storage.\nYou can only delete cars from your own agency."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Login (Get Token)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"agency@example.com\",\n  \"password\": \"password\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "auth", "login"]
+                        },
+                        "description": "Login and receive bearer token for API requests.\n\nReplace {{base_url}} with your actual server URL.\nExample: http://localhost:8000"
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000",
+            "type": "string"
+        }
+    ]
+}

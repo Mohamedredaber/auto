@@ -1,6 +1,6 @@
 import api, { getCsrfToken } from "./index";
 export const fetchAgencyCars = async () => {
-    getCsrfToken();
+    await getCsrfToken();
     return api.get("/agency/cars");
 }
 export const createCar = async (data) => {
