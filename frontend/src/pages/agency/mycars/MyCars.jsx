@@ -56,13 +56,8 @@ const MyCars = () => {
     if (sortOrder === "desc") return b.price_per_day - a.price_per_day;
     return 0;
   });
-<<<<<<< HEAD
 
   // --- PAGINATION ---
-=======
-  console.log(cars)
-  // Pagination
->>>>>>> completedashagency
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
   const currentCars = sortedCars.slice(indexOfFirstCar, indexOfLastCar);
@@ -73,7 +68,22 @@ const MyCars = () => {
   const availableCars = cars.filter(c => c.status === "disponible").length;
   const estimatedRevenue = cars.reduce((acc, c) => acc + (Number(c.price_per_day) || 0), 0);
 
+  // --- HANDLERS ---
   const handleCloseForm = () => dispatch(closeModals());
+  const handleEditClick = (car) => dispatch(openEditForm(car));
+  const handleDeleteClick = (id) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce véhicule ?")) {
+      dispatch(deleteCarThunk(id));
+    }
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "disponible": return "status-disponible";
+      case "loué": return "status-loue";
+      default: return "status-indisponible";
+    }
+  };
 
   return (
     <div className="mycars-container">
@@ -91,8 +101,6 @@ const MyCars = () => {
         </button>
       </div>
 
-      {/* Filtres UI... (Garder le code de dashagency ici) */}
-      
       {/* Table Section */}
       <div className="mycars-table-container">
         {isLoading ? (
@@ -109,38 +117,13 @@ const MyCars = () => {
                 <th>Actions</th>
               </tr>
             </thead>
-              <script>
-                console.log(currentCars);
-              </script>
             <tbody>
-<<<<<<< HEAD
-              {currentCars.map((car) => (
-                <tr key={car.id}>
-                  <td>
-                    <img src={car.cover_image_url || car.images?.[0]} alt={car.brand} className="car-image-thumb" />
-                  </td>
-                  <td>{car.brand} {car.model}</td>
-                  <td>{car.city || 'Tanger'}</td>
-                  <td>{car.price_per_day} MAD</td>
-                  <td>
-                    <span className={`status-badge ${car.status}`}>
-                      {car.status}
-                    </span>
-                  </td>
-                  <td>
-                    <div className="actions">
-                      <button onClick={() => dispatch(openEditForm(car))}>✏️</button>
-                      <button onClick={() => {
-                        if(window.confirm("Supprimer ?")) dispatch(deleteCarThunk(car.id))
-                      }}>🗑️</button>
-                    </div>
-=======
               {currentCars.length > 0 ? (
                 currentCars.map((car) => (
                   <tr key={car.id}>
                     <td>
                       <div className="car-image">
-                          <img src={car.cover_image_url} alt={car.brand} />
+                        <img src={car.cover_image_url} alt={car.brand} />
                       </div>
                     </td>
                     <td>
@@ -152,7 +135,7 @@ const MyCars = () => {
                     <td>
                       <span className="city-badge">
                         <span className="city-dot"></span>
-                        {car.city}
+                        {car.city || 'Tanger'}
                       </span>
                     </td>
                     <td>
@@ -161,43 +144,23 @@ const MyCars = () => {
                       </span>
                     </td>
                     <td>
-                      <span
-                        className={`status-badge ${getStatusClass(car.status)}`}
-                      >
+                      <span className={`status-badge ${getStatusClass(car.status)}`}>
                         {car.status}
                       </span>
                     </td>
                     <td>
                       <div className="actions">
-                        <button className="btn-action btn-view" title="Voir">
-                          👁️
-                        </button>
-                        <button
-                          className="btn-action btn-edit"
-                          onClick={() => handleEditClick(car)}
-                          title="Modifier"
-                        >
-                          ✏️
-                        </button>
-                        <button
-                          className="btn-action btn-delete"
-                          onClick={() => handleDeleteClick(car.id)}
-                          title="Supprimer"
-                        >
-                          🗑️
-                        </button>
+                        <button className="btn-action" onClick={() => handleEditClick(car)}>✏️</button>
+                        <button className="btn-action" onClick={() => handleDeleteClick(car.id)} style={{ color: 'red' }}>🗑️</button>
                       </div>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="no-data">
-                    Aucun véhicule trouvé
->>>>>>> completedashagency
-                  </td>
+                  <td colSpan="6" className="no-data">Aucun véhicule trouvé</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         )}
@@ -208,8 +171,8 @@ const MyCars = () => {
         <div className="modal-overlay" onClick={handleCloseForm}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>{formMode === "add" ? "Ajouter" : "Modifier"}</h2>
-              <button onClick={handleCloseForm}>×</button>
+              <h2>{formMode === "add" ? "Ajouter un véhicule" : "Modifier le véhicule"}</h2>
+              <button className="modal-close" onClick={handleCloseForm}>×</button>
             </div>
             <CarFormModal />
           </div>
