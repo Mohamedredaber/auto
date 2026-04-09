@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agency\CarController;
 use App\Http\Controllers\Agency\DashboardController;
 use App\Http\Controllers\Agency\ReservationController;
+use App\Http\Controllers\Public\CarListingController;
 Route::prefix('auth')->group(function () {
 
     // ── Routes publiques ──────────────────────────────────
@@ -34,3 +35,5 @@ Route::middleware(['auth:sanctum', 'role:admin_agency'])
         Route::put('/reservations/{id}/status', [ReservationController::class, 'updateStatus']);
 
 });
+Route::get('/cars', [CarListingController::class, 'index']);
+Route::get('/cars/{id}', [CarListingController::class, 'show']);

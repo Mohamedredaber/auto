@@ -59,7 +59,6 @@ const MyCars = () => {
     if (sortOrder === "desc") return b.price_per_day - a.price_per_day;
     return 0;
   });
-  console.log(cars)
   // Pagination
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
@@ -194,9 +193,6 @@ const MyCars = () => {
                 <th>Actions</th>
               </tr>
             </thead>
-              <script>
-                console.log(currentCars);
-              </script>
             <tbody>
               {currentCars.length > 0 ? (
                 currentCars.map((car) => (

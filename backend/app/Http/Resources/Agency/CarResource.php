@@ -24,7 +24,6 @@ class CarResource extends JsonResource
             'status'         => $this->status,
             'additional_info'=> $this->additional_information,
             
-            // URL de la cover
             'cover_image_url'=> $this->coverImage 
                 ? asset('storage/' . $this->coverImage->url) 
                 : asset('images/default-car.png'),
