@@ -56,8 +56,13 @@ const MyCars = () => {
     if (sortOrder === "desc") return b.price_per_day - a.price_per_day;
     return 0;
   });
+<<<<<<< HEAD
 
   // --- PAGINATION ---
+=======
+  console.log(cars)
+  // Pagination
+>>>>>>> completedashagency
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
   const currentCars = sortedCars.slice(indexOfFirstCar, indexOfLastCar);
@@ -104,7 +109,11 @@ const MyCars = () => {
                 <th>Actions</th>
               </tr>
             </thead>
+              <script>
+                console.log(currentCars);
+              </script>
             <tbody>
+<<<<<<< HEAD
               {currentCars.map((car) => (
                 <tr key={car.id}>
                   <td>
@@ -125,6 +134,67 @@ const MyCars = () => {
                         if(window.confirm("Supprimer ?")) dispatch(deleteCarThunk(car.id))
                       }}>🗑️</button>
                     </div>
+=======
+              {currentCars.length > 0 ? (
+                currentCars.map((car) => (
+                  <tr key={car.id}>
+                    <td>
+                      <div className="car-image">
+                          <img src={car.cover_image_url} alt={car.brand} />
+                      </div>
+                    </td>
+                    <td>
+                      <div className="car-info">
+                        <span className="car-brand">{car.brand}</span>
+                        <span className="car-model">{car.model}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="city-badge">
+                        <span className="city-dot"></span>
+                        {car.city}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="price">
+                        {car.price_per_day} <small>MAD</small>
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        className={`status-badge ${getStatusClass(car.status)}`}
+                      >
+                        {car.status}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="actions">
+                        <button className="btn-action btn-view" title="Voir">
+                          👁️
+                        </button>
+                        <button
+                          className="btn-action btn-edit"
+                          onClick={() => handleEditClick(car)}
+                          title="Modifier"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          className="btn-action btn-delete"
+                          onClick={() => handleDeleteClick(car.id)}
+                          title="Supprimer"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="no-data">
+                    Aucun véhicule trouvé
+>>>>>>> completedashagency
                   </td>
                 </tr>
               ))}
