@@ -59,7 +59,7 @@ const MyCars = () => {
     if (sortOrder === "desc") return b.price_per_day - a.price_per_day;
     return 0;
   });
-
+  console.log(cars)
   // Pagination
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
@@ -194,17 +194,16 @@ const MyCars = () => {
                 <th>Actions</th>
               </tr>
             </thead>
+              <script>
+                console.log(currentCars);
+              </script>
             <tbody>
               {currentCars.length > 0 ? (
                 currentCars.map((car) => (
                   <tr key={car.id}>
                     <td>
                       <div className="car-image">
-                        {car.images?.[0] ? (
-                          <img src={car.images[0]} alt={car.brand} />
-                        ) : (
-                          <div className="no-image">🚗</div>
-                        )}
+                          <img src={car.cover_image_url} alt={car.brand} />
                       </div>
                     </td>
                     <td>

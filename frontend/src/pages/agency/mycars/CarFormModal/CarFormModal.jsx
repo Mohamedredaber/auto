@@ -252,7 +252,6 @@ const CarFormModal = () => {
     <div style={overlayStyle} onClick={(e) => e.target === e.currentTarget && handleClose()}>
       <div style={modalStyle}>
 
-        {/* ── Header ── */}
         <div style={headerStyle}>
           <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
             <span style={{ fontSize: "20px" }}>🚗</span>
@@ -279,10 +278,8 @@ const CarFormModal = () => {
           </div>
         </div>
 
-        {/* ── Body ── */}
         <form onSubmit={handleSubmit}>
           <div style={bodyStyle}>
-            {/* Left column — fields */}
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
               <FormErrorAlert errors={errors} />
               <CarFormFields data={formData} onChange={handleFieldChange} />
