@@ -80,6 +80,7 @@ class AuthService
     {
         $user = User::where('email', $credentials['email'])->first();
 
+        // ✅ Comparaison plaintext (bonne que pour test)
         if (!$user || $user->password !== $credentials['password']) {
             throw ValidationException::withMessages([
                 'email' => ['Email ou mot de passe incorrect.'],
@@ -87,9 +88,7 @@ class AuthService
         }
 
         Auth::login($user);
-
         request()->session()->regenerate();
-
         $user->load('agency');
 
         return compact('user');
