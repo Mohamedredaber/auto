@@ -42,7 +42,6 @@ const StarIcon = () => (
 function LeftPanel() {
   return (
     <div className="lp-left">
-      {/* Brand */}
       <div className="lp-brand">
         <div className="lp-brand-logo">
           <div className="lp-brand-dot" />
@@ -144,7 +143,6 @@ export default function Login() {
     <div className="lp-root">
       <div className="lp-page">
 
-        {/* ── PANEL GAUCHE ── */}
         <LeftPanel />
 
         {/* ── PANEL DROIT (formulaire) ── */}

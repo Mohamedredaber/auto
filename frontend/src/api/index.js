@@ -9,9 +9,6 @@ const api = axios.create({
   },
 });
 
-/**
- * 🔐 Récupérer le cookie CSRF (Sanctum)
- */
 export const getCsrfToken = () =>
   axios.get("/sanctum/csrf-cookie", {
     withCredentials: true,
@@ -21,12 +18,11 @@ export const getCsrfToken = () =>
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Si c'est une erreur 401 (Unauthorized)
     if (error.response?.status === 401) {
       const isLoginPath = window.location.pathname.includes("/login");
-      const isLogoutRequest = error.config.url.includes("/logout");
+      const isMeRequest = error.config.url.includes("/auth/me"); // Évite la boucle sur /me
 
-      if (!isLoginPath && !isLogoutRequest) {
+      if (!isLoginPath && !isMeRequest) {
         window.location.href = "/login";
       }
     }
