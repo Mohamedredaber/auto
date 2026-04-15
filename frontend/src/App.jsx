@@ -16,7 +16,8 @@ function App() {
   useEffect(() => {
     // Bootstrap : vérifie la session Sanctum au démarrage
     // Si authentifié → isAuth = true, user et role remplis
-    // Si non authentifié → isInitialized = true, isAuth = false
+    // Si non authentif
+    // ié → isInitialized = true, isAuth = false
     dispatch(fetchMeThunk())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 

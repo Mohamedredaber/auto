@@ -38,5 +38,6 @@ export const logout = async () => {
 
 
 export const me = async () => {
+    await getCsrfToken(); 
   return api.get("/auth/me");
 };

@@ -1,11 +1,11 @@
 import axios from "axios";
 
-// Instance principale pour toutes les requêtes API
 const api = axios.create({
-  baseURL: "/api", // ✅ via proxy React
-  withCredentials: true, // 🔥 obligatoire pour Sanctum (cookies)
+  baseURL: "/api",
+  withCredentials: true, 
   headers: {
     Accept: "application/json",
+    'X-Requested-With': 'XMLHttpRequest'
   },
 });
 
