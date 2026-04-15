@@ -9,7 +9,7 @@ class CarSearchService
 {
     public function search(Request $request)
     {   
-        $query = Car::with(['coverImage', 'agency'])->where('status', 'available');
+        $query = Car::with(['images', 'agency'])->where('status', 'available');
 
         if ($request->filled('search')) {
             $searchTerm = $request->search;

@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use app\Http\Resources\Public\CarCardResource;
+use App\Http\Resources\Public\CarCardResource;
 use App\Services\Public\CarSearchService;
 use App\Models\Car;
-use App\Models\Agency;
 class CarListingController extends Controller
 {
     public function __construct(

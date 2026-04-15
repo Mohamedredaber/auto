@@ -57,7 +57,6 @@ export const fetchMeThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await me();
-      // Retourne le UserResource directement — le slice l'exploitera
       return data.data;
     } catch (error) {
       return rejectWithValue(

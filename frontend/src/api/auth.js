@@ -36,9 +36,7 @@ export const logout = async () => {
   return api.post("/auth/logout");
 };
 
-/**
- * 👤 Get current user
- */
+
 export const me = async () => {
   return api.get("/auth/me");
 };
