@@ -32,10 +32,8 @@ const TopBar = () => {
           
           <div className="agency-avatar">
             <img
-              src={agency?.logo_url || "/default-agency.png"}
-              alt={agency?.agency_name || "Logo"}
-              onError={(e) => { e.target.src = "/default-agency.png"; }}
-            />
+              src={agency?.logo_url}
+              alt={agency?.agency_name || "Logo"}        />
           </div>
         </div>
       </div>

@@ -23,11 +23,13 @@ server: {
     proxy: {
       "/sanctum": {
         target: "http://127.0.0.1:8000",
-        changeOrigin: true,
+        changeOrigin: false,
+        secure: false,
       },
       "/api": {
         target: "http://127.0.0.1:8000",
-        changeOrigin: true,
+        changeOrigin: false,
+        secure: false,
       },
     },
   },

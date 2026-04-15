@@ -7,6 +7,13 @@ use App\Http\Controllers\Agency\ReservationController;
 use App\Http\Controllers\Public\CarListingController;
 use Illuminate\Support\Facades\Route;
 
+// 🚗 Catalog Routes (Public - No Auth Required)
+Route::prefix('catalog')->group(function () {
+    Route::get('/', [CarListingController::class, 'index']);
+    Route::get('/{id}', [CarListingController::class, 'show']);
+});
+
+// Legacy routes (backward compatibility)
 Route::get('/cars', [CarListingController::class, 'index']);
 Route::get('/cars/{id}', [CarListingController::class, 'show']);
 
