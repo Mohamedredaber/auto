@@ -11,7 +11,7 @@ import AdminLayout from "../components/layout/AdminLayout";
 
 import Home from "../pages/home/Home";
 import Contact from "../pages/contact/Contact";
-import Cars from "../pages/cars/Cars";
+import Cars from "../pages/public/cars/Cars";
 import Login from "../pages/login/login";
 import Register from "../pages/register/Register";
 import ClientDashboard from "../pages/client/Dashboard";

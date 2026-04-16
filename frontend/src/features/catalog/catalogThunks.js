@@ -12,9 +12,7 @@ export const fetchCars = createAsyncThunk(
 
       const response = await getCars(params);
 
-      console.log("✅ [Thunk] Réponse brute reçue:", response);
-      console.log("✅ [Thunk] response.data:", response.data);
-      console.log("✅ [Thunk] response.status:", response.status);
+
 
       // Log structure analysis
       if (Array.isArray(response.data)) {
@@ -27,12 +25,7 @@ export const fetchCars = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      console.error("❌ [Thunk] Erreur lors du fetch cars:");
-      console.error("  ├─ error.message:", error.message);
-      console.error("  ├─ error.response?.status:", error.response?.status);
-      console.error("  ├─ error.response?.data:", error.response?.data);
-      console.error("  └─ error stack:", error);
-
+     
       return rejectWithValue(error.response?.data || error.message);
     }
   },
@@ -45,7 +38,6 @@ export const fetchCarById = createAsyncThunk(
       console.log(`🚀 [Thunk] fetchCarById - id=${id}`);
 
       const response = await getCarById(id);
-      console.log(`✅ [Thunk] Car ${id} reçu:`, response.data);
 
       return response.data;
     } catch (error) {
