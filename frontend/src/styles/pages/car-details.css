@@ -1,0 +1,204 @@
+/* =============================================
+   CAR DETAILS PAGE
+   ============================================= */
+
+.car-details {
+  background: var(--color-bg-primary);
+  min-height: 100vh;
+  color: var(--color-text-primary);
+}
+
+.car-details__container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-8);
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--space-8);
+}
+
+@media (max-width: 1024px) {
+  .car-details__container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────── */
+/* MAIN CONTENT */
+/* ─────────────────────────────────────────── */
+
+.car-details__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Header */
+.car-details__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(37, 99, 235, 0.05) 100%
+  );
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.car-details__title-section {
+  flex: 1;
+}
+
+.car-details__title {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+
+.car-details__model {
+  color: var(--color-red-500);
+  font-weight: var(--weight-bold);
+}
+
+.car-details__description {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.car-details__badge {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.car-details__status {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-align: center;
+  min-width: 120px;
+}
+
+.car-details__status--available {
+  background: var(--color-green-100);
+  color: var(--color-green-700);
+}
+
+.car-details__status--rented {
+  background: var(--color-yellow-100);
+  color: var(--color-yellow-700);
+}
+
+.car-details__status--maintenance {
+  background: var(--color-red-100);
+  color: var(--color-red-700);
+}
+
+/* ─────────────────────────────────────────── */
+/* SIDEBAR */
+/* ─────────────────────────────────────────── */
+
+.car-details__sidebar {
+  position: sticky;
+  top: var(--space-6);
+  height: fit-content;
+}
+
+@media (max-width: 1024px) {
+  .car-details__sidebar {
+    position: static;
+    top: auto;
+  }
+}
+
+/* ─────────────────────────────────────────── */
+/* LOADING STATE */
+/* ─────────────────────────────────────────── */
+
+.car-details--loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.car-details__loader {
+  text-align: center;
+  padding: var(--space-12);
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--color-border-subtle);
+  border-top-color: var(--color-blue-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto var(--space-4);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.car-details__loader p {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* ─────────────────────────────────────────── */
+/* ERROR STATE */
+/* ─────────────────────────────────────────── */
+
+.car-details--error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-6);
+}
+
+.car-details__error {
+  text-align: center;
+  max-width: 500px;
+  padding: var(--space-12);
+  background: var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.car-details__error h2 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.car-details__error p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.car-details__btn-back {
+  padding: var(--space-2) var(--space-6);
+  background: var(--color-blue-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: var(--weight-semibold);
+  transition: var(--transition-base);
+}
+
+.car-details__btn-back:hover {
+  background: var(--color-blue-600);
+  transform: translateY(-2px);
+}

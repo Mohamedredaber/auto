@@ -1,15 +1,21 @@
 import "../../../../../styles/components/pagination.css";
 
 export default function Pagination({ pagination, onPageChange }) {
-  if (!pagination || pagination.lastPage <= 1) return null;
+  if (!pagination) return null;
 
-  const { currentPage, lastPage, total } = pagination;
+  // Support deux formats : { currentPage, lastPage, total } et { current_page, last_page, total }
+  const currentPage = pagination.currentPage ?? pagination.current_page ?? 1;
+  const lastPage = pagination.lastPage ?? pagination.last_page ?? 1;
+  const total = pagination.total ?? 0;
+  const perPage = pagination.per_page ?? 12;
+
+  if (lastPage <= 1) return null;
 
   const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
 
   // Afficher max 5 pages autour de la page courante
   const visiblePages = pages.filter(
-    (p) => p === 1 || p === lastPage || Math.abs(p - currentPage) <= 1
+    (p) => p === 1 || p === lastPage || Math.abs(p - currentPage) <= 1,
   );
 
   const withEllipsis = [];
@@ -20,12 +26,14 @@ export default function Pagination({ pagination, onPageChange }) {
     withEllipsis.push(p);
   });
 
+  // Calcul du nombre d'éléments affichés
+  const startIndex = (currentPage - 1) * perPage + 1;
+  const endIndex = Math.min(currentPage * perPage, total);
+
   return (
     <div className="pagination">
       <span className="pagination__info">
-        Affichage de{" "}
-        <strong>{(currentPage - 1) * 10 + 1}</strong>–
-        <strong>{Math.min(currentPage * 10, total)}</strong>{" "}
+        Affichage de <strong>{startIndex}</strong>–<strong>{endIndex}</strong>{" "}
         sur <strong>{total}</strong> véhicules
       </span>
 
@@ -40,7 +48,9 @@ export default function Pagination({ pagination, onPageChange }) {
 
         {withEllipsis.map((p, i) =>
           p === "..." ? (
-            <span key={`ellipsis-${i}`} className="pagination__ellipsis">…</span>
+            <span key={`ellipsis-${i}`} className="pagination__ellipsis">
+              …
+            </span>
           ) : (
             <button
               key={p}
@@ -51,7 +61,7 @@ export default function Pagination({ pagination, onPageChange }) {
             >
               {p}
             </button>
-          )
+          ),
         )}
 
         <button

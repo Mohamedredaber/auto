@@ -4,22 +4,20 @@ export const selectCatalogState = (state) => state.catalog;
 // --- Sélecteurs pour la liste des voitures ---
 
 /**
- * Récupère la liste des voitures. 
- * Gère les deux structures : response.data ou response.data.data (pagination)
+ * Récupère la liste des voitures.
+ * Retourne toujours un tableau (state.catalog.cars)
  */
 export const selectAllCars = (state) => {
-    const data = state.catalog.cars;
-    // Si data est un objet contenant un champ 'data', c'est la structure paginée de Laravel
-    return Array.isArray(data) ? data : (data?.data || []);
+  const cars = state.catalog.cars;
+  return Array.isArray(cars) ? cars : [];
 };
 
 /**
- * Récupère les métadonnées de pagination (current_page, last_page, etc.)
+ * Récupère les métadonnées de pagination (current_page, last_page, total, etc.)
+ * Format Laravel: { current_page, last_page, total, per_page, ... }
  */
 export const selectCatalogPagination = (state) => {
-    const data = state.catalog.cars;
-    // Si c'est paginé, on renvoie les infos de pagination, sinon null
-    return data?.meta || data?.pagination || null;
+  return state.catalog.pagination || null;
 };
 
 // --- Sélecteurs pour une voiture seule (Détails) ---
@@ -37,3 +35,15 @@ export const selectCatalogError = (state) => state.catalog.error;
  * Vérifie s'il y a des résultats à afficher
  */
 export const selectHasCars = (state) => selectAllCars(state).length > 0;
+
+
+export const selectPaginationInfo = (state) => {
+  const pagination = selectCatalogPagination(state);
+  if (!pagination) return null;
+
+  return {
+    currentPage: pagination.current_page || 1,
+    lastPage: pagination.last_page || 1,
+    total: pagination.total || 0,
+  };
+};

@@ -3,11 +3,7 @@ import { fetchCars, fetchCarById } from "./catalogThunks";
 
 const initialState = {
   cars: [],
-  pagination: {
-    currentPage: 1,
-    lastPage: 1,
-    total: 0,
-  },
+  pagination: null, // Stockera directement meta/pagination Laravel
   selectedCar: null,
   loading: false,
   error: null,
@@ -31,34 +27,28 @@ const catalogSlice = createSlice({
         state.loading = false;
 
         if (Array.isArray(action.payload)) {
-          // Réponse simple : tableau direct
+          // Réponse simple : tableau direct (sans Laravel Resource)
           state.cars = action.payload;
-          state.pagination = {
-            currentPage: 1,
-            lastPage: 1,
-            total: action.payload.length || 0,
-          };
-        } else if (action.payload.data) {
+          state.pagination = null;
+        } else if (action.payload.data && action.payload.meta) {
           // Réponse paginée : { data: [...], meta: {...} }
           state.cars = action.payload.data;
-          state.pagination = {
-            currentPage: action.payload.meta?.current_page || 1,
-            lastPage: action.payload.meta?.last_page || 1,
-            total: action.payload.meta?.total || 0,
-          };
+          state.pagination = action.payload.meta;
+        } else if (action.payload.data) {
+          // Fallback si seulement data
+          state.cars = action.payload.data;
+          state.pagination = null;
         } else {
-          // Fallback
+          // Fallback complet
           state.cars = [];
-          state.pagination = {
-            currentPage: 1,
-            lastPage: 1,
-            total: 0,
-          };
+          state.pagination = null;
         }
       })
       .addCase(fetchCars.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.cars = [];
+        state.pagination = null;
       })
 
       .addCase(fetchCarById.pending, (state) => {

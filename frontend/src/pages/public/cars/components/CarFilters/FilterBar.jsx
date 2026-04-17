@@ -4,35 +4,55 @@ import "../../../../../styles/components/filterbar.css";
 
 /* ─── Constantes ────────────────────────────────────── */
 const BRANDS = [
-  "Toutes les marques", "BMW", "Mercedes-Benz", "Audi", "Porsche",
-  "Land Rover", "Toyota", "Volkswagen", "Dacia", "Hyundai", "Peugeot",
-  "Renault", "Ford", "Kia", "Nissan",
+  "Toutes les marques",
+  "BMW",
+  "Mercedes-Benz",
+  "Audi",
+  "Porsche",
+  "Land Rover",
+  "Toyota",
+  "Volkswagen",
+  "Dacia",
+  "Hyundai",
+  "Peugeot",
+  "Renault",
+  "Ford",
+  "Kia",
+  "Nissan",
 ];
 
 const VILLES = [
-  "Toutes les villes", "Casablanca", "Rabat", "Marrakech", "Fès",
-  "Tanger", "Agadir", "Meknès", "Oujda", "Tétouan",
+  "Toutes les villes",
+  "Casablanca",
+  "Rabat",
+  "Marrakech",
+  "Fès",
+  "Tanger",
+  "Agadir",
+  "Meknès",
+  "Oujda",
+  "Tétouan",
 ];
 
 const STATUTS = [
   { value: "", label: "Tous les statuts" },
-  { value: "available",   label: "Disponible"  },
-  { value: "rented",      label: "Loué"        },
+  { value: "available", label: "Disponible" },
+  { value: "rented", label: "Loué" },
   { value: "maintenance", label: "Maintenance" },
 ];
 
 const FUEL_TYPES = [
   { value: "", label: "Carburant" },
-  { value: "essence",    label: "Essence"    },
-  { value: "diesel",     label: "Diesel"     },
+  { value: "essence", label: "Essence" },
+  { value: "diesel", label: "Diesel" },
   { value: "electrique", label: "Électrique" },
-  { value: "hybride",    label: "Hybride"    },
+  { value: "hybride", label: "Hybride" },
 ];
 
 const SORT_OPTIONS = [
-  { value: "price_asc",  label: "Prix croissant"   },
-  { value: "price_desc", label: "Prix décroissant"  },
-  { value: "newest",     label: "Plus récent"       },
+  { value: "price_asc", label: "Prix croissant" },
+  { value: "price_desc", label: "Prix décroissant" },
+  { value: "newest", label: "Plus récent" },
 ];
 
 const PRICE_MAX_DEFAULT = 3000;
@@ -51,7 +71,7 @@ export default function FilterBar({ filters, onChange }) {
         onChange({ ...filters, search: val, page: 1 });
       }, 400);
     },
-    [filters, onChange]
+    [filters, onChange],
   );
 
   const handleField = (key) => (e) => {
@@ -64,7 +84,17 @@ export default function FilterBar({ filters, onChange }) {
 
   const handleReset = () => {
     setSearch("");
-    onChange({ page: 1 });
+    // Réinitialiser tous les filtres aux valeurs par défaut
+    onChange({
+      page: 1,
+      search: "",
+      brand: "",
+      city: "",
+      status: "",
+      fuel: "",
+      sort: "price_asc",
+      max_price: PRICE_MAX_DEFAULT,
+    });
   };
 
   const hasActiveFilters =
@@ -140,7 +170,9 @@ export default function FilterBar({ filters, onChange }) {
             onChange={handleField("status")}
           >
             {STATUTS.map((s) => (
-              <option key={s.value} value={s.value}>{s.label}</option>
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
             ))}
           </select>
         </div>
@@ -153,7 +185,9 @@ export default function FilterBar({ filters, onChange }) {
             onChange={handleField("fuel")}
           >
             {FUEL_TYPES.map((f) => (
-              <option key={f.value} value={f.value}>{f.label}</option>
+              <option key={f.value} value={f.value}>
+                {f.label}
+              </option>
             ))}
           </select>
         </div>
@@ -166,7 +200,9 @@ export default function FilterBar({ filters, onChange }) {
             onChange={handleField("sort")}
           >
             {SORT_OPTIONS.map((s) => (
-              <option key={s.value} value={s.value}>{s.label}</option>
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
             ))}
           </select>
         </div>
@@ -178,7 +214,8 @@ export default function FilterBar({ filters, onChange }) {
           <label className="filterbar__price-label">
             Prix max :{" "}
             <span className="filterbar__price-value">
-              {(filters.max_price ?? PRICE_MAX_DEFAULT).toLocaleString("fr-MA")} MAD / jour
+              {(filters.max_price ?? PRICE_MAX_DEFAULT).toLocaleString("fr-MA")}{" "}
+              MAD / jour
             </span>
           </label>
           <input
