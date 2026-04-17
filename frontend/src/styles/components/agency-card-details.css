@@ -1,0 +1,250 @@
+/* ========================================
+   Agency Card Details Styling
+   ======================================== */
+
+.agency-card-details {
+  background: white;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 8px;
+  padding: var(--spacing-lg, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 1.5rem);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.agency-card-details__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 1rem);
+  padding-bottom: var(--spacing-md, 1rem);
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+.agency-card-details__logo {
+  width: 60px;
+  height: 60px;
+  background: var(--background-light, #f9f9f9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.agency-card-details__logo svg {
+  width: 32px;
+  height: 32px;
+  color: var(--primary-color, #1a5f7a);
+}
+
+.agency-card-details__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.agency-card-details__name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+}
+
+.agency-card-details__rating {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 0.25rem);
+  font-size: 0.85rem;
+  color: var(--text-secondary, #666);
+  margin-top: var(--spacing-xs, 0.25rem);
+}
+
+.agency-card-details__stars {
+  color: var(--accent-color, #ffc107);
+  font-size: 0.9rem;
+}
+
+.agency-card-details__reviews {
+  font-size: 0.8rem;
+  color: var(--text-tertiary, #999);
+}
+
+/* Details List */
+.agency-card-details__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 0.75rem);
+  padding: var(--spacing-md, 1rem);
+  background-color: var(--background-light, #f9f9f9);
+  border-radius: 6px;
+}
+
+.agency-card-details__detail-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 0.75rem);
+  font-size: 0.95rem;
+  color: var(--text-secondary, #666);
+}
+
+.agency-card-details__detail-check {
+  color: var(--success-color, #27ae60);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Buttons */
+.agency-card-details__buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md, 1rem);
+}
+
+.agency-card-details__button {
+  padding: var(--spacing-sm, 0.875rem) var(--spacing-md, 1.5rem);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.agency-card-details__button-primary {
+  background-color: var(--error-color, #e74c3c);
+  color: white;
+}
+
+.agency-card-details__button-primary:hover {
+  background-color: #c0392b;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.agency-card-details__button-secondary {
+  background-color: var(--primary-color, #1a5f7a);
+  color: white;
+}
+
+.agency-card-details__button-secondary:hover {
+  background-color: var(--primary-dark, #0d3b4f);
+  box-shadow: 0 4px 12px rgba(26, 95, 122, 0.3);
+}
+
+.agency-card-details__button:active {
+  transform: translateY(1px);
+}
+
+/* Footer - Location */
+.agency-card-details__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 0.75rem);
+  padding-top: var(--spacing-md, 1rem);
+  border-top: 1px solid var(--border-color, #e0e0e0);
+  font-size: 0.9rem;
+  color: var(--text-secondary, #666);
+}
+
+.agency-card-details__location-icon {
+  color: var(--error-color, #e74c3c);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .agency-card-details {
+    padding: var(--spacing-md, 1.5rem);
+  }
+
+  .agency-card-details__header {
+    gap: var(--spacing-md, 1rem);
+  }
+
+  .agency-card-details__buttons {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .agency-card-details {
+    padding: var(--spacing-md, 1.2rem);
+    gap: var(--spacing-md, 1rem);
+  }
+
+  .agency-card-details__logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .agency-card-details__logo svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .agency-card-details__name {
+    font-size: 1rem;
+  }
+
+  .agency-card-details__button {
+    padding: var(--spacing-sm, 0.75rem) var(--spacing-md, 1rem);
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .agency-card-details {
+    padding: var(--spacing-md, 1rem);
+    gap: var(--spacing-sm, 0.75rem);
+  }
+
+  .agency-card-details__header {
+    gap: var(--spacing-sm, 0.75rem);
+  }
+
+  .agency-card-details__logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .agency-card-details__logo svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .agency-card-details__name {
+    font-size: 0.95rem;
+  }
+
+  .agency-card-details__rating {
+    font-size: 0.8rem;
+  }
+
+  .agency-card-details__details {
+    padding: var(--spacing-sm, 0.75rem);
+    gap: var(--spacing-xs, 0.5rem);
+  }
+
+  .agency-card-details__detail-item {
+    font-size: 0.85rem;
+    gap: var(--spacing-xs, 0.5rem);
+  }
+
+  .agency-card-details__buttons {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm, 0.75rem);
+  }
+
+  .agency-card-details__button {
+    padding: var(--spacing-sm, 0.75rem) var(--spacing-md, 1rem);
+    font-size: 0.85rem;
+  }
+
+  .agency-card-details__footer {
+    font-size: 0.85rem;
+    gap: var(--spacing-xs, 0.5rem);
+  }
+}

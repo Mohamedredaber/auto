@@ -1,0 +1,248 @@
+/* ========================================
+   Pricing Card Details Styling
+   ======================================== */
+
+.pricing-card-details {
+  background: white;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 8px;
+  padding: var(--spacing-lg, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 1.5rem);
+  position: sticky;
+  top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.pricing-card-details__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  padding-bottom: var(--spacing-md, 1rem);
+}
+
+.pricing-card-details__vehicle-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+}
+
+.pricing-card-details__rating {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 0.25rem);
+  font-size: 0.9rem;
+  color: var(--text-secondary, #666);
+}
+
+.pricing-card-details__stars {
+  color: var(--accent-color, #ffc107);
+}
+
+/* Date Selection */
+.pricing-card-details__dates {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 0.75rem);
+}
+
+.pricing-card-details__date-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #666);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pricing-card-details__date-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm, 0.75rem);
+}
+
+.pricing-card-details__date-input {
+  padding: var(--spacing-sm, 0.75rem);
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: var(--text-primary, #333);
+  transition: all 0.2s ease;
+}
+
+.pricing-card-details__date-input:focus {
+  outline: none;
+  border-color: var(--primary-color, #1a5f7a);
+  box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.1);
+}
+
+/* Tarification */
+.pricing-card-details__tarification {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 0.75rem);
+  background-color: var(--background-light, #f9f9f9);
+  padding: var(--spacing-md, 1rem);
+  border-radius: 6px;
+}
+
+.pricing-card-details__tarification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--text-secondary, #666);
+}
+
+.pricing-card-details__tarification-label {
+  font-weight: 500;
+}
+
+.pricing-card-details__tarification-value {
+  color: var(--text-primary, #333);
+  font-weight: 500;
+}
+
+.pricing-card-details__tarification-total {
+  border-top: 1px solid var(--border-color, #ddd);
+  padding-top: var(--spacing-sm, 0.75rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+}
+
+.pricing-card-details__total-price {
+  color: var(--success-color, #27ae60);
+  font-size: 1.3rem;
+}
+
+/* Conditions */
+.pricing-card-details__conditions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 0.75rem);
+  padding: var(--spacing-md, 1rem);
+  background-color: var(--background-light, #f9f9f9);
+  border-radius: 6px;
+}
+
+.pricing-card-details__condition {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 0.75rem);
+  font-size: 0.9rem;
+  color: var(--text-secondary, #666);
+}
+
+.pricing-card-details__condition input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary-color, #1a5f7a);
+}
+
+.pricing-card-details__condition label {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Buttons */
+.pricing-card-details__button {
+  padding: var(--spacing-md, 1rem) var(--spacing-lg, 2rem);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pricing-card-details__button-primary {
+  background-color: var(--primary-color, #1a5f7a);
+  color: white;
+}
+
+.pricing-card-details__button-primary:hover {
+  background-color: var(--primary-dark, #0d3b4f);
+  box-shadow: 0 4px 12px rgba(26, 95, 122, 0.3);
+}
+
+.pricing-card-details__button-primary:active {
+  transform: translateY(1px);
+}
+
+.pricing-card-details__button-secondary {
+  background-color: var(--background-secondary, #f5f5f5);
+  color: var(--text-primary, #333);
+  border: 1px solid var(--border-color, #ddd);
+}
+
+.pricing-card-details__button-secondary:hover {
+  background-color: var(--border-color, #e0e0e0);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .pricing-card-details {
+    position: static;
+    top: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-card-details {
+    padding: var(--spacing-md, 1.5rem);
+    gap: var(--spacing-md, 1rem);
+  }
+
+  .pricing-card-details__header {
+    flex-direction: column;
+    gap: var(--spacing-sm, 0.75rem);
+    align-items: flex-start;
+  }
+
+  .pricing-card-details__date-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-card-details__button {
+    padding: var(--spacing-md, 0.875rem) var(--spacing-md, 1.5rem);
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .pricing-card-details {
+    padding: var(--spacing-md, 1rem);
+    gap: var(--spacing-sm, 0.75rem);
+    border-radius: 6px;
+  }
+
+  .pricing-card-details__vehicle-name {
+    font-size: 1rem;
+  }
+
+  .pricing-card-details__rating {
+    font-size: 0.85rem;
+  }
+
+  .pricing-card-details__tarification {
+    padding: var(--spacing-sm, 0.75rem);
+  }
+
+  .pricing-card-details__conditions {
+    padding: var(--spacing-sm, 0.75rem);
+  }
+
+  .pricing-card-details__button {
+    padding: var(--spacing-sm, 0.75rem) var(--spacing-md, 1rem);
+    font-size: 0.9rem;
+  }
+}
