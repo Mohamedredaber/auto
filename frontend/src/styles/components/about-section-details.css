@@ -26,9 +26,7 @@
   margin: 0;
 }
 
-/* ─────────────────────────────────────────── */
 /* FEATURES */
-/* ─────────────────────────────────────────── */
 
 .about-section__features {
   display: grid;
@@ -50,11 +48,10 @@
   border-color: var(--color-blue-500);
   background: rgba(59, 130, 246, 0.02);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* ─────────────────────────────────────────── */
 /* FEATURE ICON */
-/* ─────────────────────────────────────────── */
 
 .about-section__feature-icon {
   font-size: var(--text-3xl);
@@ -65,9 +62,7 @@
   justify-content: center;
 }
 
-/* ─────────────────────────────────────────── */
 /* FEATURE CONTENT */
-/* ─────────────────────────────────────────── */
 
 .about-section__feature-content {
   display: flex;
@@ -89,9 +84,7 @@
   line-height: 1.5;
 }
 
-/* ─────────────────────────────────────────── */
 /* RESPONSIVE */
-/* ─────────────────────────────────────────── */
 
 @media (max-width: 768px) {
   .about-section {
@@ -116,10 +109,6 @@
 }
 
 @media (max-width: 640px) {
-  .about-section__title {
-    font-size: var(--text-lg);
-  }
-
   .about-section__features {
     grid-template-columns: 1fr;
   }
