@@ -1,0 +1,96 @@
+/* =============================================
+   CARS PAGE
+   ============================================= */
+
+.cars-page {
+  background: var(--color-bg-primary);
+  min-height: 100vh;
+  color: var(--color-text-primary);
+}
+
+/* =============================================
+   HERO
+   ============================================= */
+
+.cars-hero {
+  background: var(--gradient-hero);
+  padding: var(--space-16) var(--space-6) var(--space-10);
+  text-align: center;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.cars-hero__content {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+.cars-hero__title {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+}
+
+.cars-hero__accent {
+  color: var(--color-blue-500);
+}
+
+.cars-hero__sub {
+  margin-top: var(--space-3);
+  font-size: var(--text-md);
+  color: var(--color-text-secondary);
+}
+
+.cars-hero__count {
+  color: var(--color-blue-400);
+  font-weight: var(--weight-semibold);
+}
+
+/* =============================================
+   MAIN CONTENT
+   ============================================= */
+
+.cars-main {
+  max-width: var(--container-2xl);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* =============================================
+   RESULTS HEADER
+   ============================================= */
+
+.cars-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cars-results-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+
+.cars-main > .pagination {
+  margin-top: var(--space-6);
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .cars-hero {
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .cars-hero__title {
+    font-size: var(--text-2xl);
+  }
+
+  .cars-main {
+    padding: var(--space-6) var(--space-4);
+  }
+}

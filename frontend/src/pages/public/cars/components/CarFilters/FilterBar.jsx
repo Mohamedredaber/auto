@@ -74,7 +74,6 @@ export default function FilterBar({ filters, onChange }) {
     filters.status ||
     filters.fuel ||
     filters.max_price;
-
   return (
     <div className="filterbar">
       {/* ── Ligne 1 : search + selects ── */}
