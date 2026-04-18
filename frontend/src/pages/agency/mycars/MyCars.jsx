@@ -94,10 +94,6 @@ const MyCars = () => {
     dispatch(closeModals());
   };
 
-  // Obtenir les villes uniques pour le filtre
-  const uniqueCities = [
-    ...new Set(cars.map((car) => car.city).filter(Boolean)),
-  ];
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -146,17 +142,7 @@ const MyCars = () => {
         <div className="filter-group">
           <span className="filter-icon">⚙️</span>
           <span>Filtrer par:</span>
-          <select
-            value={cityFilter}
-            onChange={(e) => setCityFilter(e.target.value)}
-          >
-            <option value="">Toutes les villes</option>
-            {uniqueCities.map((city) => (
-              <option key={city} value={city}>
-                {city}
-              </option>
-            ))}
-          </select>
+      
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}

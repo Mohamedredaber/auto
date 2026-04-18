@@ -25,8 +25,9 @@ class StoreCarRequest extends FormRequest
             'doors'         => 'required|integer|min:2|max:5',
             'price_per_day' => 'required|numeric|min:0',
             'status'        => ['required', Rule::in(['available', 'reserved', 'maintenance'])],
+            'available_from' => 'required|date',
+            'available_to'   => 'required|date|after:available_from',
             
-            // Image de couverture réelle (file)
             'cover_image'   => 'required|image|mimes:jpeg,png,jpg|max:2048', 
             
             // Galerie d'images

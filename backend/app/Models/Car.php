@@ -25,6 +25,8 @@ class Car extends Model
         'status',
         'available_from',
         'available_to',
+        'description',
+        'version',
         'additional_information',
     ];
     public function coverImage(): HasOne

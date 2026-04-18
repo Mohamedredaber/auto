@@ -35,7 +35,6 @@ const CarFormFields = ({ data, onChange }) => {
   return (
     <div className="car-form-wrapper">
       
-      {/* SECTION: IDENTITÉ */}
       <div className="form-grid-2">
         <div className="form-field">
           <label className="form-label">Marque <span className="required-star">*</span></label>
@@ -122,7 +121,6 @@ const CarFormFields = ({ data, onChange }) => {
         </div>
       </div>
 
-      {/* SECTION: NOTES */}
       <div className="form-field">
         <label className="form-label">Notes ou remarques</label>
         <textarea
