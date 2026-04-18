@@ -5,11 +5,7 @@ export const fetchCars = createAsyncThunk(
   "catalog/fetchCars",
   async (params, { rejectWithValue }) => {
     try {
-      console.log("🚀 [fetchCars] Appel API avec params:", params);
-
       const response = await getCars(params);
-
-      // Log structure analysis
       if (Array.isArray(response.data)) {
         console.log(
           "📦 fetchCars: Structure TABLEAU SIMPLE (data est un array)",
@@ -44,17 +40,11 @@ export const fetchCarById = createAsyncThunk(
   "catalog/fetchCarById",
   async (id, { rejectWithValue }) => {
     try {
-      console.log(`🚀 [fetchCarById] id=${id}`);
 
       const response = await getCarById(id);
 
-      console.log(
-        `✅ [fetchCarById] Voiture chargée:`,
-        response.data.brand,
-        response.data.model,
-      );
-
-      return response.data;
+   
+      return response.data.data;
     } catch (error) {
       console.error(`❌ [fetchCarById] Erreur pour id=${id}:`, error.message);
       return rejectWithValue(error.response?.data || error.message);

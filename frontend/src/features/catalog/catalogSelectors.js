@@ -22,7 +22,7 @@ export const selectCatalogPagination = (state) => {
 
 // --- Sélecteurs pour une voiture seule (Détails) ---
 
-export const selectSelectedCar = (state) => state.catalog.selectedCar;
+export const selectSelectedCar = (state ) => state.catalog.selectedCar;
 
 // --- Sélecteurs d'état (UI) ---
 

@@ -8,7 +8,8 @@ class CarCardResource extends JsonResource
     public function toArray($request): array
     {
         $cover = $this->images->firstWhere('is_cover', true);
-        return [
+        $agency = $this->agency;
+            return [
             'id'            => $this->id,
             'brand'         => $this->brand,
             'model'         => $this->model,
@@ -23,11 +24,7 @@ class CarCardResource extends JsonResource
                                 ? asset('/storage/' . $cover->url) 
                                 : asset('images/default-car.png'),
 
-            // Ville depuis l'agence (pour l'affichage sur la carte)
-            'city'          => $this->agency?->city,
-            'agency_name'   => $this->agency?->name,
 
-            // On garde whenLoaded pour la galerie (c'est déjà optimisé)
             'gallery'       => $this->whenLoaded('images', function() {
                 return $this->images->map(fn($img) => [
                     'id'       => $img->id,
@@ -35,7 +32,7 @@ class CarCardResource extends JsonResource
                     'is_cover' => (bool) $img->is_cover
                 ]);
             }),
-
+            'agency' => $agency,
             'description' => $this->additional_information,
         ];
     }
