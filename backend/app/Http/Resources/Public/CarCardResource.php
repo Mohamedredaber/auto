@@ -33,7 +33,11 @@ class CarCardResource extends JsonResource
                 ]);
             }),
             'agency' => $agency,
-            'description' => $this->additional_information,
+            'additional_information' => $this->additional_information,
+            'description' => $this->description,
+            'version' => $this->version,    
+            
+
         ];
     }
 }

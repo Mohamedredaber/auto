@@ -32,7 +32,8 @@ class StoreCarRequest extends FormRequest
             // Galerie d'images
             'images'        => 'nullable|array',
             'images.*'      => 'image|mimes:jpeg,png,jpg|max:2048', 
-            
+            'description'   => 'nullable|string',
+            'version'       => 'nullable|string',
             'additional_information' => 'nullable|string',
         ];
     }

@@ -28,6 +28,7 @@ const INITIAL_DATA = {
   price_per_day: "",
   status: "available",
   additional_information: "",
+  description: "",
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -43,7 +44,6 @@ const buildFormData = (fields, coverFile, galleryFiles) => {
 
 const fileToPreview = (file) => URL.createObjectURL(file);
 
-// ─── Component ────────────────────────────────────────────────────────────────
 const CarFormModal = () => {
   const dispatch = useDispatch();
   const isOpen    = useSelector(selectIsFormOpen);
@@ -73,18 +73,17 @@ const CarFormModal = () => {
         price_per_day:          car.price_per_day          ?? "",
         status:                 car.status                 ?? "available",
         additional_information: car.additional_information ?? "",
+        description:            car.description            ?? "",
       });
     } else {
       setFormData(INITIAL_DATA);
     }
-    // Reset images on every open
     setCoverFile(null);
     setCoverPreview(null);
     setGalleryFiles([]);
     setGalleryPreviews([]);
   }, [isOpen, isEditing, car]);
 
-  // ── Cleanup object URLs ────────────────────────────────────────────────────
   useEffect(() => {
     return () => {
       if (coverPreview) URL.revokeObjectURL(coverPreview);
@@ -92,7 +91,6 @@ const CarFormModal = () => {
     };
   }, [coverPreview, galleryPreviews]);
 
-  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleFieldChange = useCallback((name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);

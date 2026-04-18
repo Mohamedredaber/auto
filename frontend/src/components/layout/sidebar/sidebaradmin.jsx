@@ -10,7 +10,7 @@ import { logoutThunk } from '../../../features/auth/authThunks';
 import { useNavigate } from 'react-router-dom';
 import '../../../styles/pages/dashboard.css'; 
 
-const Sidebaradmin = () => {
+const Sidebar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -81,4 +81,4 @@ const Sidebaradmin = () => {
   );
 };
 
-export default Sidebaradmin;
+export default Sidebar;
