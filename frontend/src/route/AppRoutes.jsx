@@ -13,7 +13,7 @@ import Home from "../pages/home/Home";
 import Contact from "../pages/contact/Contact";
 import Cars from "../pages/public/cars/Cars";
 import DetailsCars from "../pages/public/cars/DetailsCars";
-import Resever from "../pages/public/cars/Resever";
+
 import Login from "../pages/login/login";
 import Register from "../pages/register/Register";
 import ClientDashboard from "../pages/client/Dashboard";
@@ -34,7 +34,6 @@ export default function AppRoutes() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cars" element={<Cars />} />
         <Route path="/cars/:id" element={<DetailsCars />} />
-        <Route path="/reservations" element={<Resever />} />
           <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
             <Route path="/reserve/:id" element={<ReservationPage/>} />
         </Route>

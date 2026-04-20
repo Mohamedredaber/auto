@@ -47,7 +47,7 @@ function CarCard({ car }) {
     }
 
     const actions = {
-      client: { label: "Réserver", to: `/reserver/${id}` },
+      client: { label: "Réserver", to: `/reserve/${id}` },
       admin_agency: { label: "Gérer", to: `/dashboard/agency/cars/${id}` },
       super_admin: { label: "Gérer", to: `/dashboard/admin/cars/${id}` },
     };

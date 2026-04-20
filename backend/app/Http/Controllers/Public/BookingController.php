@@ -20,12 +20,10 @@ class BookingController extends Controller
     {
     $car = Car::findOrFail($request->car_id);
 
-    // 2. Calculer la durée (en jours)
     $start = \Carbon\Carbon::parse($request->start_date);
     $end = \Carbon\Carbon::parse($request->end_date);
-    $days = $start->diffInDays($end) ?: 1; // Minimum 1 jour
+    $days = $start->diffInDays($end) ?: 1; 
 
-    // 3. Créer la réservation
     $booking = Booking::create([
         'car_id'      => $car->id,
         'user_id'     => auth()->id(),

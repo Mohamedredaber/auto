@@ -100,7 +100,7 @@ export default function DetailsCars() {
             year={car.year}
           />
 
-          {/* Specs */}
+
           <KeySpecs car={car} />
 
           {/* Équipements */}

@@ -28,8 +28,8 @@ Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 });
-Route::get('/cars/{id}/booking-details', [BookingController::class, 'getCarForBooking'])
-;Route::post('/createbookings', [BookingController::class, 'store']);
+Route::get('/cars/{id}/booking-details', [BookingController::class, 'getCarForBooking']);
+Route::post('/createbookings', [BookingController::class, 'store']);
 
 Route::middleware(['auth:sanctum', 'role:admin_agency'])
     ->prefix('agency') 

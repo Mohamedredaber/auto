@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchcarselected } from "./bookingThunks";
+import { fetchcarselected  , createBookingThunk} from "./bookingThunks";
 
 const initialState = {
   list: [],
@@ -20,23 +20,21 @@ const bookingSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Create Booking
-    // builder
-    //   .addCase(createBookingThunk.pending, (state) => {
-    //     state.isLoading = true;
-    //     state.success = false;
-    //   })
-    //   .addCase(createBookingThunk.fulfilled, (state, action) => {
-    //     state.isLoading = false;
-    //     state.success = true;
-    //     state.currentBooking = action.payload;
-    //   })
-    //   .addCase(createBookingThunk.rejected, (state, action) => {
-    //     state.isLoading = false;
-    //     state.error = action.payload;
-    //   });
+    builder
+      .addCase(createBookingThunk.pending, (state) => {
+        state.isLoading = true;
+        state.success = false;
+      })
+      .addCase(createBookingThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.success = true;
+        state.currentBooking = action.payload;
+      })
+      .addCase(createBookingThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
 
-    // Fetch Car Details
     builder
       .addCase(fetchcarselected.pending, (state) => {
         state.isLoading = true;
