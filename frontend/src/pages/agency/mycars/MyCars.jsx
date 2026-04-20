@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Eye } from "../../../components/layout/icons";
 import {
   selectAllCars,
   selectCarLoading,
@@ -163,7 +164,6 @@ const MyCars = () => {
         </div>
       </div>
 
-      {/* Table */}
       <div className="mycars-table-container">
         {isLoading ? (
           <div className="loading">Chargement...</div>
@@ -215,7 +215,7 @@ const MyCars = () => {
                     <td>
                       <div className="actions">
                         <button className="btn-action btn-view" title="Voir">
-                          👁️
+                          <Eye/>  ️
                         </button>
                         <button
                           className="btn-action btn-edit"

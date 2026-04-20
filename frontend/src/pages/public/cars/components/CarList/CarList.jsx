@@ -1,7 +1,6 @@
 import CarCard from "../CarCard/CarCard";
 import "../../../../../styles/components/carlist.css";
 
-/* ── Skeleton Card ──────────────────────────────────── */
 function SkeletonCard() {
   return (
     <div className="car-skeleton">
@@ -23,11 +22,10 @@ function SkeletonCard() {
   );
 }
 
-/* ── Empty State ────────────────────────────────────── */
 function EmptyState() {
   return (
     <div className="carlist__empty">
-      <div className="carlist__empty-icon">🚗</div>
+      <div className="carlist__empty-icon"></div>
       <h3 className="carlist__empty-title">Aucun véhicule trouvé</h3>
       <p className="carlist__empty-desc">
         Essayez de modifier vos filtres pour trouver plus de résultats.
@@ -40,14 +38,13 @@ function EmptyState() {
 function ErrorState({ message }) {
   return (
     <div className="carlist__error">
-      <div className="carlist__error-icon">⚠️</div>
+      <div className="carlist__error-icon"></div>
       <h3 className="carlist__error-title">Une erreur est survenue</h3>
       <p className="carlist__error-desc">{message}</p>
     </div>
   );
 }
 
-/* ── CarList ────────────────────────────────────────── */
 export default function CarList({ cars, loading, error, onReserve }) {
   if (loading) {
     return (

@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-
+import { Link } from "react-router-dom";
 function today() {
   return new Date().toISOString().split("T")[0];
 }
@@ -88,16 +88,15 @@ export default function PricingCard({ car }) {
           <span className="pricing-card__total-value">{subtotal.toLocaleString("fr-MA")} MAD</span>
         </div>
 
-        {/* CTA */}
-        <button className="pricing-card__cta" >
-            <>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+           <Link to={`/reserve/${car.id}`} className="pricing-card__cta">
+             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
-              Réserver maintenant
-            </>
-          
-        </button>
+        Réserver maintenant
+      </Link>
+            
+        
+  
         <p className="pricing-card__guarantee">
           Aucun frais caché · Annulation gratuite 24h avant
         </p>

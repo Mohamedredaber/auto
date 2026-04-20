@@ -29,7 +29,6 @@ export default function Cars() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  /* Action "Réserver" depuis CarCard */
   const handleReserve = useCallback((car) => {
     console.log("Réserver voiture:", car.id);
   }, []);

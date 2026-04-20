@@ -47,4 +47,8 @@ class Agency extends Model
     {
         return $this->logo ? asset("storage/{$this->logo}") : null;
     }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

@@ -20,43 +20,36 @@ import ClientDashboard from "../pages/client/Dashboard";
 import AgencyDashboard from "../pages/agency/dashboard/Dashboard";
 import AgencyClient from "../pages/agency/client/AgencyClient";
 import AdminDashboard from "../pages/admin/Dashboard";
-
+import Reservations from "../pages/client/reservation/ReservationPage";
 import NotFound from "../pages/errors/NotFound";
 import Unauthorized from "../pages/errors/Unauthorized";
 import { ROLES } from "../constants/roles";
-import Reservations from "../pages/agency/reservations/Reservations";
 import MyCars from "../pages/agency/mycars/Mycars";
+import ReservationPage from "../pages/client/reservation/ReservationPage";
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* ══════════════════════════
-          PUBLIC
-      ══════════════════════════ */}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cars" element={<Cars />} />
         <Route path="/cars/:id" element={<DetailsCars />} />
         <Route path="/reservations" element={<Resever />} />
-        {/* Guests uniquement (non connectés) */}
+          <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
+            <Route path="/reserve/:id" element={<ReservationPage/>} />
+        </Route>
         <Route element={<GuestRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
       </Route>
-
-      {/* ══════════════════════════
-          PROTECTED (connecté)
-      ══════════════════════════ */}
       <Route element={<ProtectedRoute />}>
-        {/* CLIENT */}
         <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
+            <Route path="/reserver/:id" element={<ReservationPage/>} />
           <Route element={<ClientLayout />}>
             <Route path="/dashboard/client" element={<ClientDashboard />} />
           </Route>
         </Route>
-
-        {/* AGENCY */}
         <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN_AGENCY]} />}>
           <Route element={<AgencyLayout />}>
             <Route path="/dashboard/agency" element={<AgencyDashboard />} />
@@ -72,17 +65,12 @@ export default function AppRoutes() {
           </Route>
         </Route>
 
-        {/* ADMIN */}
         <Route element={<RoleRoute allowedRoles={[ROLES.SUPER_ADMIN]} />}>
           <Route element={<AdminLayout />}>
             <Route path="/dashboard/admin" element={<AdminDashboard />} />
           </Route>
         </Route>
       </Route>
-
-      {/* ══════════════════════════
-          ERRORS
-      ══════════════════════════ */}
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

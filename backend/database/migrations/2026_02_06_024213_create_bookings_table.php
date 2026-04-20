@@ -39,7 +39,6 @@ return new class extends Migration {
 
             $table->timestamps();
 
-            // Index utiles
             $table->index(['car_id', 'start_date', 'end_date']);
             $table->index('status');
         });

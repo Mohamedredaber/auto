@@ -33,14 +33,6 @@ const VILLES = [
   "Oujda",
   "Tétouan",
 ];
-
-const STATUTS = [
-  { value: "", label: "Tous les statuts" },
-  { value: "available", label: "Disponible" },
-  { value: "rented", label: "Loué" },
-  { value: "maintenance", label: "Maintenance" },
-];
-
 const FUEL_TYPES = [
   { value: "", label: "Carburant" },
   { value: "essence", label: "Essence" },
@@ -162,20 +154,7 @@ export default function FilterBar({ filters, onChange }) {
           </select>
         </div>
 
-        {/* Statut */}
-        <div className="filterbar__select-wrap">
-          <select
-            className="filterbar__select"
-            value={filters.status ?? ""}
-            onChange={handleField("status")}
-          >
-            {STATUTS.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </div>
+
 
         {/* Carburant */}
         <div className="filterbar__select-wrap">

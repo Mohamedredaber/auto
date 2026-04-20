@@ -1,5 +1,10 @@
 import { NavLink, Link } from "react-router-dom";
+import {selectIsAuth} from "../../../features/auth/authSelectors";
+import { useSelector } from "react-redux";
+import MyEspace from "./components/MyEspace";
 function Navbar() {
+    const isAuth = useSelector(selectIsAuth);
+
     return (
         <div>
             <nav className="navbar">
@@ -48,7 +53,7 @@ function Navbar() {
                         </NavLink>
                     </li>
                 </ul>
-
+{!isAuth ?(
                 <div className="navbar__actions">
                     <Link to="/login" className="navbar__btn navbar__btn--ghost">
                         Login
@@ -57,6 +62,11 @@ function Navbar() {
                         Register
                     </Link>
                 </div>
+                ): (
+                    <div className="navbar__actions">
+                        <MyEspace />
+                    </div>
+                )}
             </nav>
         </div>
     );

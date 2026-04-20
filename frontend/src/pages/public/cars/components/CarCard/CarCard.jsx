@@ -1,124 +1,121 @@
-import { memo } from "react";
-import { useNavigate } from "react-router-dom";
+import { memo, useMemo } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   MapPinIconCar,
   FuelIcon,
   TransmissionIcon,
   CalendarIconCar,
 } from "../../../../../components/layout/icons/index";
+import { selectIsAuth, selectRole } from "../../../../../features/auth/authSelectors";
 import "../../../../../styles/components/carcard.css";
 
-/* ─── Helpers ──────────────────────────────────────── */
 const STATUS_MAP = {
-  available:   { label: "Disponible",   cls: "badge--available"   },
+  available:   { label: "Disponible",  cls: "badge--available"   },
   rented:      { label: "Loué",         cls: "badge--rented"      },
   maintenance: { label: "Maintenance",  cls: "badge--maintenance" },
 };
 
-function StatusBadge({ status }) {
-  const { label, cls } = STATUS_MAP[status] ?? { label: status, cls: "" };
-  return <span className={`car-badge ${cls}`}>{label}</span>;
-}
+const StatusBadge = memo(({ status }) => {
+  const config = STATUS_MAP[status] || { label: status, cls: "" };
+  return <span className={`car-badge ${config.cls}`}>{config.label}</span>;
+});
 
-/* ─── Component ─────────────────────────────────────── */
-function CarCard({ car, onReserve }) {
+function CarCard({ car }) {
+  const isAuth = useSelector(selectIsAuth);
+  const role = useSelector(selectRole);
   const navigate = useNavigate();
 
   const {
-    id,
-    brand,
-    model,
-    year,
-    price_per_day,
-    status,
-    fuel,
-    transmission,
-    seats,
-    cover_image,
-    city,
+    id, brand, model, year, price_per_day,
+    status, fuel, transmission, seats, cover_image, city,
   } = car;
 
-  const handleDetails = () => navigate(`/cars/${id}`);
+  // 1. Mémorisation du prix formaté
+  const formattedPrice = useMemo(() => 
+    Number(price_per_day).toLocaleString("fr-MA"), 
+  [price_per_day]);
+
+  // 2. Détermination dynamique de l'action principale
+  const renderPrimaryAction = () => {
+    if (!isAuth) {
+      return (
+        <Link to="/login" className="car-card__btn car-card__btn--primary">
+          Se connecter
+        </Link>
+      );
+    }
+
+    const actions = {
+      client: { label: "Réserver", to: `/reserver/${id}` },
+      admin_agency: { label: "Gérer", to: `/dashboard/agency/cars/${id}` },
+      super_admin: { label: "Gérer", to: `/dashboard/admin/cars/${id}` },
+    };
+
+    const currentAction = actions[role];
+
+    return currentAction ? (
+      <Link to={currentAction.to} className="car-card__btn car-card__btn--primary">
+        {currentAction.label}
+      </Link>
+    ) : null;
+  };
 
   return (
     <article className="car-card">
-      <div className="car-card__image-wrap">
+      <div className="car-card__image-wrap" onClick={() => navigate(`/cars/${id}`)} style={{cursor: 'pointer'}}>
         <img
-          src={cover_image}
+          src={cover_image || "/images/default-car.png"}
           alt={`${brand} ${model}`}
           className="car-card__image"
           loading="lazy"
-          onError={(e) => {
-            e.currentTarget.src = "/images/default-car.png";
-          }}
         />
         <StatusBadge status={status} />
         {year && <span className="car-card__year">{year}</span>}
       </div>
 
       <div className="car-card__body">
-        {/* Titre */}
         <div className="car-card__title-row">
           <div>
             <h3 className="car-card__brand">{brand}</h3>
             <p className="car-card__model">{model}</p>
           </div>
           <div className="car-card__price">
-            <span className="car-card__price-amount">
-              {Number(price_per_day).toLocaleString("fr-MA")}
-            </span>
+            <span className="car-card__price-amount">{formattedPrice}</span>
             <span className="car-card__price-unit">MAD/j</span>
           </div>
         </div>
 
-        {/* Specs */}
         <ul className="car-card__specs">
-          {city && (
-            <li className="car-card__spec">
-              <MapPinIconCar className="car-card__spec-icon" />
-              {city}
-            </li>
-          )}
-          {fuel && (
-            <li className="car-card__spec">
-              <FuelIcon className="car-card__spec-icon" />
-              {fuel}
-            </li>
-          )}
-          {transmission && (
-            <li className="car-card__spec">
-              <TransmissionIcon className="car-card__spec-icon" />
-              {transmission}
-            </li>
-          )}
-          {seats && (
-            <li className="car-card__spec">
-              <CalendarIconCar className="car-card__spec-icon" />
-              {seats} places
-            </li>
-          )}
+          <SpecItem Icon={MapPinIconCar} text={city} />
+          <SpecItem Icon={FuelIcon} text={fuel} />
+          <SpecItem Icon={TransmissionIcon} text={transmission} />
+          <SpecItem Icon={CalendarIconCar} text={`${seats} places`} />
         </ul>
 
         <div className="car-card__actions">
           <button
             type="button"
             className="car-card__btn car-card__btn--outline"
-            onClick={handleDetails}
+            onClick={() => navigate(`/cars/${id}`)}
           >
             Détails
           </button>
-          <button
-            type="button"
-            className="car-card__btn car-card__btn--primary"
-            disabled={status !== "available"}
-            onClick={() => onReserve?.(car)}
-          >
-            Réserver
-          </button>
+          {renderPrimaryAction()}
         </div>
       </div>
     </article>
   );
 }
+
+const SpecItem = ({ Icon, text }) => {
+  if (!text) return null;
+  return (
+    <li className="car-card__spec">
+      <Icon className="car-card__spec-icon" />
+      {text}
+    </li>
+  );
+};
 
 export default memo(CarCard);

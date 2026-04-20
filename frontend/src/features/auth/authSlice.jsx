@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   user: null,
-  role: null, // 🔥 ajouté
+  role: null, 
   isAuth: false,
   isLoading: false,
   isInitialized: false,
@@ -35,7 +35,7 @@ const setAuthSuccess = (state, action) => {
   state.isAuth = true;
   state.isInitialized = true;
   state.user = action.payload.user;
-  state.role = action.payload.role; // 🔥 ajouté
+  state.role = action.payload.role; 
 };
 
 const authSlice = createSlice({

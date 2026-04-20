@@ -145,11 +145,9 @@ export default function Login() {
 
         <LeftPanel />
 
-        {/* ── PANEL DROIT (formulaire) ── */}
         <div className="lp-right">
           <div className="lp-form-wrap lp-view">
 
-            {/* Header */}
             <div className="lp-fheader">
               <h1 className="lp-ftitle">
                 Bon retour{" "}
@@ -160,7 +158,6 @@ export default function Login() {
               </p>
             </div>
 
-            {/* Erreur globale */}
             {globalError && (
               <div className="lp-global-error">
                 <Icon.Error /> {globalError}
@@ -182,7 +179,6 @@ export default function Login() {
                 error={errors.email || apiErrors?.email?.[0]}
               />
 
-              {/* Mot de passe */}
               <div className="rp-group">
                 <label className="rp-label" htmlFor="lPass">Mot de passe</label>
                 <div className="rp-input-wrap">
@@ -203,7 +199,6 @@ export default function Login() {
                 )}
               </div>
 
-              {/* Remember me + Forgot password */}
               <div className="lp-remember">
                 <label className="lp-checkbox-wrap">
                   <input
