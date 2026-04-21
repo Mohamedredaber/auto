@@ -18,7 +18,7 @@ export default function Cars() {
     max_price: 3000,
   });
   const { cars, loading, error, pagination } = useCars(filters);
-
+  console.log(cars)
   const handleFilterChange = useCallback((newFilters) => {
     setFilters(newFilters);
   }, []);
