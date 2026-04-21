@@ -102,7 +102,7 @@ public function show(Car $car)
         return response()->json(['success' => false, 'message' => 'Non autorisé'], 403);
     }
 
-    return (new CarResource($car->load(['coverImage', 'images'])))
+    return (new CarResource($car->load(['coverImage', 'images','bookings'])))
         ->additional(['success' => true]);
 }
     public function destroy(Car $car)

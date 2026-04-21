@@ -28,7 +28,6 @@ export default function PricingCard({ car }) {
 
   return (
     <div className="pricing-card">
-      {/* Header */}
       <div className="pricing-card__header">
         <div className="pricing-card__price-row">
           <span className="pricing-card__price">{pricePerDay.toLocaleString("fr-MA")}</span>

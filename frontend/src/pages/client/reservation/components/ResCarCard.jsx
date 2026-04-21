@@ -8,7 +8,8 @@ const FUEL_LABELS = {
 };
 
 export default function ResCarCard({ car }) {
-  const coverImage = car?.cover_image || car?.gallery?.[0]?.url || null;
+  const coverImage = car?.cover_image?.url || car?.gallery?.[0]?.url || null;
+  console.log("Cover Image:", car);
   const agencyName = car?.agency?.agency_name || "—";
   const city = car?.agency?.city || car?.city || null;
   const fuel = FUEL_LABELS[car?.fuel] || car?.fuel || "—";

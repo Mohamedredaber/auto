@@ -8,15 +8,23 @@ import AdditionalInfo from "./components/detailscar/AdditionalInfo";
 import AboutSection from "./components/detailscar/AboutSection";
 import AgencyCard from "./components/detailscar/AgencyCard";
 import PricingCard from "./components/detailscar/PricingCard";
-
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../features/auth/authSelectors";
 import "../../../styles/pages/cardetails.css";
-
+import AlreadyBooked from "../../client/reservation/components/AlreadyBooked";
+import { useMemo } from "react";
 export default function DetailsCars() {
+  const user = useSelector(selectUser);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const { car, loading, error } = useCarDetails(id);
-
-  /* ---- Loading ---- */
+  console.log(user);
+  console.log("Car Details:", car, "Loading:", loading, "Error:", error);
+  const alreadyBookedByUser = useMemo(() => {
+    if (!user?.id || !car?.bookings?.length) return false;
+    return car.bookings.some((b) => b.user_id === user.id);
+  });
   if (loading) {
     return (
       <div className="car-details car-details--loading">
@@ -115,7 +123,11 @@ export default function DetailsCars() {
 
         {/* ═══ SIDEBAR ═══ */}
         <aside className="car-details__sidebar">
-          <PricingCard car={car} />
+          {alreadyBookedByUser ? (
+            <AlreadyBooked onBack={() => navigate(`/cars/${id}`)} />
+          ) : (
+            <PricingCard car={car} />
+          )}  
         </aside>
       </div>
     </div>

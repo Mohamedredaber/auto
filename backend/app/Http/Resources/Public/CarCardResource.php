@@ -19,7 +19,7 @@ class CarCardResource extends JsonResource
             'transmission'  => $this->transmission,
             'year'          => $this->year,
             'seats'         => $this->seats,
-            
+            'bookings' => $this->whenLoaded('bookings'),
             'cover_image'   => $cover 
                                 ? asset('/storage/' . $cover->url) 
                                 : asset('images/default-car.png'),

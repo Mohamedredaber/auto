@@ -455,3 +455,91 @@
   .reservation__heading h1 { font-size: var(--text-3xl); }
   .res-dates { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   ALREADY BOOKED BLOCK
+   ============================================================ */
+.res-already-booked {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+.res-already-booked__icon {
+  width: 72px;
+  height: 72px;
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.res-already-booked__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.res-already-booked__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+  max-width: 340px;
+  margin: 0;
+}
+
+.res-already-booked__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 280px;
+  margin-top: var(--space-2);
+}
+
+.res-already-booked__btn-primary {
+  width: 100%;
+  background: var(--gradient-red);
+  color: #fff;
+  border: none;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  font-family: var(--font-body);
+  cursor: pointer;
+  letter-spacing: var(--tracking-wide);
+  transition: all var(--transition-spring);
+}
+.res-already-booked__btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-red);
+}
+
+.res-already-booked__btn-ghost {
+  width: 100%;
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.res-already-booked__btn-ghost:hover {
+  border-color: var(--color-text-muted);
+  color: var(--color-text-primary);
+}

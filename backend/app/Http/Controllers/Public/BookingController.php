@@ -6,15 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\Car;
-
+use App\Http\Resources\Public\CarCardResource;
 class BookingController extends Controller
 
 {
     public function getCarForBooking($id)
 {
-    $car = Car::with('agency')->findOrFail($id);
-    
-    return response()->json($car);
+    $car = Car::with('agency' ,'images' ,'coverImage' ,'bookings')->findOrFail($id);
+  if ($car->coverImage) {
+        $car->coverImage->url = asset('storage/' . $car->coverImage->url);
+    }
+    return response()->json($car,);
 }
     public function store(Request $request) 
     {

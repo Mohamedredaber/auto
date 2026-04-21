@@ -36,14 +36,11 @@ class CarListingController extends Controller
         }
     }
 
-    /**
-     * GET /api/catalog/{id}
-     * Retourne une voiture spécifique
-     */
+
     public function show($id)
     {
         try {
-            $car = Car::with(['images', 'agency'])->findOrFail($id);
+            $car = Car::with(['images', 'agency','bookings'])->findOrFail($id);
 
             return new CarCardResource($car);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {

@@ -4,6 +4,7 @@ import { fetchcarselected  , createBookingThunk} from "./bookingThunks";
 const initialState = {
   list: [],
   currentBooking: null,
+  statusbookingcar: null,
   carselected: null,
   isLoading: false,
   error: null,

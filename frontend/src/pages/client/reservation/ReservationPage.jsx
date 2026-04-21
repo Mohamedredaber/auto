@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchcarselected } from "../../../features/booking/bookingThunks";
+import { selectUser } from "../../../features/auth/authSelectors";
 import {
   selectCarSelected,
   selectBookingLoading,
 } from "../../../features/booking/bookingSelectors";
-
+import AlreadyBooked from "./components/AlreadyBooked";
 import ResCarCard from "./components/ResCarCard";
 import ResBookingForm from "./components/ResBookingForm";
 import "../../../styles/pages/reservation.css";
@@ -17,20 +18,27 @@ export default function ReservationPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const user = useSelector(selectUser);
+  const isLoading = useSelector(selectBookingLoading);
+  const car = useSelector(selectCarSelected);
+
   const {
     subtotal: stateSubtotal,
     depart: stateDepart,
     retour: stateRetour,
-    pricePerDay: statePricePerDay,
-    // `days` peut être undefined si non transmis — on recalcule côté form
   } = location.state || {};
-
-  const isLoading = useSelector(selectBookingLoading);
-  const car = useSelector(selectCarSelected);
 
   useEffect(() => {
     if (id) dispatch(fetchcarselected(id));
   }, [id, dispatch]);
+
+  // Vérifie si l'utilisateur connecté a déjà une réservation active sur cette voiture
+  const alreadyBookedByUser = useMemo(() => {
+    if (!user?.id || !car?.bookings?.length) return false;
+    return car.bookings.some((b) => b.user_id === user.id);
+  }, [car, user]);
+
+  /* ---- Loading ---- */
   if (isLoading) {
     return (
       <div className="reservation reservation--loading">
@@ -42,7 +50,8 @@ export default function ReservationPage() {
     );
   }
 
-  if (!isLoading && !car) {
+  /* ---- Not found ---- */
+  if (!car) {
     return (
       <div className="reservation reservation--error">
         <div className="reservation__error-box">
@@ -82,18 +91,25 @@ export default function ReservationPage() {
           </p>
         </div>
 
+        {/* Grid */}
         <div className="reservation__grid">
           <ResCarCard car={car} />
 
-          <ResBookingForm
-            car={car}
-            initialDepart={stateDepart}
-            initialRetour={stateRetour}
-            initialSubtotal={stateSubtotal}
-          />
+          {alreadyBookedByUser ? (
+            <AlreadyBooked onBack={() => navigate(`/cars/${id}`)} />
+          ) : (
+            <ResBookingForm
+              car={car}
+              initialDepart={stateDepart}
+              initialRetour={stateRetour}
+              initialSubtotal={stateSubtotal}
+            />
+          )}
         </div>
 
       </div>
     </div>
   );
 }
+
+
