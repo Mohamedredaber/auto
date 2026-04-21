@@ -1,0 +1,129 @@
+.bookings-container {
+  padding: 2rem;
+  background-color: var(--color-bg-primary);
+  min-height: 100vh;
+}
+
+.page-header h1 {
+  color: var(--color-text-primary);
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+}
+
+/* Grille */
+.bookings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Carte */
+.booking-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.booking-card:hover {
+  border-color: var(--color-blue-500);
+  background-color: var(--color-bg-card-hover);
+}
+
+.booking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.car-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.car-icon-wrapper {
+  background-color: var(--color-blue-900);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.agency-name {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Badges de statut */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pending { background: var(--color-warning-bg); color: var(--color-warning); }
+.status-confirmed { background: var(--color-success-bg); color: var(--color-success); }
+.status-cancelled { background: var(--color-error-bg); color: var(--color-error); }
+
+/* Body & Footer */
+.booking-card-body {
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.price-tag {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-blue-400);
+  margin-top: 1rem;
+}
+
+.booking-card-footer {
+  display: flex;
+  gap: 1rem;
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: 1rem;
+}
+
+.btn-details {
+  flex: 1;
+  background: var(--color-bg-input);
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.btn-cancel {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--color-red-500);
+  color: var(--color-red-500);
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background: var(--color-red-600);
+  color: white;
+}

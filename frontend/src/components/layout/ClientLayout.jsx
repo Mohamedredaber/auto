@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "./sidebar/Sidebar"; // Sidebar li derna b CSS separé
+import Sidebarclient from "./sidebar/Sidbarclient"; // Sidebar li derna b CSS separé
 import "../../styles/pages/dashboard.css";
 import TopBar from "./topbar/TopBar"; // TopBa
 const ClientLayout = () => {
   return (
      <div className="dashboard-layout">
-      <Sidebar />
+      <Sidebarclient />
       <div className="main-wrapper">
       <TopBar />
 

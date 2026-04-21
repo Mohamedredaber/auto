@@ -36,7 +36,6 @@ export default function DetailsCars() {
     );
   }
 
-  /* ---- Error ---- */
   if (error || !car) {
     return (
       <div className="car-details car-details--error">
