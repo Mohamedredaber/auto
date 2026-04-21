@@ -28,7 +28,9 @@
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.5rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .booking-card:hover {
@@ -71,9 +73,18 @@
   text-transform: uppercase;
 }
 
-.status-pending { background: var(--color-warning-bg); color: var(--color-warning); }
-.status-confirmed { background: var(--color-success-bg); color: var(--color-success); }
-.status-cancelled { background: var(--color-error-bg); color: var(--color-error); }
+.status-pending {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+.status-confirmed {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+.status-cancelled {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
 
 /* Body & Footer */
 .booking-card-body {

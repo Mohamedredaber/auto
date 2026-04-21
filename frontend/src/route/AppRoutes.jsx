@@ -37,8 +37,8 @@ export default function AppRoutes() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cars" element={<Cars />} />
         <Route path="/cars/:id" element={<DetailsCars />} />
-          <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
-            <Route path="/reserve/:id" element={<ReservationPage/>} />
+        <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
+          <Route path="/reserve/:id" element={<ReservationPage />} />
         </Route>
         <Route element={<GuestRoute />}>
           <Route path="/login" element={<Login />} />
@@ -47,12 +47,21 @@ export default function AppRoutes() {
       </Route>
       <Route element={<ProtectedRoute />}>
         <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
-            <Route path="/reserver/:id" element={<ReservationPage/>} />
+          <Route path="/reserver/:id" element={<ReservationPage />} />
           <Route element={<ClientLayout />}>
             <Route path="/dashboard/client" element={<ClientDashboard />} />
-            <Route path="/dashboard/client/reservations" element={<ReservationsClientDash />} />
-            <Route path="/dashboard/client/settings" element={<SettingClient />} />
-            <Route path="/dashboard/client/profile" element={<ProfileClient />} />
+            <Route
+              path="/dashboard/client/reservations"
+              element={<ReservationsClientDash />}
+            />
+            <Route
+              path="/dashboard/client/settings"
+              element={<SettingClient />}
+            />
+            <Route
+              path="/dashboard/client/profile"
+              element={<ProfileClient />}
+            />
           </Route>
         </Route>
         <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN_AGENCY]} />}>

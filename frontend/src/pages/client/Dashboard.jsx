@@ -17,7 +17,9 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h1>Bienvenue sur votre tableau de bord, {user?.name || "Utilisateur"}!</h1>
+      <h1>
+        Bienvenue sur votre tableau de bord, {user?.name || "Utilisateur"}!
+      </h1>
       <p>Gérez vos réservations, consultez votre historique et plus encore.</p>
       <button className="dashboard__logout-btn" onClick={handleLogout}>
         Se déconnecter

@@ -59,7 +59,11 @@ export default function ReservationPage() {
           <p>Ce véhicule n'existe pas ou a été supprimé.</p>
           <button
             className="res-cta"
-            style={{ width: "auto", padding: "var(--space-3) var(--space-8)", margin: "0 auto" }}
+            style={{
+              width: "auto",
+              padding: "var(--space-3) var(--space-8)",
+              margin: "0 auto",
+            }}
             onClick={() => navigate("/cars")}
           >
             ← Retour aux voitures
@@ -72,7 +76,6 @@ export default function ReservationPage() {
   return (
     <div className="reservation">
       <div className="reservation__wrapper">
-
         {/* Breadcrumb */}
         <nav className="reservation__breadcrumb">
           <Link to="/cars">Voitures</Link>
@@ -106,10 +109,7 @@ export default function ReservationPage() {
             />
           )}
         </div>
-
       </div>
     </div>
   );
 }
-
-
