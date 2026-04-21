@@ -24,6 +24,8 @@ import Reservations from "../pages/client/reservation/ReservationPage";
 import ReservationsClientDash from "../pages/client/reservation/ReservationsClientDash";
 import NotFound from "../pages/errors/NotFound";
 import Unauthorized from "../pages/errors/Unauthorized";
+import SettingClient from "../pages/client/setting/SettingClient";
+import ProfileClient from "../pages/client/profile/ProfileClient";
 import { ROLES } from "../constants/roles";
 import MyCars from "../pages/agency/mycars/Mycars";
 import ReservationPage from "../pages/client/reservation/ReservationPage";
@@ -49,6 +51,8 @@ export default function AppRoutes() {
           <Route element={<ClientLayout />}>
             <Route path="/dashboard/client" element={<ClientDashboard />} />
             <Route path="/dashboard/client/reservations" element={<ReservationsClientDash />} />
+            <Route path="/dashboard/client/settings" element={<SettingClient />} />
+            <Route path="/dashboard/client/profile" element={<ProfileClient />} />
           </Route>
         </Route>
         <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN_AGENCY]} />}>
