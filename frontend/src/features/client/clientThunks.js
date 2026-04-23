@@ -13,8 +13,6 @@ export const fetchUserBookings = createAsyncThunk(
     }
   },
 );
-
-
 export const fetchBookingDetails = createAsyncThunk(
   "client/fetchBookingDetails",
   async (id, { rejectWithValue }) => {

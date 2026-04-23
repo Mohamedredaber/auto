@@ -22,8 +22,6 @@ export const cancelBooking = async (id) => {
   await getCsrfToken();
   return api.patch(`/client/bookings/${id}/cancel`, {});
 };
-
-
 export const deleteBooking = async (id) => {
   await getCsrfToken();
   console.log(`🔵 Envoi DELETE /api/client/bookings/${id}/destroy`);

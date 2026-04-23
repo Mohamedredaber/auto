@@ -30,13 +30,10 @@ const MyCars = () => {
   const formMode = useSelector(selectFormMode);
   const singleCar = useSelector(selectSingleCar);
 
-  // Filtres
   const [searchTerm, setSearchTerm] = useState("");
-  const [cityFilter, setCityFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("");
 
-  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const carsPerPage = 5;
 
@@ -44,14 +41,12 @@ const MyCars = () => {
     dispatch(fetchAgencyCarsThunk());
   }, [dispatch]);
 
-  // Filtrer les voitures
   const filteredCars = cars.filter((car) => {
     const matchesSearch =
       car.brand?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       car.model?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCity = !cityFilter || car.city === cityFilter;
     const matchesStatus = !statusFilter || car.status === statusFilter;
-    return matchesSearch && matchesCity && matchesStatus;
+    return matchesSearch && matchesStatus;
   });
 
   // Trier les voitures
@@ -60,13 +55,11 @@ const MyCars = () => {
     if (sortOrder === "desc") return b.price_per_day - a.price_per_day;
     return 0;
   });
-  // Pagination
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
   const currentCars = sortedCars.slice(indexOfFirstCar, indexOfLastCar);
   const totalPages = Math.ceil(sortedCars.length / carsPerPage);
-
-  // Statistiques
+  console.log("Current Cars:", currentCars);
   const totalCars = cars.length;
   const availableCars = cars.filter(
     (car) => car.status === "disponible",
@@ -76,7 +69,6 @@ const MyCars = () => {
     0,
   );
 
-  // Handlers
   const handleAddClick = () => {
     dispatch(openAddForm());
   };
@@ -95,7 +87,7 @@ const MyCars = () => {
     dispatch(closeModals());
   };
 
-
+  console.log("Cars in MyCars.jsx:", cars);
   const getStatusClass = (status) => {
     switch (status) {
       case "disponible":
@@ -112,10 +104,9 @@ const MyCars = () => {
 
   return (
     <div className="mycars-container">
-      {/* Header */}
       <div className="mycars-header">
         <div className="header-content">
-          <div className="header-icon">🚗</div>
+          <div className="header-icon"></div>
           <div className="header-text">
             <h1>Gestion de la Flotte</h1>
             <p>
@@ -129,7 +120,6 @@ const MyCars = () => {
         </button>
       </div>
 
-      {/* Filtres */}
       <div className="mycars-filters">
         <div className="search-box">
           <span className="search-icon">🔍</span>
@@ -143,13 +133,13 @@ const MyCars = () => {
         <div className="filter-group">
           <span className="filter-icon">⚙️</span>
           <span>Filtrer par:</span>
-      
+
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <option value="">Tous les statuts</option>
-            <option value="disponible">Disponible</option>
+            <option value="available">Disponible</option>
             <option value="loué">Loué</option>
             <option value="indisponible">Indisponible</option>
           </select>
@@ -185,7 +175,7 @@ const MyCars = () => {
                   <tr key={car.id}>
                     <td>
                       <div className="car-image">
-                          <img src={car.cover_image_url} alt={car.brand} />
+                        <img src={car.cover_image_url} alt={car.brand} />
                       </div>
                     </td>
                     <td>
@@ -215,7 +205,7 @@ const MyCars = () => {
                     <td>
                       <div className="actions">
                         <button className="btn-action btn-view" title="Voir">
-                          <Eye/>  ️
+                          <Eye /> ️
                         </button>
                         <button
                           className="btn-action btn-edit"
@@ -320,8 +310,7 @@ const MyCars = () => {
                 ×
               </button>
             </div>
-            <CarFormModal
-            />
+            <CarFormModal />
           </div>
         </div>
       )}

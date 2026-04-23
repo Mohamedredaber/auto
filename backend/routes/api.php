@@ -37,7 +37,18 @@ Route::middleware(['auth:sanctum', 'role:admin_agency'])
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index']);
         Route::apiResource('cars', CarController::class);
-});
+        
+        // Routes pour les réservations
+        Route::prefix('reservations')->group(function () {
+            Route::get('/', [ReservationController::class, 'index']);
+            Route::get('/{booking}', [ReservationController::class, 'show']);
+            Route::patch('/{booking}', [ReservationController::class, 'update']);
+            Route::post('/{booking}/cancel', [ReservationController::class, 'cancel']);
+            Route::get('/filter/{status}', [ReservationController::class, 'filterByStatus']);
+            Route::get('/stats/overview', [ReservationController::class, 'stats']);
+            Route::get('/recent/{days?}', [ReservationController::class, 'recentBookings']);
+        });
+    });
 
 Route::middleware('auth:sanctum')
     ->prefix('client')

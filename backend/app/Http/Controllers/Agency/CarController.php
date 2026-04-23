@@ -7,11 +7,9 @@ use App\Models\Car;
 use App\Http\Resources\Agency\CarResource;
 use App\Http\Requests\Agency\Car\UpdateCarRequest;
 use App\Http\Requests\Agency\Car\StoreCarRequest;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
 class CarController extends Controller
 {
     public function index()
@@ -34,7 +32,7 @@ class CarController extends Controller
                 ['agency_id' => Auth::user()->agency_id]
             ));
 
-            // 2. Image de couverture (Obligatoire)
+            // 1. Image de couverture (Obligatoire)
             if ($request->hasFile('cover_image')) {
                 $path = $request->file('cover_image')->store('cars/covers', 'public');
                 $car->images()->create([
@@ -43,58 +41,59 @@ class CarController extends Controller
                 ]);
             }
 
-            // 3. Galerie d'images (Optionnelle)
-        if ($request->hasFile('images')) {
-            // Supprimer les anciennes d'abord
-            $car->images()->where('is_cover', false)->each(function ($img) {
-                Storage::disk('public')->delete($img->url);
-                $img->delete();
-            });
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('cars/gallery', 'public');
-                $car->images()->create(['url' => $path, 'is_cover' => false]);
+            // 2. Galerie d'images (Optionnelle)
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('cars/gallery', 'public');
+                    $car->images()->create(['url' => $path, 'is_cover' => false]);
+                }
             }
-        }
 
             return (new CarResource($car->load(['coverImage', 'images'])))
                 ->additional(['success' => true, 'message' => 'Véhicule ajouté !']);
         });
     }
     public function update(UpdateCarRequest $request, Car $car)
-{
-    if ($car->agency_id !== Auth::user()->agency_id) {
-        return response()->json(['success' => false, 'message' => 'Non autorisé'], 403);
+    {
+        if ($car->agency_id !== Auth::user()->agency_id) {
+            return response()->json(['success' => false, 'message' => 'Non autorisé'], 403);
+        }
+
+        return DB::transaction(function () use ($request, $car) {
+
+            // 1. Update car data
+            $car->update($request->validated());
+
+            // 2. New cover image - supprimer l'ancienne si elle existe
+            if ($request->hasFile('cover_image')) {
+                $old = $car->images()->where('is_cover', true)->first();
+                if ($old) {
+                    Storage::disk('public')->delete($old->url);
+                    $old->delete();
+                }
+                $path = $request->file('cover_image')->store('cars/covers', 'public');
+                $car->images()->create(['url' => $path, 'is_cover' => true]);
+            }
+
+            // 3. New gallery images - supprimer les anciennes si de nouvelles sont ajoutées
+            if ($request->hasFile('images')) {
+                // Supprimer les anciennes images de galerie
+                $car->images()->where('is_cover', false)->each(function ($img) {
+                    Storage::disk('public')->delete($img->url);
+                    $img->delete();
+                });
+                
+                // Ajouter les nouvelles images
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('cars/gallery', 'public');
+                    $car->images()->create(['url' => $path, 'is_cover' => false]);
+                }
+            }
+
+            return (new CarResource($car->load(['coverImage', 'images'])))
+                ->additional(['success' => true, 'message' => 'Véhicule mis à jour !']);
+        });
     }
-
-    return DB::transaction(function () use ($request, $car) {
-
-        // 1. Update car data
-        $car->update($request->validated());
-
-        // 2. New cover image
-        if ($request->hasFile('cover_image')) {
-            // حذف القديمة
-            $old = $car->images()->where('is_cover', true)->first();
-            if ($old) {
-                Storage::disk('public')->delete($old->url);
-                $old->delete();
-            }
-            $path = $request->file('cover_image')->store('cars/covers', 'public');
-            $car->images()->create(['url' => $path, 'is_cover' => true]);
-        }
-
-        // 3. New gallery images
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('cars/gallery', 'public');
-                $car->images()->create(['url' => $path, 'is_cover' => false]);
-            }
-        }
-
-        return (new CarResource($car->load(['coverImage', 'images'])))
-            ->additional(['success' => true, 'message' => 'Véhicule mis à jour !']);
-    });
-}
 public function show(Car $car)
 {
     if ($car->agency_id !== Auth::user()->agency_id) {

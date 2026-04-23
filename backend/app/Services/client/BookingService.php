@@ -11,11 +11,16 @@ class BookingService
 {
     public function getUserBookings(): Collection
     {
-        return Booking::where('user_id', auth()->id())
+        $userId = auth()->id();
+        if (!$userId) {
+            return collect();
+        }
+        
+        return Booking::where('user_id', $userId)
             ->with([
-                'car:id,brand,model,agency_id,price_per_day,category',
-                'car.images' => fn($q) => $q->where('is_cover', true),
-                'agency:id,agency_name,city'
+                'car' => fn($q) => $q->select('id', 'brand', 'model', 'agency_id', 'price_per_day', 'category', 'year'),
+                'car.images' => fn($q) => $q->where('is_cover', true)->select('id', 'car_id', 'url', 'is_cover'),
+                'agency' => fn($q) => $q->select('id', 'agency_name', 'city')
             ])
             ->orderBy('start_date', 'desc')
             ->get();
@@ -23,12 +28,17 @@ class BookingService
 
     public function getUserBooking(int $id): Booking
     {
-        $booking = Booking::where('user_id', auth()->id())
+        $userId = auth()->id();
+        if (!$userId) {
+            throw new NotFoundHttpException('Non authentifié');
+        }
+        
+        $booking = Booking::where('user_id', $userId)
             ->where('id', $id)
             ->with([
-                'car:id,brand,model,agency_id,price_per_day,category,year,fuel,transmission,seats,doors,description',
-                'car.images',
-                'agency:id,agency_name,city,address,phone'
+                'car' => fn($q) => $q->select('id', 'brand', 'model', 'agency_id', 'price_per_day', 'category', 'year', 'fuel', 'transmission', 'seats', 'doors', 'description', 'additional_information'),
+                'car.images' => fn($q) => $q->select('id', 'car_id', 'url', 'is_cover'),
+                'agency' => fn($q) => $q->select('id', 'agency_name', 'city', 'address', 'phone')
             ])
             ->first();
 

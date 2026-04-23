@@ -35,8 +35,6 @@ class CarListingController extends Controller
             ], 500);
         }
     }
-
-
     public function show($id)
     {
         try {

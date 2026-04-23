@@ -40,7 +40,6 @@ class CarSearchService
             });
         }
         
-        // Filtre carburant
         if ($request->filled('fuel')) {
             $query->where('fuel', $request->fuel);
         }

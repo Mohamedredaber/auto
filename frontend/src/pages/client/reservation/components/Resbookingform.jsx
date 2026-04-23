@@ -79,10 +79,8 @@ export default function ResBookingForm({
       setSubmitting(false);
     }
   };
-
   const isAvailable = car?.status === "available";
 
-  /* ---- Success state ---- */
   if (submitted) {
     return (
       <div

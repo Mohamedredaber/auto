@@ -15,8 +15,19 @@ class BookingController extends Controller
 
     public function index()
     {
-        $bookings = $this->bookingService->getUserBookings();
-        return BookingResource::collection($bookings);
+        try {
+            $bookings = $this->bookingService->getUserBookings();
+            return BookingResource::collection($bookings)->additional([
+                'success' => true,
+                'message' => 'Réservations récupérées avec succès'
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching user bookings: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function show($id)

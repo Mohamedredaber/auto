@@ -59,6 +59,7 @@ class User extends Authenticatable
     {
         return trim("{$this->first_name} {$this->last_name}");
     }
+    
     public function bookings()
     {
         return $this->hasMany(Booking::class);
