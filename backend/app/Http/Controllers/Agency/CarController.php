@@ -29,9 +29,8 @@ class CarController extends Controller
     public function store(StoreCarRequest $request)
     {
         return DB::transaction(function () use ($request) {
-            // 1. Création du véhicule
             $car = Car::create(array_merge(
-                $request->validated(),
+                $request->validate(),
                 ['agency_id' => Auth::user()->agency_id]
             ));
 

@@ -4,8 +4,6 @@ import FilterBar from "./components/CarFilters/FilterBar";
 import CarList from "./components/CarList/CarList";
 import Pagination from "./components/Pagination/Pagination";
 import "../../../styles/pages/cars.css";
-
-
 export default function Cars() {
   const [filters, setFilters] = useState({
     page:      1,
@@ -22,20 +20,16 @@ export default function Cars() {
   const handleFilterChange = useCallback((newFilters) => {
     setFilters(newFilters);
   }, []);
-
-  /* Changement de page */
   const handlePageChange = useCallback((page) => {
     setFilters((prev) => ({ ...prev, page }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-
   const handleReserve = useCallback((car) => {
     console.log("Réserver voiture:", car.id);
   }, []);
 
   return (
     <div className="cars-page">
-      {/* ── Hero Header ── */}
       <section className="cars-hero">
         <div className="cars-hero__content">
           <h1 className="cars-hero__title">
@@ -51,12 +45,9 @@ export default function Cars() {
         </div>
       </section>
 
-      {/* ── Contenu principal ── */}
       <section className="cars-main">
-        {/* Filtres */}
         <FilterBar filters={filters} onChange={handleFilterChange} />
 
-        {/* Résultats header */}
         {!loading && !error && pagination && (
           <div className="cars-results-header">
             <span className="cars-results-count">
@@ -65,16 +56,12 @@ export default function Cars() {
             </span>
           </div>
         )}
-
-        {/* Liste */}
         <CarList
           cars={cars}
           loading={loading}
           error={error}
           onReserve={handleReserve}
         />
-
-        {/* Pagination */}
         <Pagination
           pagination={pagination}
           onPageChange={handlePageChange}

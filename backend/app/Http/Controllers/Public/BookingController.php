@@ -13,10 +13,21 @@ class BookingController extends Controller
     public function getCarForBooking($id)
 {
     $car = Car::with('agency' ,'images' ,'coverImage' ,'bookings')->findOrFail($id);
-  if ($car->coverImage) {
+    
+    // Transform cover image URL
+    if ($car->coverImage) {
         $car->coverImage->url = asset('storage/' . $car->coverImage->url);
     }
-    return response()->json($car,);
+    
+    // Transform gallery images URLs
+    if ($car->images && $car->images->count() > 0) {
+        $car->images = $car->images->map(function ($image) {
+            $image->url = asset('storage/' . $image->url);
+            return $image;
+        });
+    }
+    
+    return response()->json($car);
 }
     public function store(Request $request) 
     {

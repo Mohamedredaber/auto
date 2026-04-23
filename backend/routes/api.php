@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Agency\CarController;
 use App\Http\Controllers\Agency\DashboardController;
 use App\Http\Controllers\Agency\ReservationController;
+use App\Http\Controllers\Client\BookingController as ClientBookingController;
 use App\Http\Controllers\Public\CarListingController;
 use App\Http\Controllers\Public\BookingController;
 use Illuminate\Support\Facades\Route;
@@ -36,5 +37,13 @@ Route::middleware(['auth:sanctum', 'role:admin_agency'])
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index']);
         Route::apiResource('cars', CarController::class);
-       
 });
+
+Route::middleware('auth:sanctum')
+    ->prefix('client')
+    ->group(function () {
+        Route::get('/bookings', [ClientBookingController::class, 'index']);
+        Route::get('/bookings/{id}', [ClientBookingController::class, 'show']);
+        Route::patch('/bookings/{id}/cancel', [ClientBookingController::class, 'cancel']);
+        Route::delete('/bookings/{id}/destroy', [ClientBookingController::class, 'destroy']);
+    });
