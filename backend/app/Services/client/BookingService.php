@@ -18,14 +18,12 @@ class BookingService
         
         return Booking::where('user_id', $userId)
             ->with([
-                'car' => fn($q) => $q->select('id', 'brand', 'model', 'agency_id', 'price_per_day', 'category', 'year'),
-                'car.images' => fn($q) => $q->where('is_cover', true)->select('id', 'car_id', 'url', 'is_cover'),
-                'agency' => fn($q) => $q->select('id', 'agency_name', 'city')
+                 'car',
+                'agency'
             ])
             ->orderBy('start_date', 'desc')
             ->get();
     }
-
     public function getUserBooking(int $id): Booking
     {
         $userId = auth()->id();
@@ -36,9 +34,8 @@ class BookingService
         $booking = Booking::where('user_id', $userId)
             ->where('id', $id)
             ->with([
-                'car' => fn($q) => $q->select('id', 'brand', 'model', 'agency_id', 'price_per_day', 'category', 'year', 'fuel', 'transmission', 'seats', 'doors', 'description', 'additional_information'),
-                'car.images' => fn($q) => $q->select('id', 'car_id', 'url', 'is_cover'),
-                'agency' => fn($q) => $q->select('id', 'agency_name', 'city', 'address', 'phone')
+                'car',
+                'agency'
             ])
             ->first();
 
@@ -60,9 +57,7 @@ class BookingService
         if (strtotime($booking->start_date) < time()) {
             throw new HttpException(403, 'La réservation a déjà commencé');
         }
-
         $booking->update(['status' => 'canceled']);
-
         return [
             'message' => 'Réservation annulée avec succès',
             'booking' => $booking
@@ -78,7 +73,6 @@ class BookingService
         }
 
         $booking->delete();
-
         return [
             'message' => 'Réservation supprimée définitivement'
         ];

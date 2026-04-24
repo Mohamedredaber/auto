@@ -19,6 +19,7 @@ class BookingResource extends JsonResource
             'end_date' => $this->end_date,
             'total_price' => (float) $this->total_price,
             'status' => $this->status,
+            "car_id" => $this->car_id,
             'car_details' => $this->car ? [
                 'id' => $this->car->id,
                 'brand' => $this->car->brand,

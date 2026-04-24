@@ -57,4 +57,22 @@ Route::middleware('auth:sanctum')
         Route::get('/bookings/{id}', [ClientBookingController::class, 'show']);
         Route::patch('/bookings/{id}/cancel', [ClientBookingController::class, 'cancel']);
         Route::delete('/bookings/{id}/destroy', [ClientBookingController::class, 'destroy']);
+        Route::get('/profile', [ClientBookingController::class, 'profile']);
+        Route::post('/profile', [ClientBookingController::class, 'updateProfile']);
     });
+
+// Debug Routes (À SUPPRIMER EN PRODUCTION)
+if (env('APP_DEBUG')) {
+    Route::prefix('debug')->group(function () {
+        Route::get('/bookings', [\App\Http\Controllers\Debug\DebugBookingController::class, 'debugAllBookings']);
+        Route::get('/bookings/{id}', [\App\Http\Controllers\Debug\DebugBookingController::class, 'debugBooking']);
+        Route::post('/bookings/fix', [\App\Http\Controllers\Debug\DebugBookingController::class, 'fixBookings']);
+        
+        // Diagnostic simple
+        Route::get('/diagnostic/booking/{id}', [\App\Http\Controllers\Debug\DiagnosticController::class, 'checkBooking']);
+        Route::get('/diagnostic/issues', [\App\Http\Controllers\Debug\DiagnosticController::class, 'listAllIssues']);
+        
+        // Test automatisé
+        Route::get('/auto-test', [\App\Http\Controllers\Debug\AutoTestController::class, 'runAllTests']);
+    });
+}

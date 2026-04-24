@@ -5,7 +5,7 @@ import agencyBookingReducer from "../features/agency/bookingSlice";
 import catalogReducer from "../features/catalog/catalogSlice";
 import bookingReducer from "../features/booking/bookingSlice";
 import clientReducer from "../features/client/clientSlice";
-
+import profileclientReducer from "../features/client/profileSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -14,5 +14,6 @@ export const store = configureStore({
     agencyBooking: agencyBookingReducer,
     booking: bookingReducer,
     client: clientReducer,
+    profileclient: profileclientReducer
   },
 });

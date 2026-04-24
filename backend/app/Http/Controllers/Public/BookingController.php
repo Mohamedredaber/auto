@@ -14,12 +14,10 @@ class BookingController extends Controller
 {
     $car = Car::with('agency' ,'images' ,'coverImage' ,'bookings')->findOrFail($id);
     
-    // Transform cover image URL
     if ($car->coverImage) {
         $car->coverImage->url = asset('storage/' . $car->coverImage->url);
     }
     
-    // Transform gallery images URLs
     if ($car->images && $car->images->count() > 0) {
         $car->images = $car->images->map(function ($image) {
             $image->url = asset('storage/' . $image->url);
@@ -40,7 +38,7 @@ class BookingController extends Controller
     $booking = Booking::create([
         'car_id'      => $car->id,
         'user_id'     => auth()->id(),
-        'agency_id'   => $car->agency_id, // On récupère l'agence de la voiture
+        'agency_id'   => $car->agency_id, 
         'start_date'  => $request->start_date,
         'end_date'    => $request->end_date,
         'total_price' => $days * $car->price_per_day,

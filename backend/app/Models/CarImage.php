@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class CarImage extends Model
 {
@@ -14,19 +13,6 @@ class CarImage extends Model
         'url',
         'is_cover',
     ];
-    
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($image) {
-            // Supprimer le fichier physique
-            if ($image->url) {
-                Storage::disk('public')->delete($image->url);
-            }
-        });
-    }
     
     public function car()
     {

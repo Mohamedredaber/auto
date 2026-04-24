@@ -14,7 +14,9 @@ class Booking extends Model
 ];
 
 // Relations
-public function car()    { return $this->belongsTo(Car::class); }
+public function car() {
+    return $this->belongsTo(Car::class, 'car_id', 'id');
+}
 public function user()   { return $this->belongsTo(User::class); }
 
 public function agency() { return $this->belongsTo(Agency::class); }
