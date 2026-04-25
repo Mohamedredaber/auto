@@ -7,8 +7,10 @@ use App\Http\Controllers\Agency\ReservationController;
 use App\Http\Controllers\Client\BookingController as ClientBookingController;
 use App\Http\Controllers\Public\CarListingController;
 use App\Http\Controllers\Public\BookingController;
+use App\Http\Controllers\Agency\StatisticsController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Agency\AgencyClientController;
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
     Route::get('/{id}', [CarListingController::class, 'show']);
@@ -33,18 +35,19 @@ Route::get('/cars/{id}/booking-details', [BookingController::class, 'getCarForBo
 Route::post('/createbookings', [BookingController::class, 'store']);
 
 Route::middleware(['auth:sanctum', 'role:admin_agency'])
-    ->prefix('agency') 
-    ->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index']);
-        Route::apiResource('cars', CarController::class);
-        
-        // Routes pour les réservations
+->prefix('agency') 
+->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/clients', [AgencyClientController::class, 'index']);
+    Route::get('/clients/recent', [AgencyClientController::class, 'recent']);
+    Route::get('/stats', [AgencyClientController::class, 'getStats']);
+    Route::apiResource('cars', CarController::class);
+    Route::get('/statistics', [StatisticsController::class, 'index']);
         Route::prefix('reservations')->group(function () {
             Route::get('/', [ReservationController::class, 'index']);
             Route::get('/{booking}', [ReservationController::class, 'show']);
             Route::patch('/{booking}', [ReservationController::class, 'update']);
             Route::post('/{booking}/cancel', [ReservationController::class, 'cancel']);
-            Route::get('/filter/{status}', [ReservationController::class, 'filterByStatus']);
             Route::get('/stats/overview', [ReservationController::class, 'stats']);
             Route::get('/recent/{days?}', [ReservationController::class, 'recentBookings']);
         });

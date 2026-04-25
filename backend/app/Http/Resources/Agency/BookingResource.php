@@ -34,7 +34,7 @@ class BookingResource extends JsonResource
             'user' => $this->whenLoaded('user', function() {
                 return [
                     'id'       => $this->user->id,
-                    'name'     => $this->user->name,
+                    'name'     => $this->user->first_name . ' ' . $this->user->last_name    ,
                     'email'    => $this->user->email,
                     'phone'    => $this->user->phone ?? null,
                 ];

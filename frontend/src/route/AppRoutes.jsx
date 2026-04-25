@@ -18,6 +18,8 @@ import Login from "../pages/login/login";
 import Register from "../pages/register/Register";
 import ClientDashboard from "../pages/client/Dashboard";
 import AgencyDashboard from "../pages/agency/dashboard/Dashboard";
+
+import ReservationDashAgency from "../pages/agency/reservation/ReservationDashAgency"; 
 import AgencyClient from "../pages/agency/client/AgencyClient";
 import AdminDashboard from "../pages/admin/Dashboard";
 import Reservations from "../pages/client/reservation/ReservationPage";
@@ -29,6 +31,7 @@ import ProfileClient from "../pages/client/profile/ProfileClient";
 import { ROLES } from "../constants/roles";
 import MyCars from "../pages/agency/mycars/Mycars";
 import ReservationPage from "../pages/client/reservation/ReservationPage";
+import StatisticsPage from "../pages/agency/statistique/StatisticsPage";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -73,8 +76,12 @@ export default function AppRoutes() {
               element={<AgencyClient />}
             />
             <Route
+              path="/dashboard/agency/statistics"
+              element={<StatisticsPage />}
+            />
+            <Route
               path="/dashboard/agency/reservations"
-              element={<Reservations />}
+              element={<ReservationDashAgency />}
             />
           </Route>
         </Route>

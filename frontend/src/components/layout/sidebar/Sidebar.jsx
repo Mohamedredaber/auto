@@ -28,6 +28,7 @@ const Sidebaradmin = () => {
 
   const agencyMenu = [
     { name: 'Dashboard', path: '/dashboard/agency', icon: DashboardIcon },
+    { name: 'Statistiques', path: '/dashboard/agency/statistics', icon: DashboardIcon },
     { name: 'Mes Voitures', path: '/dashboard/agency/cars', icon: CarIcon },
     { name: 'Réservations', path: '/dashboard/agency/reservations', icon: CalendarIcon },
     { name: 'Clients', path: '/dashboard/agency/clients', icon: UsersIcon },

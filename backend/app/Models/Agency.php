@@ -51,4 +51,8 @@ class Agency extends Model
     {
         return $this->hasMany(Booking::class);
     }
+    public function clients(){
+        return $this->hasManyThrough(User::class, Booking::class, 'agency_id', 'id', 'id', 'user_id')
+                    ->distinct();
+    }
 }

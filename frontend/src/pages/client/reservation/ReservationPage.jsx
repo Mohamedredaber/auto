@@ -32,7 +32,6 @@ export default function ReservationPage() {
     if (id) dispatch(fetchcarselected(id));
   }, [id, dispatch]);
 
-  // Vérifie si l'utilisateur connecté a déjà une réservation active sur cette voiture
   const alreadyBookedByUser = useMemo(() => {
     if (!user?.id || !car?.bookings?.length) return false;
     return car.bookings.some((b) => b.user_id === user.id);

@@ -1,0 +1,112 @@
+/* =============================================
+   STATISTICS PAGE — CUSTOM STYLES
+   ============================================= */
+
+/* 1. الحاوية الرئيسية (Page Entrance) */
+.animate-fade-in {
+    animation: statsFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes statsFadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 2. ستايل الـ Cards (بناءً على التوكينز) */
+.ac-card {
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-card);
+}
+
+.ac-card:hover {
+    border-color: var(--color-border);
+    background-color: var(--color-bg-card-hover);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* 3. ستايل الأزرار في الـ Header */
+.header-btn-secondary {
+    background-color: var(--color-bg-card);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-4);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: var(--transition-fast);
+}
+
+.header-btn-secondary:hover {
+    background-color: var(--color-bg-card-hover);
+    border-color: var(--color-blue-500);
+    color: var(--color-text-primary);
+}
+
+.btn-exporter {
+    background: var(--gradient-red);
+    color: var(--color-text-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-5);
+    font-weight: 700;
+    box-shadow: var(--shadow-red);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: var(--transition-spring);
+    cursor: pointer;
+}
+
+.btn-exporter:hover {
+    transform: scale(1.03);
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* 4. ستايل خاص بالـ Tooltip ديال المبيانات (Recharts) */
+.recharts-default-tooltip {
+    background-color: var(--color-bg-card) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.recharts-tooltip-label {
+    color: var(--color-text-primary) !important;
+    font-weight: bold;
+}
+
+/* 5. ستايل الجدول (Détails par Modèle) */
+.stats-table thead {
+    background-color: var(--color-bg-secondary);
+}
+
+.stats-table tr {
+    border-bottom: 1px solid var(--color-border-subtle);
+    transition: background-color var(--transition-fast);
+}
+
+.stats-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Progress Bar Custom */
+.progress-bar-bg {
+    background-color: var(--color-bg-input);
+    height: 6px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background: var(--gradient-red);
+    height: 100%;
+    border-radius: var(--radius-full);
+}

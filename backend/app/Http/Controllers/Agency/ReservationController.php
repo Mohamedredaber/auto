@@ -8,26 +8,51 @@ use App\Http\Resources\Agency\BookingResource;
 use App\Http\Requests\Agency\Booking\UpdateBookingRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Http\Request;
 class ReservationController extends Controller
 {
     /**
      * Lister toutes les réservations de l'agence
      */
-    public function index()
-    {
-        $agencyId = Auth::user()->agency_id;
-        
-        $bookings = Booking::with(['car', 'user'])
-            ->where('agency_id', $agencyId)
-            ->latest()
-            ->paginate(15);
-        
-        return BookingResource::collection($bookings)->additional([
-            'success' => true,
-            'message' => 'Réservations récupérées avec succès.',
-        ]);
+ public function index(Request $request)
+{
+    $agencyId = Auth::user()->agency_id; // Récupère l'ID de l'agence de l'utilisateur connecté
+
+    $query = Booking::with(['car', 'user'])
+        ->where('agency_id', $agencyId);
+
+    if ($request->has('search') && $request->search != '') {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('id', 'like', "%$search%")
+              ->orWhereHas('user', function($qu) use ($search) {
+                  $qu->where('first_name', 'like', "%$search%")
+                    ->orWhere('last_name', 'like', "%$search%");
+              })
+              
+              ->orWhereHas('car', function($qc) use ($search) {
+                  $qc->where('brand', 'like', "%$search%")
+                    ->orWhere('model', 'like', "%$search%");
+              });
+        });
     }
+
+    if ($request->has('status') && $request->status != 'all') {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->has('date_start') && $request->has('date_end')) {
+        $query->whereBetween('start_date', [$request->date_start, $request->date_end]);
+    }
+
+    $bookings = $query->latest()->paginate($request->get('per_page', 15));
+
+    // 6. On retourne la collection avec les métadonnées
+    return BookingResource::collection($bookings)->additional([
+        'success' => true,
+        'message' => 'Réservations filtrées avec succès.',
+    ]);
+}
 
     /**
      * Afficher une réservation spécifique
@@ -105,28 +130,7 @@ class ReservationController extends Controller
     /**
      * Filtrer les réservations par statut
      */
-    public function filterByStatus($status)
-    {
-        $validStatuses = ['pending', 'confirmed', 'canceled', 'completed'];
-        
-        if (!in_array($status, $validStatuses)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Statut invalide.'
-            ], 400);
-        }
 
-        $bookings = Booking::with(['car', 'user'])
-            ->where('agency_id', Auth::user()->agency_id)
-            ->where('status', $status)
-            ->latest()
-            ->paginate(15);
-
-        return BookingResource::collection($bookings)->additional([
-            'success' => true,
-            'message' => "Réservations avec le statut '{$status}'.",
-        ]);
-    }
 
     /**
      * Statistiques des réservations
