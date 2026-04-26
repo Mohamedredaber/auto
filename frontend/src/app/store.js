@@ -8,6 +8,7 @@ import clientReducer from "../features/client/clientSlice";
 import profileclientReducer from "../features/client/profileSlice";
 import agencyClientsReducer from "../features/agency/agencyClientsSlice";
 import agencyStatsReducer from "../features/agency/agencyStatsSlice";
+import agencyProfileReducer from "../features/agency/agencyProfileSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -18,6 +19,7 @@ export const store = configureStore({
     client: clientReducer,
     profileclient: profileclientReducer,
     agencyClients : agencyClientsReducer,
-    agencyStats : agencyStatsReducer
-  },
+    agencyStats : agencyStatsReducer,
+    agencyProfile : agencyProfileReducer  
+    },
 });

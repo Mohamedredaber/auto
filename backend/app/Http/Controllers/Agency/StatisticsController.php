@@ -14,7 +14,6 @@ class StatisticsController extends Controller
     {
         $agencyId = auth()->user()->agency->id;
 
-        // 1. الإحصائيات السريعة (The 4 Top Cards)
         $totalBookings = Booking::where('agency_id', $agencyId)->count();
         $totalRevenue = Booking::where('agency_id', $agencyId)->sum('total_price');
         $popularCar = Car::where('agency_id', $agencyId)
@@ -22,8 +21,6 @@ class StatisticsController extends Controller
                         ->orderBy('bookings_count', 'desc')
                         ->first();
 
-        // 2. مبيان الحجوزات الشهري (Volume de Réservations Mensuelles)
-        // كنجيبو عدد الحجوزات لكل شهر فالسنة الحالية
         $monthlyBookings = Booking::where('agency_id', $agencyId)
             ->whereYear('created_at', date('Y'))
             ->select(DB::raw('MONTH(created_at) as month'), DB::raw('count(*) as total'))
@@ -31,7 +28,6 @@ class StatisticsController extends Controller
             ->orderBy('month')
             ->get();
 
-        // 3. مبيان الأرباح (Revenu Mensuel)
         $monthlyRevenue = Booking::where('agency_id', $agencyId)
             ->whereYear('created_at', date('Y'))
             ->select(DB::raw('MONTH(created_at) as month'), DB::raw('sum(total_price) as revenue'))
@@ -39,7 +35,6 @@ class StatisticsController extends Controller
             ->orderBy('month')
             ->get();
 
-        // 4. أفضل السيارات (Top Flotte)
         $topCars = Car::where('agency_id', $agencyId)
             ->withCount('bookings')
             ->orderBy('bookings_count', 'desc')

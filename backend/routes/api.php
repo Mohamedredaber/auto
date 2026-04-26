@@ -9,7 +9,7 @@ use App\Http\Controllers\Public\CarListingController;
 use App\Http\Controllers\Public\BookingController;
 use App\Http\Controllers\Agency\StatisticsController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Agency\AgencyProfileController;
 use App\Http\Controllers\Agency\AgencyClientController;
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
@@ -42,7 +42,11 @@ Route::middleware(['auth:sanctum', 'role:admin_agency'])
     Route::get('/clients/recent', [AgencyClientController::class, 'recent']);
     Route::get('/stats', [AgencyClientController::class, 'getStats']);
     Route::apiResource('cars', CarController::class);
+    Route::get('/profile', [AgencyProfileController::class, 'index']);
+    Route::put('/profile/update', [AgencyProfileController::class, 'update']);
+    Route::post('/profile/logo', [AgencyProfileController::class, 'updateLogo']);
     Route::get('/statistics', [StatisticsController::class, 'index']);
+
         Route::prefix('reservations')->group(function () {
             Route::get('/', [ReservationController::class, 'index']);
             Route::get('/{booking}', [ReservationController::class, 'show']);
@@ -50,9 +54,8 @@ Route::middleware(['auth:sanctum', 'role:admin_agency'])
             Route::post('/{booking}/cancel', [ReservationController::class, 'cancel']);
             Route::get('/stats/overview', [ReservationController::class, 'stats']);
             Route::get('/recent/{days?}', [ReservationController::class, 'recentBookings']);
-        });
     });
-
+});
 Route::middleware('auth:sanctum')
     ->prefix('client')
     ->group(function () {

@@ -21,6 +21,7 @@ import AgencyDashboard from "../pages/agency/dashboard/Dashboard";
 
 import ReservationDashAgency from "../pages/agency/reservation/ReservationDashAgency"; 
 import AgencyClient from "../pages/agency/client/AgencyClient";
+import AgencyProfilePage from "../pages/agency/profile/AgencyProfilePage";
 import AdminDashboard from "../pages/admin/Dashboard";
 import Reservations from "../pages/client/reservation/ReservationPage";
 import ReservationsClientDash from "../pages/client/reservation/ReservationsClientDash";
@@ -74,6 +75,10 @@ export default function AppRoutes() {
             <Route
               path="/dashboard/agency/clients"
               element={<AgencyClient />}
+            />
+            <Route
+              path="/dashboard/agency/profile"
+              element={<AgencyProfilePage />}
             />
             <Route
               path="/dashboard/agency/statistics"

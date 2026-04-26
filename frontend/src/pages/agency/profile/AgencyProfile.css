@@ -1,0 +1,16 @@
+.ac-input-dark {
+    background-color: #1a1c1e;
+    border: 1px solid #2d2d2d;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: white;
+    width: 100%;
+    outline: none;
+}
+
+.ac-card {
+    background-color: #16181a;
+    border: 1px solid #2d2d2d;
+    border-radius: 16px;
+    padding: 24px;
+}

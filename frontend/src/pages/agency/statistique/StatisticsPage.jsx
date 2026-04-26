@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-// 1. استيراد الـ Thunks والـ Selectors
 import { fetchAgencyStatistics } from '../../../features/agency/agencyStatsThunks';
 import { 
     selectStatsSummary, 
@@ -15,45 +14,56 @@ import PerformanceCards from './components/PerformanceCards';
 import BookingTrendsChart from './components/BookingTrendsChart';
 import MonthlyRevenueChart from './components/MonthlyRevenueChart';
 import VehicleDetailsTable from './components/VehicleDetailsTable';
+
 const StatisticsPage = () => {
     const dispatch = useDispatch();
     const summary = useSelector(selectStatsSummary);
     const charts = useSelector(selectStatsCharts);
     const topCars = useSelector(selectTopCars);
     const loading = useSelector(selectStatsLoading);
+
     useEffect(() => {
         dispatch(fetchAgencyStatistics());
     }, [dispatch]);
-    console.log("Charts dans le composant:", charts);
-    console.log("Top Cars dans le composant:", topCars);
-    console.log("Loading dans le composant:", loading);
-    console.log("Summary dans le composant:", summary);
+
     if (loading) {
         return (
             <div className="flex h-96 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-blue-500)] border-t-transparent"></div>
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-red-500 border-t-transparent"></div>
             </div>
         );
     }
 
     return (
-        <div className="animate-fade-in space-y-10 md:space-y-12 p-4 md:p-8">
+        /* space-y-12 crée un espacement vertical important entre chaque bloc principal */
+        <div className="animate-fade-in space-y-12 p-4 md:p-8 max-w-[1600px] mx-auto">
             
-            <StatsHeader />
+            {/* Section 1: Header */}
+      <div className="space-y-8">
 
+            <StatsHeader />
+            {/* Section 2: Métriques clés */}
             <PerformanceCards summary={summary} />
             
-            <div className="grid grid-cols-1 gap-8 lg:gap-10 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                    <BookingTrendsChart data={charts?.bookings} />
-                </div>
-
-                <div className="lg:col-span-1">
-                    <MonthlyRevenueChart data={charts?.revenue} />
+      </div>
+            {/* Section 3: Graphiques (Grid) */}
+            <div className="space-y-8">
+                <h2 className="text-lg font-semibold text-white px-1">Analyses Graphiques</h2>
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                    <div className="lg:col-span-2">
+                        <BookingTrendsChart data={charts?.bookings} />
+                    </div>
+                    <div className="lg:col-span-1">
+                        <MonthlyRevenueChart data={charts?.revenue} />
+                    </div>
                 </div>
             </div>
 
-            <VehicleDetailsTable vehicles={topCars} />
+            {/* Section 4: Tableau de flotte */}
+            <div className="space-y-8 pt-4">
+                <h2 className="text-lg font-semibold text-white px-1">Performance de la Flotte</h2>
+                <VehicleDetailsTable vehicles={topCars} />
+            </div>
 
         </div>
     );
