@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Eye } from "../../../components/layout/icons";
+import { Car, Search, Filter, MapPin, Eye, Edit2, Trash2, Plus, TrendingUp } from "lucide-react";
 import {
   selectAllCars,
   selectCarLoading,
@@ -59,7 +59,6 @@ const MyCars = () => {
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
   const currentCars = sortedCars.slice(indexOfFirstCar, indexOfLastCar);
   const totalPages = Math.ceil(sortedCars.length / carsPerPage);
-  console.log("Current Cars:", currentCars);
   const totalCars = cars.length;
   const availableCars = cars.filter(
     (car) => car.status === "disponible",
@@ -87,7 +86,6 @@ const MyCars = () => {
     dispatch(closeModals());
   };
 
-  console.log("Cars in MyCars.jsx:", cars);
   const getStatusClass = (status) => {
     switch (status) {
       case "disponible":
@@ -103,10 +101,12 @@ const MyCars = () => {
   };
 
   return (
-    <div className="mycars-container">
-      <div className="mycars-header">
+    <div className="mycars-container animate-fade-in">
+      <div className="mycars-header ac-card">
         <div className="header-content">
-          <div className="header-icon"></div>
+          <div className="header-icon">
+            <Car size={24} />
+          </div>
           <div className="header-text">
             <h1>Gestion de la Flotte</h1>
             <p>
@@ -115,14 +115,15 @@ const MyCars = () => {
             </p>
           </div>
         </div>
-        <button className="btn-add" onClick={handleAddClick}>
-          + Ajouter un nouveau véhicule
+        <button className="btn-add inline-flex items-center gap-2" onClick={handleAddClick}>
+          <Plus size={16} />
+          Ajouter un nouveau véhicule
         </button>
       </div>
 
-      <div className="mycars-filters">
-        <div className="search-box">
-          <span className="search-icon">🔍</span>
+      <div className="mycars-filters ac-card">
+        <div className="search-box ac-input-dark">
+          <Search size={16} className="search-icon" />
           <input
             type="text"
             placeholder="Rechercher par marque ou modèle..."
@@ -131,7 +132,7 @@ const MyCars = () => {
           />
         </div>
         <div className="filter-group">
-          <span className="filter-icon">⚙️</span>
+          <Filter size={16} className="filter-icon text-gray-400" />
           <span>Filtrer par:</span>
 
           <select
@@ -154,7 +155,7 @@ const MyCars = () => {
         </div>
       </div>
 
-      <div className="mycars-table-container">
+      <div className="mycars-table-container ac-card">
         {isLoading ? (
           <div className="loading">Chargement...</div>
         ) : (
@@ -185,8 +186,8 @@ const MyCars = () => {
                       </div>
                     </td>
                     <td>
-                      <span className="city-badge">
-                        <span className="city-dot"></span>
+                        <span className="city-badge">
+                          <MapPin size={12} className="text-red-500" />
                         {car.city}
                       </span>
                     </td>
@@ -205,21 +206,21 @@ const MyCars = () => {
                     <td>
                       <div className="actions">
                         <button className="btn-action btn-view" title="Voir">
-                          <Eye /> ️
+                          <Eye size={14} />
                         </button>
                         <button
                           className="btn-action btn-edit"
                           onClick={() => handleEditClick(car)}
                           title="Modifier"
                         >
-                          ✏️
+                          <Edit2 size={14} />
                         </button>
                         <button
                           className="btn-action btn-delete"
                           onClick={() => handleDeleteClick(car.id)}
                           title="Supprimer"
                         >
-                          🗑️
+                          <Trash2 size={14} />
                         </button>
                       </div>
                     </td>
@@ -272,21 +273,21 @@ const MyCars = () => {
       {/* Stats Footer */}
       <div className="mycars-stats">
         <div className="stat-card">
-          <div className="stat-icon red">🚗</div>
+          <div className="stat-icon red"><Car size={20} className="text-red-500" /></div>
           <div className="stat-content">
             <span className="stat-label">FLOTTE TOTALE</span>
             <span className="stat-value">{totalCars}</span>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon green">✓</div>
+          <div className="stat-icon green"><Eye size={20} className="text-green-500" /></div>
           <div className="stat-content">
             <span className="stat-label">DISPONIBLES</span>
             <span className="stat-value">{availableCars}</span>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon yellow">💰</div>
+          <div className="stat-icon yellow"><TrendingUp size={20} className="text-yellow-500" /></div>
           <div className="stat-content">
             <span className="stat-label">REVENU ESTIMÉ</span>
             <span className="stat-value">

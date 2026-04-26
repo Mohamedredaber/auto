@@ -1,18 +1,18 @@
 import React from 'react';
-import { Search, Filter, MapPin, Building, Calendar as CalendarIcon } from 'lucide-react';
+import { Search, Filter, MapPin, Calendar as CalendarIcon } from 'lucide-react';
 
 const ReservationFilters = ({ filters, setFilters }) => {
-  console.log('Current Filters:', filters); 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value, page: 1 }));
   };
 
   return (
-    <div className="filters-bar">
+    <div className="filters-bar ac-card">
       <div className="search-wrapper">
         <Search size={18} className="search-icon" />
         <input 
+          className="ac-input-dark"
           type="text" 
           name="search"
           placeholder="Rechercher par ID, client ou véhicule..." 

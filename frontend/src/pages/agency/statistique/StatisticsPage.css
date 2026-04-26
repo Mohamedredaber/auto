@@ -2,7 +2,6 @@
    STATISTICS PAGE — CUSTOM STYLES
    ============================================= */
 
-/* 1. الحاوية الرئيسية (Page Entrance) */
 .animate-fade-in {
     animation: statsFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -12,62 +11,53 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 2. ستايل الـ Cards (بناءً على التوكينز) */
 .ac-card {
-    background-color: var(--color-bg-card);
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-xl);
-    padding: var(--space-6);
-    transition: all var(--transition-base);
-    box-shadow: var(--shadow-card);
+    background-color: #16181a;
+    border: 1px solid #2d2d2d;
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.2s ease;
 }
 
 .ac-card:hover {
-    border-color: var(--color-border);
-    background-color: var(--color-bg-card-hover);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: scale(1.01);
 }
 
-/* 3. ستايل الأزرار في الـ Header */
 .header-btn-secondary {
-    background-color: var(--color-bg-card);
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-2) var(--space-4);
-    font-weight: 600;
-    display: flex;
+    background: #1a1c1e;
+    color: #d1d5db;
+    border: 1px solid #2d2d2d;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-weight: 500;
+    display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
-    transition: var(--transition-fast);
+    gap: 8px;
+    transition: all 0.2s ease;
 }
 
 .header-btn-secondary:hover {
-    background-color: var(--color-bg-card-hover);
-    border-color: var(--color-blue-500);
-    color: var(--color-text-primary);
+    border-color: #ef4444;
+    color: #ffffff;
 }
 
 .btn-exporter {
-    background: var(--gradient-red);
-    color: var(--color-text-primary);
-    border: none;
-    border-radius: var(--radius-md);
-    padding: var(--space-2) var(--space-5);
-    font-weight: 700;
-    box-shadow: var(--shadow-red);
-    display: flex;
+    background: #ef4444;
+    color: #ffffff;
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-weight: 600;
+    display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
-    transition: var(--transition-spring);
+    gap: 8px;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .btn-exporter:hover {
-    transform: scale(1.03);
-    filter: brightness(1.1);
-    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+    background: #dc2626;
+    border-color: #dc2626;
 }
 
 /* 4. ستايل خاص بالـ Tooltip ديال المبيانات (Recharts) */

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ShieldCheck } from 'lucide-react';
 
@@ -8,7 +9,7 @@ const VerificationStatus = ({ isVerified }) => (
                 <ShieldCheck className={isVerified ? 'text-green-500' : 'text-orange-500'} />
             </div>
             <div>
-                <h4 className="font-semibold text-sm">Statut de Vérification</h4>
+                <h4 className="font-semibold text-sm text-white">Statut de Vérification</h4>
                 <p className="text-[11px] text-gray-400 mt-1 leading-relaxed">
                     Votre agence est certifiée AutoConnect. Nos clients bénéficient de l'assurance garantie.
                 </p>

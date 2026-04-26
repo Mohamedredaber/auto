@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Globe, Phone, Share2 } from 'lucide-react';
+import { Settings, MapPin, Phone, Share2 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { updateAgencyProfile } from '../../../../features/agency/agencyProfileThunks';
 
@@ -95,7 +95,7 @@ const AgencyDetailsForm = ({ agency }) => {
     return (
         <div className="ac-card space-y-10">
             <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold underline decoration-red-500/30 underline-offset-8">Détails de l'Agence</h3>
+                <h3 className="text-lg font-semibold text-white underline decoration-red-500/30 underline-offset-8">Détails de l'Agence</h3>
                 {isEditing ? (
                     <div className="flex gap-2">
                         <button type="button" className="btn-exporter" onClick={handleCancel}>Annuler</button>
@@ -113,13 +113,13 @@ const AgencyDetailsForm = ({ agency }) => {
             {/* INFORMATIONS GÉNÉRALES */}
             <div className="space-y-6">
                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
-                    <Globe size={14} className="text-red-500" /> Informations Générales
+                    <Settings size={14} className="text-red-500" /> Informations Générales
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Field label="Nom de l'Agence" value={formData.agency_name} editable={isEditing} onChange={(value) => handleChange('agency_name', value)} />
-                    <Field label="Ville" value={formData.city} editable={isEditing} onChange={(value) => handleChange('city', value)} />
+                    <Field label="Ville" value={formData.city} icon={<MapPin size={14}/>} editable={isEditing} onChange={(value) => handleChange('city', value)} />
                     <div className="md:col-span-2">
-                        <Field label="Adresse Complète" value={formData.address} editable={isEditing} onChange={(value) => handleChange('address', value)} />
+                        <Field label="Adresse Complète" value={formData.address} icon={<MapPin size={14}/>} editable={isEditing} onChange={(value) => handleChange('address', value)} />
                     </div>
                 </div>
             </div>
@@ -132,8 +132,8 @@ const AgencyDetailsForm = ({ agency }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Field label="Téléphone" value={formData.phone} editable={isEditing} onChange={(value) => handleChange('phone', value)} />
                     <Field label="Email de Contact" value={formData.email} editable={isEditing} onChange={(value) => handleChange('email', value)} />
-                    <Field label="Heure d'Ouverture" value={formData.time_start} icon={<Globe size={14}/>} editable={isEditing} onChange={(value) => handleChange('time_start', value)} />
-                    <Field label="Heure de Fermeture" value={formData.time_end} icon={<Globe size={14}/>} editable={isEditing} onChange={(value) => handleChange('time_end', value)} />
+                    <Field label="Heure d'Ouverture" value={formData.time_start} icon={<Phone size={14}/>} editable={isEditing} onChange={(value) => handleChange('time_start', value)} />
+                    <Field label="Heure de Fermeture" value={formData.time_end} icon={<Phone size={14}/>} editable={isEditing} onChange={(value) => handleChange('time_end', value)} />
                 </div>
             </div>
 
@@ -143,9 +143,9 @@ const AgencyDetailsForm = ({ agency }) => {
                     <Share2 size={14} className="text-red-500" /> Réseaux Sociaux
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <SocialField icon={<Globe size={14}/>} value={formData.instagram} editable={isEditing} onChange={(value) => handleChange('instagram', value)} />
+                    <SocialField icon={<Share2 size={14}/>} value={formData.instagram} editable={isEditing} onChange={(value) => handleChange('instagram', value)} />
                     <SocialField icon={<Share2 size={14}/>} value={formData.facebook} editable={isEditing} onChange={(value) => handleChange('facebook', value)} />
-                    <SocialField icon={<Globe size={14}/>} value={formData.website} editable={isEditing} onChange={(value) => handleChange('website', value)} placeholder="Site Web" />
+                    <SocialField icon={<Share2 size={14}/>} value={formData.website} editable={isEditing} onChange={(value) => handleChange('website', value)} placeholder="Site Web" />
                 </div>
             </div>
         </div>

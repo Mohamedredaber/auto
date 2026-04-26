@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Users } from "lucide-react";
 
 import {
   fetchAgencyClients,
@@ -48,11 +49,14 @@ export default function AgencyClient() {
   }
 
   return (
-    <div className="agency-clients">
+    <div className="agency-clients animate-fade-in">
 
-      <div className="agency-clients__header">
+      <div className="agency-clients__header ac-card">
         <div className="agency-clients__heading">
-          <h1>Clients</h1>
+          <h1 className="text-white flex items-center gap-2">
+            <Users size={20} className="text-red-500" />
+            Clients
+          </h1>
           <p>Gérez et suivez l'ensemble de vos clients et leurs réservations.</p>
         </div>
       </div>

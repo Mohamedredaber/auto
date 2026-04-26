@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { TrendingUp } from 'lucide-react';
 
 import { fetchAgencyStatistics } from '../../../features/agency/agencyStatsThunks';
 import { 
@@ -36,7 +37,7 @@ const StatisticsPage = () => {
 
     return (
         /* space-y-12 crée un espacement vertical important entre chaque bloc principal */
-        <div className="animate-fade-in space-y-12 p-4 md:p-8 max-w-[1600px] mx-auto">
+        <div className="animate-fade-in space-y-12 p-4 md:p-8 max-w-[1600px] mx-auto text-white">
             
             {/* Section 1: Header */}
       <div className="space-y-8">
@@ -48,12 +49,15 @@ const StatisticsPage = () => {
       </div>
             {/* Section 3: Graphiques (Grid) */}
             <div className="space-y-8">
-                <h2 className="text-lg font-semibold text-white px-1">Analyses Graphiques</h2>
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                    <div className="lg:col-span-2">
+                <h2 className="text-lg font-semibold text-white px-1 inline-flex items-center gap-2">
+                    <TrendingUp size={18} className="text-red-500" />
+                    Analyses Graphiques
+                </h2>
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+                    <div className="lg:col-span-8">
                         <BookingTrendsChart data={charts?.bookings} />
                     </div>
-                    <div className="lg:col-span-1">
+                    <div className="lg:col-span-4">
                         <MonthlyRevenueChart data={charts?.revenue} />
                     </div>
                 </div>

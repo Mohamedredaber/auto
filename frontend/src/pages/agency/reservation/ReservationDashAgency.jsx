@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Calendar } from 'lucide-react';
 import { 
   getAgencyBookings, 
   getBookingStats 
@@ -20,11 +21,10 @@ const ReservationDashAgency = () => {
   const dispatch = useDispatch();
   
   // Sélecteurs
-  const bookings = useSelector(selectAllBookings);
+  const bookings = useSelector(selectAllBookings) || [];
   const stats = useSelector(selectBookingStats);
   const loading = useSelector(selectBookingLoading);
-  const pagination = useSelector(selectBookingPagination);
-  console.log("Stats dans le composant:", bookings);
+  const pagination = useSelector(selectBookingPagination) || {};
   const [filters, setFilters] = useState({
     search: '',
     status: 'all',
@@ -44,10 +44,13 @@ const ReservationDashAgency = () => {
   };
 
   return (
-    <div className="agency-reservations-container">
-      <header className="page-header">
-        <h1>Gestion des Réservations</h1>
-        <p>Supervisez et gérez l'ensemble des contrats de location de la plateforme.</p>
+    <div className="agency-reservations-container animate-fade-in text-white">
+      <header className="page-header ac-card">
+        <h1 className="inline-flex items-center gap-2">
+          <Calendar size={20} className="text-red-500" />
+          Gestion des Réservations
+        </h1>
+        <p className="text-gray-400">Supervisez et gérez l'ensemble des contrats de location de la plateforme.</p>
       </header>
 
       {/* Cartes statistiques du haut */}
@@ -57,20 +60,24 @@ const ReservationDashAgency = () => {
       <ReservationFilters filters={filters} setFilters={setFilters} />
 
       {/* Table des données */}
-      <div className="table-container shadow-card">
+      <div className="table-container shadow-card ac-card">
         <ReservationTable bookings={bookings} isLoading={loading} />
         
         {/* Pagination footer */}
         <div className="table-footer">
-          <span>Affichage de {bookings.length} sur {pagination.total} réservations</span>
+          <span>
+            Affichage de {bookings.length} sur {pagination.total ?? bookings.length} réservations
+          </span>
           <div className="pagination-btns">
             <button 
-              disabled={pagination.current_page === 1}
-              onClick={() => handlePageChange(pagination.current_page - 1)}
+              className="pagination-btn"
+              disabled={(pagination.current_page ?? 1) === 1}
+              onClick={() => handlePageChange((pagination.current_page ?? 1) - 1)}
             >Précédent</button>
             <button 
-              disabled={pagination.current_page === pagination.last_page}
-              onClick={() => handlePageChange(pagination.current_page + 1)}
+              className="pagination-btn"
+              disabled={(pagination.current_page ?? 1) >= (pagination.last_page ?? 1)}
+              onClick={() => handlePageChange((pagination.current_page ?? 1) + 1)}
             >Suivant</button>
           </div>
         </div>

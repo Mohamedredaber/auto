@@ -6,6 +6,7 @@
     color: white;
     width: 100%;
     outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .ac-card {
@@ -13,4 +14,39 @@
     border: 1px solid #2d2d2d;
     border-radius: 16px;
     padding: 24px;
+    transition: all 0.2s ease;
+}
+
+.ac-card:hover {
+    transform: scale(1.01);
+}
+
+.ac-input-dark:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
+}
+
+.btn-exporter {
+    background: #ef4444;
+    color: #ffffff;
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-exporter:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+.btn-exporter:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
 }

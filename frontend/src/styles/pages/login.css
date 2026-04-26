@@ -1,490 +1,265 @@
-/* ================================================================
-   LOGIN PAGE — css partagé avec register.css (mêmes variables)
-   AutoConnect | Dark Premium Design
-   ================================================================ */
+/* ═══════════════════════════════════════════════════════
+   LOGIN PAGE  —  login.css
+   Dépend de : register.css  (tokens rp-*)
+   Toutes les couleurs via les tokens CSS de globals.css
+═══════════════════════════════════════════════════════ */
 
-@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap");
-
-/* ── On réutilise les variables de register.css ── */
-/* Si register.css est déjà importé, ces :root ne font que confirmer */
-:root {
-  --lp-bg:         #0c0c0e;
-  --lp-bg2:        #141418;
-  --lp-bg3:        #1a1a20;
-  --lp-bg4:        #1e1e26;
-  --lp-border:     #2a2a35;
-  --lp-border2:    #1f1f28;
-  --lp-blue:       #2563eb;
-  --lp-blue2:      #3b82f6;
-  --lp-blue-glow:  rgba(37, 99, 235, 0.35);
-  --lp-blue-faint: rgba(37, 99, 235, 0.08);
-  --lp-red:        #dc2626;
-  --lp-red2:       #ef4444;
-  --lp-green:      #10b981;
-  --lp-text:       #ffffff;
-  --lp-text2:      #cbd5e1;
-  --lp-muted:      #64748b;
-}
-
-/* ── ROOT ── */
+/* ── Root wrapper ─────────────────────────────────── */
 .lp-root {
-  font-family: "DM Sans", sans-serif;
-  color: var(--lp-text);
-  background: var(--lp-bg);
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-}
-.lp-root *,
-.lp-root *::before,
-.lp-root *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-.lp-root button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font: inherit;
-  color: inherit;
-}
-.lp-root a {
-  color: inherit;
-  text-decoration: none;
-}
-.lp-root input {
-  font: inherit;
-  color: inherit;
-}
-.lp-root ::-webkit-scrollbar { width: 4px; }
-.lp-root ::-webkit-scrollbar-thumb {
-  background: var(--lp-border);
-  border-radius: 99px;
-}
-
-/* ── PAGE LAYOUT ── */
-.lp-page {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
-}
-
-/* ── LEFT PANEL (décoratif) ── */
-.lp-left {
-  position: relative;
-  background: var(--lp-bg2);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 56px;
-  border-right: 1px solid var(--lp-border);
-}
-
-/* Grille en arrière-plan */
-.lp-left::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-primary);
+  /* subtil bruit de fond pour éviter le noir plat */
   background-image:
-    linear-gradient(var(--lp-border2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--lp-border2) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.2) 100%);
-  opacity: 0.5;
+    radial-gradient(ellipse 80% 60% at 70% 40%, #DC262610 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 10% 80%, #1F293710 0%, transparent 60%);
 }
 
-/* Gradient lumineux bleu centré */
-.lp-left::after {
-  content: "";
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%);
-  pointer-events: none;
+/* ── Page centré ──────────────────────────────────── */
+.lp-page {
+  width: 100%;
+  max-width: 480px;
+  padding: 1.5rem;
 }
 
-.lp-left-content {
-  position: relative;
-  z-index: 2;
-}
-
-.lp-brand {
-  position: absolute;
-  top: 40px;
-  left: 56px;
-  z-index: 3;
-}
-
-.lp-brand-logo {
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 22px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.lp-brand-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--lp-blue2);
-  box-shadow: 0 0 10px var(--lp-blue-glow);
-}
-
-/* Testimonial / Citation */
-.lp-quote {
-  position: relative;
-  z-index: 2;
-}
-
-.lp-quote-marks {
-  font-size: 64px;
-  line-height: 1;
-  color: var(--lp-blue);
-  opacity: 0.4;
-  font-family: "Sora", sans-serif;
-  margin-bottom: -12px;
-}
-
-.lp-quote-text {
-  font-size: 20px;
-  font-family: "Sora", sans-serif;
-  font-weight: 600;
-  line-height: 1.5;
-  color: var(--lp-text);
-  margin-bottom: 20px;
-  max-width: 360px;
-}
-
-.lp-quote-author {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.lp-quote-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--lp-blue), var(--lp-blue2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 14px;
-  flex-shrink: 0;
-}
-
-.lp-quote-info-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--lp-text);
-}
-
-.lp-quote-info-role {
-  font-size: 12px;
-  color: var(--lp-muted);
-}
-
-/* Stats flottantes */
-.lp-stats {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: 220px;
-}
-
-.lp-stat-card {
-  background: rgba(20, 20, 24, 0.85);
-  border: 1px solid var(--lp-border);
-  border-radius: 14px;
-  padding: 14px 18px;
-  backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  animation: lp-float 6s ease-in-out infinite;
-}
-
-.lp-stat-card:nth-child(2) { animation-delay: -2s; }
-.lp-stat-card:nth-child(3) { animation-delay: -4s; }
-@keyframes lp-float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-6px); }
-}
-
-.lp-stat-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--lp-blue-faint);
-  border: 1px solid rgba(37, 99, 235, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--lp-blue2);
-  flex-shrink: 0;
-}
-
-.lp-stat-val {
-  font-family: "Sora", sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--lp-text);
-  line-height: 1;
-}
-
-.lp-stat-lbl {
-  font-size: 11px;
-  color: var(--lp-muted);
-  margin-top: 2px;
-}
-
-/* ── RIGHT PANEL (formulaire) ── */
+/* ── Carte formulaire ─────────────────────────────── */
 .lp-right {
-  background: var(--lp-bg2);
-  display: flex;
-  flex-direction: column;
-  border-left: 1px solid var(--lp-border);
-  overflow-y: auto;
+  width: 100%;
 }
 
 .lp-form-wrap {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 56px;
-  max-width: 520px;
-  width: 100%;
-  margin: 0 auto;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 1.25rem;
+  padding: 2.5rem 2rem;
+  box-shadow:
+    0 0 0 1px var(--color-border-subtle),
+    0 24px 48px #00000066;
 }
 
-/* ── FORM HEADER ── */
+/* ── Animation d'entrée ───────────────────────────── */
+.lp-view {
+  animation: lp-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes lp-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── En-tête formulaire ───────────────────────────── */
 .lp-fheader {
-  margin-bottom: 36px;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .lp-ftitle {
-  font-family: "Sora", sans-serif;
-  font-size: 30px;
-  font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 10px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
 }
 
-.lp-ftitle-accent { color: var(--lp-blue2); }
+.lp-ftitle-accent {
+  color: var(--color-primary-500);
+}
 
 .lp-fsub {
-  font-size: 14px;
-  color: var(--lp-muted);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
   line-height: 1.6;
 }
 
-/* ── FORM FIELDS (réutilise les classes rp-* de register) ─ */
-/* Les composants InputField utilisent rp-group / rp-label / rp-input etc.
-   On importe register.css pour l'avoir, mais on met ici ce qui diffère */
+/* ── Erreur globale ───────────────────────────────── */
+.lp-global-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error);
+  border-radius: 0.5rem;
+  color: var(--color-error);
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+}
 
-/* ── REMEMBER ME ── */
+/* ── "Se souvenir / Mot de passe oublié" ──────────── */
 .lp-remember {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .lp-checkbox-wrap {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   cursor: pointer;
+  user-select: none;
 }
 
 .lp-checkbox {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  border: 1px solid var(--lp-border);
-  background: var(--lp-bg3);
   appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 0.25rem;
+  background: var(--color-bg-input);
   cursor: pointer;
   position: relative;
-  transition: all 0.2s;
+  flex-shrink: 0;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .lp-checkbox:checked {
-  background: var(--lp-blue);
-  border-color: var(--lp-blue);
+  background: var(--color-primary-500);
+  border-color: var(--color-primary-500);
 }
 
 .lp-checkbox:checked::after {
   content: "";
   position: absolute;
-  top: 2px;
-  left: 4px;
-  width: 5px;
-  height: 8px;
-  border: 2px solid white;
-  border-top: none;
-  border-left: none;
-  transform: rotate(45deg);
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5l3.5 3.5L11 1' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+    center / 10px no-repeat;
 }
 
 .lp-checkbox-lbl {
-  font-size: 13px;
-  color: var(--lp-text2);
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
 }
 
 .lp-forgot {
-  font-size: 13px;
-  color: var(--lp-blue2);
+  font-size: 0.8125rem;
+  color: var(--color-primary-400);
+  text-decoration: none;
   transition: color 0.2s;
 }
 
-.lp-forgot:hover { color: var(--lp-blue); }
-
-/* ── BUTTONS ── */
-.lp-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 13px 22px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.2s;
-  width: 100%;
-  letter-spacing: 0.02em;
+.lp-forgot:hover {
+  color: var(--color-primary-500);
+  text-decoration: underline;
 }
 
-.lp-btn-primary {
-  background: linear-gradient(135deg, var(--lp-blue), var(--lp-blue2));
-  color: #fff;
-  box-shadow: 0 4px 16px var(--lp-blue-glow);
-}
-.lp-btn-primary:hover {
-  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.5);
-  transform: translateY(-1px);
-}
-.lp-btn-primary:active { transform: translateY(0); }
-.lp-btn-primary:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.lp-btn-google {
-  background: var(--lp-bg3);
-  color: var(--lp-text2);
-  border: 1px solid var(--lp-border);
-}
-.lp-btn-google:hover {
-  background: var(--lp-bg4);
-  border-color: #3a3a48;
-  color: var(--lp-text);
-}
-
+/* ── Actions ──────────────────────────────────────── */
 .lp-btn-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.75rem;
 }
 
+/* Base bouton */
+.lp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.lp-btn:active { transform: scale(0.98); }
+
+/* Bouton principal */
+.lp-btn-primary {
+  background: var(--gradient-primary);
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 16px #DC262630;
+}
+
+.lp-btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: 0 6px 20px #DC262648;
+}
+
+.lp-btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Bouton Google */
+.lp-btn-google {
+  background: var(--color-bg-input);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.lp-btn-google:hover {
+  background: var(--color-bg-card-hover);
+  border-color: var(--color-accent-500);
+}
+
+/* Spinner */
+.lp-spin {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #ffffff44;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: lp-spin 0.7s linear infinite;
+}
+
+@keyframes lp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Séparateur "ou" */
 .lp-or {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
 }
+
 .lp-or::before,
 .lp-or::after {
   content: "";
   flex: 1;
   height: 1px;
-  background: var(--lp-border);
-}
-.lp-or span {
-  font-size: 12px;
-  color: var(--lp-muted);
+  background: var(--color-border);
 }
 
-/* ── GLOBAL ERROR ── */
-.lp-global-error {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 14px;
-  background: rgba(220, 38, 38, 0.1);
-  border: 1px solid rgba(220, 38, 38, 0.3);
-  border-radius: 10px;
-  font-size: 13px;
-  color: var(--lp-red2);
-  margin-bottom: 20px;
-  animation: lp-fadeup 0.3s ease both;
-}
-
-/* ── REGISTER LINK ── */
+/* ── Lien inscription ─────────────────────────────── */
 .lp-register-link {
   text-align: center;
-  font-size: 13px;
-  color: var(--lp-muted);
-  margin-top: 20px;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
 }
+
 .lp-register-link a {
-  color: var(--lp-blue2);
+  color: var(--color-primary-400);
+  text-decoration: none;
   font-weight: 600;
-}
-.lp-register-link a:hover { color: var(--lp-blue); }
-
-/* ── SPINNER ── */
-.lp-spin {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: lp-spinr 0.6s linear infinite;
-  flex-shrink: 0;
-}
-@keyframes lp-spinr { to { transform: rotate(360deg); } }
-
-/* ── ANIMATION D'ENTRÉE ── */
-.lp-view {
-  animation: lp-fadeup 0.35s ease both;
-}
-@keyframes lp-fadeup {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  transition: color 0.2s;
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .lp-page {
-    grid-template-columns: 1fr;
-  }
-  .lp-left {
-    display: none;
-  }
-  .lp-form-wrap {
-    padding: 36px 24px;
-  }
+.lp-register-link a:hover {
+  color: var(--color-primary-500);
 }
+
 @media (max-width: 480px) {
   .lp-form-wrap {
-    padding: 28px 18px;
+    padding: 2rem 1.25rem;
+    border-radius: 1rem;
+  }
+
+  .lp-ftitle {
+    font-size: 1.5rem;
   }
 }

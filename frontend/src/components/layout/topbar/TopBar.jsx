@@ -6,6 +6,7 @@ import '../../../styles/pages/dashboard.css';
 
 const TopBar = () => {
   const user = useSelector(selectUser);
+  const role = user?.role;
   const agency = user?.agency;
 
   return (
@@ -27,14 +28,17 @@ const TopBar = () => {
             <span className="user-name">
               {user?.full_name || `${user?.first_name} ${user?.last_name}`}
             </span>
-            <span className="user-role">Agency Manager</span>
+
+              <span className="user-role">{ role === "agency_manager" ? "Agency Manager" : "dashboard user"   }</span>
           </div>
           
-          <div className="agency-avatar">
+     
+      {role === "agency_manager" && agency &&
+          <div className="agency-avatar"> 
             <img
               src={agency?.logo_url}
               alt={agency?.agency_name || "Logo"}        />
-          </div>
+          </div>}
         </div>
       </div>
     </header>
