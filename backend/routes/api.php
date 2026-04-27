@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Agency\CarController;
-use App\Http\Controllers\Agency\DashboardController;
 use App\Http\Controllers\Agency\ReservationController;
 use App\Http\Controllers\Client\BookingController as ClientBookingController;
 use App\Http\Controllers\Public\CarListingController;
@@ -11,6 +10,7 @@ use App\Http\Controllers\Agency\StatisticsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agency\AgencyProfileController;
 use App\Http\Controllers\Agency\AgencyClientController;
+use App\Http\Controllers\Agency\DashboardController;
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
     Route::get('/{id}', [CarListingController::class, 'show']);

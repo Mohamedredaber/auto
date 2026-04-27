@@ -35,8 +35,7 @@ export default function HeroSearch() {
 
           <p className="hero-search__subtitle">
             Comparez les offres des meilleures agences de location et réservez 
-            votre véhicule premium en quelques minutes seulement.
-          </p>
+            votre véhicule premium en quelques minutes seulement.          </p>
 
           <form className="hero-search__form" onSubmit={handleSearch}>
             <div className="hero-search__input-group">
