@@ -6,6 +6,7 @@ import { fetchDashboardData }         from "../../../features/agency/dashboardTh
 import {
   selectDashboardStats,
   selectRecentBookings,
+  selectTrimestreGrowth,
   selectChartData,
   selectIsDashboardLoading,
 } from "../../../features/agency/dashboardSelector";
@@ -56,14 +57,16 @@ export default function Dashboard() {
   const recentBookings = useSelector(selectRecentBookings);
   const chartData      = useSelector(selectChartData);
   const isLoading      = useSelector(selectIsDashboardLoading);
-
+  const performance  = useSelector(selectTrimestreGrowth);
+  console.log("Performance data from Redux:", performance);
   const [section, setSection] = useState("overview");
   const [period,  setPeriod]  = useState("30j");
 
   useEffect(() => {
     dispatch(fetchDashboardData());
   }, [dispatch]);
-
+  // console.log("Dashboard render", { stats, recentBookings, chartData, isLoading });
+  
   const statCards = [
     {
       icon:       <Icons.Car />,
@@ -100,14 +103,12 @@ export default function Dashboard() {
   ];
 
   const handleExport = () => {
-    /* TODO: implémenter export CSV/PDF */
     alert("Export en cours de développement…");
   };
 
   return (
     <div className="db-root">
 
-      {/* ── Page header ─────────────────────────────────────── */}
       <div className="db-page-header">
         <div>
           <h1 className="db-page-title">Tableau de Bord</h1>
@@ -116,7 +117,6 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Section tabs */}
         <div className="db-section-tabs">
           <button
             className={`db-tab${section === "overview" ? " active" : ""}`}
@@ -140,7 +140,6 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* ════════ SECTION : VUE D'ENSEMBLE ════════ */}
       {section === "overview" && (
         <div className="db-overview">
           <div className="db-overview-main">
@@ -153,7 +152,6 @@ export default function Dashboard() {
           <div className="db-overview-side">
             <MonthlyChart chartData={chartData} loading={isLoading} />
 
-            {/* Résumé de performance */}
             <div className="db-perf-card">
               <div className="db-perf-icon">
                 <Icons.Revenue />
@@ -162,7 +160,7 @@ export default function Dashboard() {
                 <h4 className="db-perf-title">Résumé de performance</h4>
                 <p className="db-perf-text">
                   Votre volume de réservation a augmenté de{" "}
-                  <strong style={{ color: "var(--color-success)" }}>18%</strong>{" "}
+                  <strong style={{ color: "var(--color-success)" }}>{performance}%</strong>{" "}
                   par rapport au trimestre précédent. La tendance reste positive
                   pour la saison estivale.
                 </p>

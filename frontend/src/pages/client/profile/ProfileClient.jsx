@@ -1,166 +1,179 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { User, Mail, Phone, Calendar, Edit2, Save, X } from "lucide-react";
+/* MonthlyChart.jsx — Graphique mensuel optimisé */
+import React from "react";
 import {
-  selectUserProfile,
-  selectIsProfileLoading,
-} from "../../../features/client/profileSelectors";
-import {
-  fetchUserProfile,
-  updateUserProfile,
-} from "../../../features/client/profileThunks";
-import "./Profile.css";
+  AreaChart, Area, XAxis, YAxis,
+  CartesianGrid, Tooltip, ResponsiveContainer,
+} from "recharts";
 
-const ProfilePage = () => {
-  const dispatch = useDispatch();
-  const user = useSelector(selectUserProfile);
-  const isLoading = useSelector(selectIsProfileLoading);
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    phone: "",
-    email: "",
-  });
-
-  // ✅ Charger le profil au montage du composant
-  useEffect(() => {
-    dispatch(fetchUserProfile());
-  }, [dispatch]);
-
-  // Synchroniser les données locales avec le store Redux
-
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone: user.phone || "",
-        email: user.email,
-      });
-    }
-  }, [user]);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(updateUserProfile(formData))
-      .unwrap()
-      .then(() => setIsEditing(false))
-      .catch((err) => alert("Erreur lors de la mise à jour : " + err));
-  };
-
-  if (isLoading && !user) return <div className="loader">Chargement...</div>;
-
+/* Tooltip personnalisé */
+const CustomTooltip = ({ active, payload, label }) => {
+  if (!active || !payload?.length) return null;
   return (
-    <div className="profile-wrapper">
-      <div className="profile-header-section">
-        <div className="avatar-large">
-          {user?.first_name?.charAt(0).toUpperCase()}
-        </div>
-        <div className="header-text">
-          <h1>
-            {user?.first_name} {user?.last_name}
-          </h1>
-          <p className="member-since">Membre depuis le {user?.created_at}</p>
-        </div>
-        {!isEditing ? (
-          <button
-            className="btn-edit-toggle"
-            onClick={() => setIsEditing(true)}
-          >
-            <Edit2 size={18} /> Modifier le profil
-          </button>
-        ) : (
-          <div className="edit-actions">
-            <button className="btn-cancel" onClick={() => setIsEditing(false)}>
-              <X size={18} /> Annuler
-            </button>
-          </div>
-        )}
+    <div style={{
+      background: "#16181a",
+      border: "1px solid #2d2d2d",
+      borderRadius: "8px",
+      padding: "8px 12px",
+      fontSize: "0.8125rem",
+      boxShadow: "0 8px 24px rgba(0,0,0,0.44)",
+    }}>
+      <div style={{ color: "#6b7280", marginBottom: "3px", fontSize: "0.75rem" }}>
+        {label}
       </div>
-
-      <form className="profile-content-grid" onSubmit={handleSubmit}>
-        <div className="info-card">
-          <div className="card-header">
-            <User size={20} />
-            <h2>Détails Personnels</h2>
-          </div>
-
-          <div className="card-body">
-            <div className="input-group">
-              <label>Prénom</label>
-              <input
-                type="text"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                disabled={!isEditing}
-                className={isEditing ? "editable" : ""}
-              />
-            </div>
-            <div className="input-group">
-              <label>Nom</label>
-              <input
-                type="text"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleChange}
-                disabled={!isEditing}
-                className={isEditing ? "editable" : ""}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="info-card">
-          <div className="card-header">
-            <Mail size={20} />
-            <h2>Contact & Sécurité</h2>
-          </div>
-
-          <div className="card-body">
-            <div className="input-group">
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                disabled={true} // Email souvent non modifiable pour la sécurité
-                className="locked"
-              />
-            </div>
-            <div className="input-group">
-              <label>Téléphone</label>
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                disabled={!isEditing}
-                className={isEditing ? "editable" : ""}
-              />
-            </div>
-          </div>
-        </div>
-
-        {isEditing && (
-          <div className="save-container">
-            <button type="submit" className="btn-save" disabled={isLoading}>
-              <Save size={18} />{" "}
-              {isLoading
-                ? "Enregistrement..."
-                : "Enregistrer les modifications"}
-            </button>
-          </div>
-        )}
-      </form>
+      <div style={{ color: "#fff", fontWeight: 700 }}>
+        {payload[0].value} réservations
+      </div>
     </div>
   );
 };
 
-export default ProfilePage;
+/* Données de fallback */
+const FALLBACK = [
+  { month: "Jan", value: 0 },
+  { month: "Fév", value: 0 },
+  { month: "Mar", value: 0 },
+  { month: "Avr", value: 0 },
+  { month: "Mai", value: 0 },
+  { month: "Juin", value: 0 },
+];
+
+export default function MonthlyChart({ chartData = [], loading = false }) {
+  console.log("📊 MonthlyChart render", { chartData, loading });
+  const normalizeData = () => {
+    try {
+      if (!Array.isArray(chartData) || chartData.length === 0) {
+        return FALLBACK;
+      }
+
+      return chartData.map((d) => ({
+        month: d.month || d.mois || d.label || "?",
+        value: Math.max(0, Number(d.value || d.bookings || d.reservations || d.count || 0)),
+      })).slice(0, 12); // Max 12 mois
+    } catch (err) {
+      console.error(" Erreur normalisation chartData:", err);
+      return FALLBACK;
+    }
+  };
+
+  const data = normalizeData();
+  
+  // Calcul tendance
+  const last = data[data.length - 1]?.value ?? 0;
+  const before = data[data.length - 2]?.value ?? 0;
+  const trend = last - before;
+  const trendColor = trend >= 0 ? "#10b981" : "#ef4444";
+  const trendBg = trend >= 0 ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)";
+
+  return (
+    <div style={{
+      background: "#16181a",
+      border: "1px solid #2d2d2d",
+      borderRadius: "1rem",
+      padding: "1.5rem",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      gap: "1rem",
+    }}>
+      {/* Header */}
+      <div style={{
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+      }}>
+        <div>
+          <h3 style={{
+            fontSize: "1rem",
+            fontWeight: 700,
+            color: "#fff",
+            marginBottom: "0.2rem",
+            margin: 0,
+          }}>Volume Mensuel</h3>
+          <p style={{
+            fontSize: "0.8125rem",
+            color: "#6b7280",
+            margin: 0,
+          }}>Réservations par mois</p>
+        </div>
+        
+        <div style={{
+          fontSize: "0.75rem",
+          fontWeight: 700,
+          padding: "4px 10px",
+          borderRadius: "99px",
+          color: trendColor,
+          background: trendBg,
+        }}>
+          {trend >= 0 ? "↑" : "↓"} {Math.abs(trend)}
+        </div>
+      </div>
+
+      {/* Graphique ou skeleton */}
+      {loading ? (
+        <div style={{
+          flex: 1,
+          minHeight: "180px",
+          borderRadius: "8px",
+          background: "linear-gradient(90deg, #2d2d2d 25%, #3a3a3f 50%, #2d2d2d 75%)",
+          backgroundSize: "200% 100%",
+          animation: "shimmer 1.4s infinite",
+        }}>
+          <style>{`
+            @keyframes shimmer {
+              0%   { background-position: 200% 0; }
+              100% { background-position: -200% 0; }
+            }
+          `}</style>
+        </div>
+      ) : (
+        <ResponsiveContainer width="100%" height={180}>
+          <AreaChart 
+            data={data} 
+            margin={{ top: 8, right: 12, left: 0, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient id="mcGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#EF4444" stopOpacity={0.35} />
+                <stop offset="95%" stopColor="#EF4444" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#2A2A35"
+              vertical={false}
+            />
+            
+            <XAxis
+              dataKey="month"
+              tick={{ fill: "#6B7280", fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
+            />
+            
+            <YAxis
+              tick={{ fill: "#6B7280", fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
+              allowDecimals={false}
+              width={40}
+            />
+            
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: "#EF444433", strokeWidth: 1 }} />
+            
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#EF4444"
+              strokeWidth={2}
+              fill="url(#mcGrad)"
+              dot={false}
+              activeDot={{ r: 5, fill: "#EF4444", stroke: "#1A1A20", strokeWidth: 2 }}
+              isAnimationActive={true}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      )}
+    </div>
+  );
+}

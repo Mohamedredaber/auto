@@ -13,12 +13,12 @@ class DashboardController extends Controller
 public function index()
 {
     $agency = auth()->user()->agency;
-
+    
     $stats = [
         'total_voitures' => $agency->cars()->count(),
         'voitures_disponibles' => $agency->cars()->where('status', 'available')->count(),
-        'reservations_actives' => $agency->bookings()->where('status', 'confirmed')->count(), // الحجوزات المؤكدة حالياً
-        'revenu_mensuel' => $agency->bookings()->where('status', 'confirmed')->whereMonth('created_at', now()->month)->sum('total_price'),
+        'reservations_actives' => $agency->bookings()->where('status', 'completed')->count(), // الحجوزات المؤكدة حالياً
+        'revenu_mensuel' => $agency->bookings()->where('status', 'completed')->whereMonth('created_at', now()->month)->sum('total_price'),
     ];
 
     $reservationrecente = $agency->bookings()
@@ -29,7 +29,7 @@ public function index()
 
     $volumemensuel = $agency->bookings()
         ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-        ->where('status', 'confirmed')
+        ->where('status', 'completed')
         ->where('created_at', '>=', now()->subMonths(6))
         ->groupBy('month')
         ->orderBy('month')
