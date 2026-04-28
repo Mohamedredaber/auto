@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import GuestRoute from "./GuestRoute";
 import RoleRoute from "./RoleRoute";
+import VerificationRoute from "./VerificationRoute";
 
 import Layout from "../components/layout/Layout";
 import ClientLayout from "../components/layout/ClientLayout";
@@ -71,6 +72,7 @@ export default function AppRoutes() {
           </Route>
         </Route>
         <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN_AGENCY]} />}>
+        <Route element={<VerificationRoute />}>
           <Route element={<AgencyLayout />}>
             <Route path="/dashboard/agency" element={<AgencyDashboard />} />
             <Route path="/dashboard/agency/cars" element={<MyCars />} />
@@ -90,6 +92,7 @@ export default function AppRoutes() {
               path="/dashboard/agency/reservations"
               element={<ReservationDashAgency />}
             />
+          </Route>
           </Route>
         </Route>
 
