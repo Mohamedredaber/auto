@@ -35,3 +35,11 @@ export const updateProfile = async (data) => {
   await getCsrfToken();
   return api.post("/client/profile", data);
 };
+
+/**
+ * Récupère les données du dashboard client
+ */
+export const getClientDashboard = async () => {
+  await getCsrfToken();
+  return api.get("/client/dashboard");
+};

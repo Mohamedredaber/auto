@@ -4,6 +4,7 @@ import {
   fetchBookingDetails,
   cancelBookingThunk,
   deleteBookingThunk,
+  getClientDashboard,
 } from "./clientThunks";
 
 const initialState = {
@@ -12,6 +13,20 @@ const initialState = {
   loading: false,
   error: null,
   totalBookings: 0,
+
+  // NEW: Dashboard Data
+  dashboard: {
+    stats: {
+      total_bookings: 0,
+      total_spent: 0,
+      active_bookings: 0,
+    },
+    recent_activity: null,
+    account_health: 0,
+    chart_data: [],
+    user: {},
+  },
+  dashboardLoading: false,
 };
 
 const clientSlice = createSlice({
@@ -48,7 +63,7 @@ const clientSlice = createSlice({
           state.totalBookings = 0;
         }
       })
-      
+
       .addCase(fetchUserBookings.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
@@ -103,6 +118,19 @@ const clientSlice = createSlice({
       })
       .addCase(deleteBookingThunk.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      // getClientDashboard
+      .addCase(getClientDashboard.pending, (state) => {
+        state.dashboardLoading = true;
+        state.error = null;
+      })
+      .addCase(getClientDashboard.fulfilled, (state, action) => {
+        state.dashboardLoading = false;
+        state.dashboard = action.payload;
+      })
+      .addCase(getClientDashboard.rejected, (state, action) => {
+        state.dashboardLoading = false;
         state.error = action.payload;
       });
   },

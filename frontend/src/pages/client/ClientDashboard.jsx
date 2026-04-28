@@ -11,7 +11,7 @@ import {
 import { TrendingUp, DollarSign, Calendar, AlertCircle } from "lucide-react";
 import "./Dashboard.css";
 
-const Dashboard = () => {
+const ClientDashboard = () => {
   const dispatch = useDispatch();
   const stats = useSelector(selectDashboardStats);
   const recentActivity = useSelector(selectDashboardRecentActivity);
@@ -23,7 +23,6 @@ const Dashboard = () => {
     dispatch(getClientDashboard());
   }, [dispatch]);
 
-  // Log to console when data loads
   useEffect(() => {
     if (!loading && stats) {
       console.log("📊 DASHBOARD STATS:", stats);
@@ -173,10 +172,8 @@ const Dashboard = () => {
           <p>Aucune réservation trouvée.</p>
         </div>
       )}
-
-  
     </div>
   );
 };
 
-export default Dashboard;
+export default ClientDashboard;

@@ -4,6 +4,7 @@ import {
   getBookingDetails,
   deleteBooking,
   cancelBooking,
+  getClientDashboard as getClientDashboardAPI,
 } from "../../api/client/clientapi";
 
 export const fetchUserBookings = createAsyncThunk(
@@ -51,6 +52,20 @@ export const deleteBookingThunk = createAsyncThunk(
       const response = await deleteBooking(id);
       return response.data;
     } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  },
+);
+
+export const getClientDashboard = createAsyncThunk(
+  "client/getClientDashboard",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getClientDashboardAPI();
+      console.log("✅ Client Dashboard Data:", response.data);
+      return response.data.data;
+    } catch (error) {
+      console.error("❌ Error fetching client dashboard:", error.message);
       return rejectWithValue(error.response?.data || error.message);
     }
   },

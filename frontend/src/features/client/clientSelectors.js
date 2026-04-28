@@ -122,3 +122,41 @@ export const selectIsLoading = (state) => selectClientLoading(state);
  * Vérifie s'il y a une erreur
  */
 export const selectHasError = (state) => !!selectClientError(state);
+
+
+export const selectClientDashboard = (state) => state.client.dashboard;
+
+
+export const selectDashboardStats = (state) => state.client.dashboard.stats;
+
+
+export const selectDashboardRecentActivity = (state) =>
+  state.client.dashboard.recent_activity;
+
+/**
+ * Récupère le pourcentage de complétude du compte
+ */
+export const selectDashboardAccountHealth = (state) =>
+  state.client.dashboard.account_health;
+
+/**
+ * Récupère les données du graphique (6 derniers mois)
+ */
+export const selectDashboardChartData = (state) =>
+  state.client.dashboard.chart_data;
+
+/**
+ * Récupère les infos utilisateur depuis le dashboard
+ */
+export const selectDashboardUser = (state) => state.client.dashboard.user;
+
+/**
+ * Vérifie si le dashboard se charge
+ */
+export const selectIsDashboardLoading = (state) =>
+  state.client.dashboardLoading;
+
+/**
+ * Récupère les erreurs du dashboard
+ */
+export const selectDashboardError = (state) => state.client.error;

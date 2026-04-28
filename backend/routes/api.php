@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agency\AgencyProfileController;
 use App\Http\Controllers\Agency\AgencyClientController;
 use App\Http\Controllers\Agency\DashboardController;
+use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Public\AgencyPublicController;
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
@@ -65,6 +66,7 @@ Route::middleware('auth:sanctum')
         Route::delete('/bookings/{id}/destroy', [ClientBookingController::class, 'destroy']);
         Route::get('/profile', [ClientBookingController::class, 'profile']);
         Route::post('/profile', [ClientBookingController::class, 'updateProfile']);
+        Route::get('/dashboard', [ClientDashboardController::class, 'getDashboardData']);
     });
 
 // Debug Routes (À SUPPRIMER EN PRODUCTION)
