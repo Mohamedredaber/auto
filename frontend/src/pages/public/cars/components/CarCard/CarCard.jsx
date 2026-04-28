@@ -48,8 +48,8 @@ function CarCard({ car }) {
 
     const actions = {
       client: { label: "Réserver", to: `/reserve/${id}` },
-      admin_agency: { label: "Gérer", to: `/dashboard/agency/cars/${id}` },
-      super_admin: { label: "Gérer", to: `/dashboard/admin/cars/${id}` },
+      admin_agency: { label: "Gérer", to: `/dashboard/agency/cars` },
+      super_admin: { label: "Gérer", to: `/dashboard/admin/cars` },
     };
 
     const currentAction = actions[role];

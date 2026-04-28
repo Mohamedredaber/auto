@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agency\AgencyProfileController;
 use App\Http\Controllers\Agency\AgencyClientController;
 use App\Http\Controllers\Agency\DashboardController;
+use App\Http\Controllers\Public\AgencyPublicController;
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
     Route::get('/{id}', [CarListingController::class, 'show']);
 });
-
-// Legacy routes (backward compatibility)
+Route::get('/public/agency/{id}', [AgencyPublicController::class, 'show']);  
 Route::get('/cars', [CarListingController::class, 'index']);
 Route::get('/cars/{id}', [CarListingController::class, 'show']);
 

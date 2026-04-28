@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useCarDetails } from "../../../hooks/useCarDetails";
-
 import Breadcrumb from "./components/detailscar/Breadcrumb";
 import ImageGallery from "./components/detailscar/ImageGallery";
 import KeySpecs from "./components/detailscar/KeySpecs";
@@ -9,13 +8,14 @@ import AboutSection from "./components/detailscar/AboutSection";
 import AgencyCard from "./components/detailscar/AgencyCard";
 import PricingCard from "./components/detailscar/PricingCard";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../../features/auth/authSelectors";
+import { selectUser ,selectRole } from "../../../features/auth/authSelectors";
 import "../../../styles/pages/cardetails.css";
 import AlreadyBooked from "../../client/reservation/components/AlreadyBooked";
 import { useMemo } from "react";
 export default function DetailsCars() {
   const user = useSelector(selectUser);
-
+  const role = useSelector(selectRole);
+  const isClient = role === "client";
   const { id } = useParams();
   const navigate = useNavigate();
   const { car, loading, error } = useCarDetails(id);
@@ -25,6 +25,7 @@ export default function DetailsCars() {
     if (!user?.id || !car?.bookings?.length) return false;
     return car.bookings.some((b) => b.user_id === user.id);
   });
+  console.log("Already Booked By User:", alreadyBookedByUser);
   if (loading) {
     return (
       <div className="car-details car-details--loading">
@@ -120,13 +121,37 @@ export default function DetailsCars() {
           <AgencyCard agency={car.agency} />
         </div>
 
-        {/* ═══ SIDEBAR ═══ */}
         <aside className="car-details__sidebar">
-          {alreadyBookedByUser ? (
-            <AlreadyBooked onBack={() => navigate(`/cars/${id}`)} />
-          ) : (
-            <PricingCard car={car} />
-          )}  
+       {alreadyBookedByUser ? (
+  <AlreadyBooked onBack={() => navigate(`/cars/${id}`)} />
+) : isClient ? (
+  <PricingCard car={car} />
+) : (
+  <div className="car-details__no-booking">
+    <h3>Accès restreint</h3>
+    <p>
+      La réservation est disponible uniquement pour les clients.
+    </p>
+
+    {role === "admin_agency" && (
+      <button
+        className="car-details__action-btn"
+        onClick={() => navigate("/dashboard/agency")}
+      >
+        Aller au dashboard
+      </button>
+    )}
+
+    {role === "super_admin" && (
+      <button
+        className="car-details__action-btn"
+        onClick={() => navigate("/dashboard/admin")}
+      >
+        Panneau admin
+      </button>
+    )}
+  </div>
+)}
         </aside>
       </div>
     </div>

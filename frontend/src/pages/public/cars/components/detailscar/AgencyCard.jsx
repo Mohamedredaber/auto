@@ -1,5 +1,5 @@
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
-
+import { useNavigate } from "react-router-dom";
 function getLogoUrl(logo) {
   if (!logo) return null;
   if (logo.startsWith("http")) return logo;
@@ -12,6 +12,7 @@ function formatHour(time) {
 }
 
 export default function AgencyCard({ agency }) {
+  const navigate = useNavigate();
   if (!agency) return null;
 
   const logoUrl = getLogoUrl(agency.logo);
@@ -86,7 +87,7 @@ export default function AgencyCard({ agency }) {
         </div>
       )}
 
-      <button className="agency-card__link">
+      <button className="agency-card__link" onClick={() => navigate(`/agency/${agency.id}`)}>
         Voir le profil de l'agence
       </button>
     </div>

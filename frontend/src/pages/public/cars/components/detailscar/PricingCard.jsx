@@ -1,5 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectRole } from "../../../../../features/auth/authSelectors";
 function today() {
   return new Date().toISOString().split("T")[0];
 }
@@ -25,7 +27,8 @@ export default function PricingCard({ car }) {
     setDepart(e.target.value);
     if (e.target.value >= retour) setRetour(addDays(e.target.value, 1));
   };
-
+  const Role = useSelector(selectRole);
+  console.log(Role);
   return (
     <div className="pricing-card">
       <div className="pricing-card__header">
@@ -64,7 +67,6 @@ export default function PricingCard({ car }) {
           </div>
         </div>
 
-        {/* Breakdown */}
         <div className="pricing-card__breakdown">
           <div className="pricing-card__breakdown-row">
             <span className="pricing-card__breakdown-label">

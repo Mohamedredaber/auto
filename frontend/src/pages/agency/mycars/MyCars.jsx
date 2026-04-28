@@ -2,7 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Car, Search, Filter, MapPin, Eye, Edit2, Trash2, Plus, TrendingUp } from "lucide-react";
+import {
+  Car,
+  Search,
+  Filter,
+  MapPin,
+  Eye,
+  Edit2,
+  Trash2,
+  Plus,
+  TrendingUp,
+} from "lucide-react";
 import {
   selectAllCars,
   selectCarLoading,
@@ -49,7 +59,6 @@ const MyCars = () => {
     return matchesSearch && matchesStatus;
   });
 
-  // Trier les voitures
   const sortedCars = [...filteredCars].sort((a, b) => {
     if (sortOrder === "asc") return a.price_per_day - b.price_per_day;
     if (sortOrder === "desc") return b.price_per_day - a.price_per_day;
@@ -99,7 +108,7 @@ const MyCars = () => {
         return "";
     }
   };
-
+  console.log("Cars in MyCars component:", cars);
   return (
     <div className="mycars-container animate-fade-in">
       <div className="mycars-header ac-card">
@@ -115,7 +124,10 @@ const MyCars = () => {
             </p>
           </div>
         </div>
-        <button className="btn-add inline-flex items-center gap-2" onClick={handleAddClick}>
+        <button
+          className="btn-add inline-flex items-center gap-2"
+          onClick={handleAddClick}
+        >
           <Plus size={16} />
           Ajouter un nouveau véhicule
         </button>
@@ -164,7 +176,6 @@ const MyCars = () => {
               <tr>
                 <th>Image</th>
                 <th>Véhicule</th>
-                <th>Ville</th>
                 <th>Prix / Jour</th>
                 <th>Statut</th>
                 <th>Actions</th>
@@ -184,12 +195,6 @@ const MyCars = () => {
                         <span className="car-brand">{car.brand}</span>
                         <span className="car-model">{car.model}</span>
                       </div>
-                    </td>
-                    <td>
-                        <span className="city-badge">
-                          <MapPin size={12} className="text-red-500" />
-                        {car.city}
-                      </span>
                     </td>
                     <td>
                       <span className="price">
@@ -273,21 +278,27 @@ const MyCars = () => {
       {/* Stats Footer */}
       <div className="mycars-stats">
         <div className="stat-card">
-          <div className="stat-icon red"><Car size={20} className="text-red-500" /></div>
+          <div className="stat-icon red">
+            <Car size={20} className="text-red-500" />
+          </div>
           <div className="stat-content">
             <span className="stat-label">FLOTTE TOTALE</span>
             <span className="stat-value">{totalCars}</span>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon green"><Eye size={20} className="text-green-500" /></div>
+          <div className="stat-icon green">
+            <Eye size={20} className="text-green-500" />
+          </div>
           <div className="stat-content">
             <span className="stat-label">DISPONIBLES</span>
             <span className="stat-value">{availableCars}</span>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon yellow"><TrendingUp size={20} className="text-yellow-500" /></div>
+          <div className="stat-icon yellow">
+            <TrendingUp size={20} className="text-yellow-500" />
+          </div>
           <div className="stat-content">
             <span className="stat-label">REVENU ESTIMÉ</span>
             <span className="stat-value">

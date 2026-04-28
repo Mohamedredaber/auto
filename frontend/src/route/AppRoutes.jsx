@@ -13,6 +13,7 @@ import Home from "../pages/home/Home";
 import Contact from "../pages/contact/Contact";
 import Cars from "../pages/public/cars/Cars";
 import DetailsCars from "../pages/public/cars/DetailsCars";
+import DetailsAgency from "../pages/public/agency/DetailsAgency";
 
 import Login from "../pages/login/login";
 import Register from "../pages/register/Register";
@@ -41,6 +42,7 @@ export default function AppRoutes() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cars" element={<Cars />} />
         <Route path="/cars/:id" element={<DetailsCars />} />
+        <Route path="/agency/:id" element={<DetailsAgency />} />  
         <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
           <Route path="/reserve/:id" element={<ReservationPage />} />
         </Route>

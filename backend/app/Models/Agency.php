@@ -36,7 +36,6 @@ class Agency extends Model
     {
         return $this->hasMany(User::class, 'agency_id');
     }
-        // L'admin de cette agence
     public function admin(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(User::class, 'agency_id');

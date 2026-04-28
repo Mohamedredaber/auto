@@ -10,6 +10,7 @@ import agencyClientsReducer from "../features/agency/agencyClientsSlice";
 import agencyStatsReducer from "../features/agency/agencyStatsSlice";
 import agencyProfileReducer from "../features/agency/agencyProfileSlice";
 import dashboardReducer from "../features/agency/dashboardSlice";
+import agencyPublicReducer from "../features/public/agencyPublicSlice"; // نضيفو الreducer ديال البروفايل العمومي ديال الوكالة
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -23,5 +24,6 @@ export const store = configureStore({
     agencyStats : agencyStatsReducer,
     agencyProfile : agencyProfileReducer  ,
     dashboard: dashboardReducer,
+    agencyPublic : agencyPublicReducer, // نضيفو الreducer ديال البروفايل العمومي ديال الوكالة
     },
 });

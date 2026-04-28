@@ -756,9 +756,6 @@
 }
 .pricing-card__conditions-link:hover { text-decoration: underline; }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
 @media (max-width: 1024px) {
   .car-details__container {
     grid-template-columns: 1fr;
@@ -775,4 +772,30 @@
   .about-section__perks { grid-template-columns: 1fr; }
   .agency-card__badges { grid-template-columns: 1fr; }
   .image-gallery__thumbs { grid-template-columns: repeat(3, 1fr); }
+}
+.car-details__no-booking {
+  background: #12121a;
+  border: 1px solid #2d2d3a;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  color: #d1d5db;
+}
+
+.car-details__no-booking h3 {
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.car-details__no-booking p {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.car-details__action-btn {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
 }
