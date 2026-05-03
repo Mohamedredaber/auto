@@ -20,8 +20,8 @@
 }
 
 .ac-card:hover {
-  border-color: var(--color-blue-500, #3b82f6);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  border-color: var(--color-primary-500, #ef4444);
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.15);
 }
 
 /* ========== INPUT STYLES ========== */
@@ -37,8 +37,8 @@
 }
 
 .ac-input-dark:focus {
-  border-color: var(--color-blue-500, #3b82f6);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--color-primary-500, #ef4444);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 /* ========== PAGE HEADER ========== */
@@ -81,9 +81,9 @@
 }
 
 .stat-card:hover {
-  border-color: var(--color-blue-500, #3b82f6);
+  border-color: var(--color-primary-500, #ef4444);
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.15);
 }
 
 .stat-card-header {
@@ -113,8 +113,8 @@
 }
 
 .stat-icon-wrapper {
-  background: rgba(59, 130, 246, 0.15);
-  color: var(--color-blue-500, #3b82f6);
+  background: rgba(220, 38, 38, 0.15);
+  color: var(--color-primary-500, #ef4444);
   padding: 10px;
   border-radius: 10px;
   display: flex;
@@ -195,7 +195,7 @@
 
 .filter-btn:hover,
 .filter-select:hover {
-  border-color: var(--color-blue-500, #3b82f6);
+  border-color: var(--color-primary-500, #ef4444);
 }
 
 .filter-select select {
@@ -207,9 +207,9 @@
 }
 
 .btn-primary-pink {
-  background: var(--color-blue-500, #3b82f6);
+  background: var(--color-primary-500, #ef4444);
   color: #ffffff;
-  border: 1px solid var(--color-blue-500, #3b82f6);
+  border: 1px solid var(--color-primary-500, #ef4444);
   border-radius: 8px;
   padding: 10px 16px;
   font-weight: 600;
@@ -218,9 +218,9 @@
 }
 
 .btn-primary-pink:hover {
-  background: #2563eb;
-  border-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  background: #dc2626;
+  border-color: #dc2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
 /* ========== TABLE STYLES ========== */
@@ -354,9 +354,9 @@
 }
 
 .pagination-btn:hover:not(:disabled) {
-  border-color: var(--color-blue-500, #3b82f6);
-  color: var(--color-blue-500, #3b82f6);
-  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--color-primary-500, #ef4444);
+  color: var(--color-primary-500, #ef4444);
+  background: rgba(220, 38, 38, 0.1);
 }
 
 .pagination-btn:active:not(:disabled) {

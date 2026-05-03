@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { SearchIcon } from "../../../../../components/layout/icons/index";
+import { Button } from "../../../../../components/ui";
 import "../../../../../styles/components/filterbar.css";
 
 /* ─── Constantes ────────────────────────────────────── */
@@ -209,13 +210,15 @@ export default function FilterBar({ filters, onChange }) {
         </div>
 
         {hasActiveFilters && (
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             className="filterbar__reset"
             onClick={handleReset}
           >
             Réinitialiser les filtres
-          </button>
+          </Button>
         )}
       </div>
     </div>

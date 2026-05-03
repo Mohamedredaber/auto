@@ -21,7 +21,7 @@
 }
 
 .dash-header .accent {
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
 }
 
 .dash-header p {
@@ -47,9 +47,9 @@
 
 .stat-card:hover {
   transform: translateY(-5px);
-  border-color: var(--color-blue-500);
+  border-color: var(--color-primary-500);
   background: var(--color-bg-card-hover);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.15);
 }
 
 .stat-card-header {
@@ -70,7 +70,7 @@
 .stat-card-icon {
   width: 24px;
   height: 24px;
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
 }
 
 .stat-card-value {
@@ -108,7 +108,7 @@
 }
 
 .health-icon {
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
 }
 
 .health-bar-container {
@@ -122,10 +122,10 @@
 
 .health-bar-fill {
   height: 100%;
-  background: var(--gradient-blue);
+  background: var(--gradient-primary);
   border-radius: 99px;
   transition: width 0.3s ease;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
 }
 
 .health-percentage {
@@ -134,7 +134,7 @@
 }
 
 .health-percentage strong {
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
   font-weight: 600;
 }
 
@@ -192,7 +192,7 @@
 }
 
 .activity-agency .agency-name {
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
   font-weight: 600;
 }
 
@@ -244,7 +244,7 @@
 .activity-price-value {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
 }
 
 .status-badge-dashboard {
@@ -259,8 +259,8 @@
 }
 
 .status-completed {
-  background: rgba(59, 130, 246, 0.15);
-  color: var(--color-blue-500);
+  background: rgba(220, 38, 38, 0.15);
+  color: var(--color-primary-500);
 }
 
 .status-confirmed {
@@ -290,8 +290,8 @@
 
 /* ========== CONSOLE NOTICE ========== */
 .console-notice {
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
@@ -301,12 +301,12 @@
 }
 
 .console-notice-icon {
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
   flex-shrink: 0;
 }
 
 .console-notice-text {
-  color: var(--color-blue-400);
+  color: var(--color-primary-400);
   font-size: 0.9rem;
 }
 

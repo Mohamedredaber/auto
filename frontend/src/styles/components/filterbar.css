@@ -52,7 +52,7 @@
 .filterbar__input:focus {
   outline: none;
   border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 2px var(--color-border-blue);
+  box-shadow: 0 0 0 2px var(--color-error-bg);
 }
 
 /* icon */
@@ -99,7 +99,7 @@
 .filterbar__select:focus {
   outline: none;
   border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 2px var(--color-border-blue);
+  box-shadow: 0 0 0 2px var(--color-error-bg);
 }
 
 /* ───────── PRICE SLIDER ───────── */
@@ -117,7 +117,7 @@
 }
 
 .filterbar__price-value {
-  color: var(--color-blue-400);
+  color: var(--color-primary-500);
   font-weight: var(--weight-semibold);
 }
 
@@ -137,14 +137,14 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--color-blue-500);
+  background: var(--color-primary-500);
   cursor: pointer;
-  box-shadow: var(--shadow-blue);
+  box-shadow: var(--shadow-red);
   transition: var(--transition-fast);
 }
 
 .filterbar__slider::-webkit-slider-thumb:hover {
-  background: var(--color-blue-600);
+  background: var(--color-primary-600);
 }
 
 /* ───────── RESET BUTTON ───────── */

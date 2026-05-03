@@ -12,6 +12,7 @@ import {
   selectBookingPagination 
 } from '../../../features/agency/bookingSelector';
 import './ReservationDashAgency.css';
+import { Card } from '../../../components/ui';
 // Sous-composants (à créer ci-dessous)
 import ReservationStats from './components/ReservationStats';
 import ReservationTable from './components/ReservationTable';
@@ -45,13 +46,13 @@ const ReservationDashAgency = () => {
 
   return (
     <div className="agency-reservations-container animate-fade-in text-white">
-      <header className="page-header ac-card">
+      <Card as="header" className="page-header ac-card">
         <h1 className="inline-flex items-center gap-2">
           <Calendar size={20} className="text-red-500" />
           Gestion des Réservations
         </h1>
         <p className="text-gray-400">Supervisez et gérez l'ensemble des contrats de location de la plateforme.</p>
-      </header>
+      </Card>
 
       {/* Cartes statistiques du haut */}
       <ReservationStats stats={stats} />
@@ -60,7 +61,7 @@ const ReservationDashAgency = () => {
       <ReservationFilters filters={filters} setFilters={setFilters} />
 
       {/* Table des données */}
-      <div className="table-container shadow-card ac-card">
+      <Card className="table-container shadow-card ac-card">
         <ReservationTable bookings={bookings} isLoading={loading} />
         
         {/* Pagination footer */}
@@ -81,7 +82,7 @@ const ReservationDashAgency = () => {
             >Suivant</button>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

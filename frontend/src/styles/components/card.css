@@ -15,8 +15,8 @@
 }
 
 .car-card:hover {
-  border-color: var(--color-blue-600);
-  box-shadow: var(--shadow-blue), var(--shadow-lg);
+  border-color: var(--color-primary-600);
+  box-shadow: var(--shadow-red), var(--shadow-lg);
   transform: translateY(-4px);
   background: var(--color-bg-card-hover);
 }
@@ -173,7 +173,7 @@
   font-family: var(--font-mono);
   font-size: var(--text-xl);
   font-weight: var(--weight-bold);
-  color: var(--color-blue-400);
+  color: var(--color-primary-500);
   line-height: 1;
 }
 

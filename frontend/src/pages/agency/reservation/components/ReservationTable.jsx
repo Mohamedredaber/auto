@@ -3,6 +3,7 @@ import { MoreHorizontal, Calendar, MapPin } from "lucide-react";
 import { useDispatch } from "react-redux";
 import ActionMenu from "./ActionMenu";
 import ReservationDetailsModal from "./ReservationDetailsModal";
+import { DataTable } from "../../../../components/ui";
 import {
   cancelAgencyBooking,
   getAgencyBookings,
@@ -44,7 +45,8 @@ const ReservationTable = ({ bookings, isLoading }) => {
 
   return (
     <>
-      <table className="visily-table">
+      <DataTable className="table-wrapper">
+      <table className="visily-table ui-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -110,6 +112,7 @@ const ReservationTable = ({ bookings, isLoading }) => {
           ))}
         </tbody>
       </table>
+      </DataTable>
 
       <ReservationDetailsModal
         booking={selectedBooking}

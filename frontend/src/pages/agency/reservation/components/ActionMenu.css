@@ -26,9 +26,9 @@
 
 .btn-menu-trigger:hover {
   background: var(--color-bg-card-hover, #333333);
-  color: var(--color-blue-500, #3b82f6);
-  border-color: var(--color-blue-500, #3b82f6);
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
+  color: var(--color-primary-500, #ef4444);
+  border-color: var(--color-primary-500, #ef4444);
+  box-shadow: 0 0 8px rgba(220, 38, 38, 0.2);
 }
 
 .btn-menu-trigger:active {
@@ -88,11 +88,11 @@
 
 .menu-item:hover {
   background: var(--color-bg-input, #2a2a2a);
-  color: var(--color-blue-500, #3b82f6);
+  color: var(--color-primary-500, #ef4444);
 }
 
 .menu-item:hover svg {
-  color: var(--color-blue-500, #3b82f6);
+  color: var(--color-primary-500, #ef4444);
   transform: scale(1.1);
 }
 

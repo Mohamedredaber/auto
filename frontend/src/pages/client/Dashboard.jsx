@@ -5,10 +5,10 @@ import {
   selectDashboardStats,
   selectDashboardRecentActivity,
   selectDashboardAccountHealth,
-  selectDashboardChartData,
   selectIsDashboardLoading,
 } from "../../features/client/clientSelectors";
 import { TrendingUp, DollarSign, Calendar, AlertCircle } from "lucide-react";
+import { Card } from "../../components/ui";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -16,22 +16,11 @@ const Dashboard = () => {
   const stats = useSelector(selectDashboardStats);
   const recentActivity = useSelector(selectDashboardRecentActivity);
   const accountHealth = useSelector(selectDashboardAccountHealth);
-  const chartData = useSelector(selectDashboardChartData);
   const loading = useSelector(selectIsDashboardLoading);
 
   useEffect(() => {
     dispatch(getClientDashboard());
   }, [dispatch]);
-
-  // Log to console when data loads
-  useEffect(() => {
-    if (!loading && stats) {
-      console.log("📊 DASHBOARD STATS:", stats);
-      console.log("📈 CHART DATA:", chartData);
-      console.log("🎯 RECENT ACTIVITY:", recentActivity);
-      console.log("❤️ ACCOUNT HEALTH:", accountHealth + "%");
-    }
-  }, [loading, stats, chartData, recentActivity, accountHealth]);
 
   if (loading) {
     return (
@@ -54,17 +43,17 @@ const Dashboard = () => {
       {/* Stats Cards */}
       <div className="stats-grid">
         {/* Total Bookings */}
-        <div className="stat-card">
+        <Card className="stat-card">
           <div className="stat-card-header">
             <span className="stat-card-title">Réservations</span>
             <Calendar className="stat-card-icon" />
           </div>
           <div className="stat-card-value">{stats.total_bookings}</div>
           <div className="stat-card-label">Total de réservations</div>
-        </div>
+        </Card>
 
         {/* Total Spent */}
-        <div className="stat-card">
+        <Card className="stat-card">
           <div className="stat-card-header">
             <span className="stat-card-title">Budget</span>
             <DollarSign className="stat-card-icon" />
@@ -73,21 +62,21 @@ const Dashboard = () => {
             {stats.total_spent.toLocaleString()}
           </div>
           <div className="stat-card-label">MAD dépensés</div>
-        </div>
+        </Card>
 
         {/* Active Bookings */}
-        <div className="stat-card">
+        <Card className="stat-card">
           <div className="stat-card-header">
             <span className="stat-card-title">Actif</span>
             <TrendingUp className="stat-card-icon" />
           </div>
           <div className="stat-card-value">{stats.active_bookings}</div>
           <div className="stat-card-label">Réservations actives</div>
-        </div>
+        </Card>
       </div>
 
       {/* Account Health */}
-      <div className="health-section">
+      <Card className="health-section">
         <div className="health-header">
           <h2 className="health-title">État du Profil</h2>
           <AlertCircle className="health-icon" size={24} />
@@ -101,11 +90,11 @@ const Dashboard = () => {
         <p className="health-percentage">
           Profil complété à <strong>{accountHealth}%</strong>
         </p>
-      </div>
+      </Card>
 
       {/* Recent Activity */}
       {recentActivity ? (
-        <div className="activity-section">
+        <Card className="activity-section">
           <h2 className="activity-title">Dernière Réservation</h2>
           <div className="activity-content">
             <div className="activity-image">
@@ -167,7 +156,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       ) : (
         <div className="empty-state">
           <p>Aucune réservation trouvée.</p>

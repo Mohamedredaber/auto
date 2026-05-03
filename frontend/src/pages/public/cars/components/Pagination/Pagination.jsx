@@ -1,4 +1,5 @@
 import "../../../../../styles/components/pagination.css";
+import { Button } from "../../../../../components/ui";
 
 export default function Pagination({ pagination, onPageChange }) {
   if (!pagination) return null;
@@ -38,13 +39,15 @@ export default function Pagination({ pagination, onPageChange }) {
       </span>
 
       <div className="pagination__controls">
-        <button
+        <Button
+          size="sm"
+          variant="secondary"
           className="pagination__btn"
           disabled={currentPage <= 1}
           onClick={() => onPageChange(currentPage - 1)}
         >
           ← Précédent
-        </button>
+        </Button>
 
         {withEllipsis.map((p, i) =>
           p === "..." ? (
@@ -52,25 +55,29 @@ export default function Pagination({ pagination, onPageChange }) {
               …
             </span>
           ) : (
-            <button
+            <Button
               key={p}
+              size="sm"
+              variant={p === currentPage ? "primary" : "secondary"}
               className={`pagination__btn pagination__btn--page ${
                 p === currentPage ? "pagination__btn--active" : ""
               }`}
               onClick={() => onPageChange(p)}
             >
               {p}
-            </button>
+            </Button>
           ),
         )}
 
-        <button
+        <Button
+          size="sm"
+          variant="secondary"
           className="pagination__btn"
           disabled={currentPage >= lastPage}
           onClick={() => onPageChange(currentPage + 1)}
         >
           Suivant →
-        </button>
+        </Button>
       </div>
     </div>
   );
