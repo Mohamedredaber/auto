@@ -28,11 +28,10 @@ class CarController extends Controller
     {
         return DB::transaction(function () use ($request) {
             $car = Car::create(array_merge(
-                $request->validate(),
+                $request->validated(),
                 ['agency_id' => Auth::user()->agency_id]
             ));
 
-            // 1. Image de couverture (Obligatoire)
             if ($request->hasFile('cover_image')) {
                 $path = $request->file('cover_image')->store('cars/covers', 'public');
                 $car->images()->create([
@@ -41,7 +40,6 @@ class CarController extends Controller
                 ]);
             }
 
-            // 2. Galerie d'images (Optionnelle)
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     $path = $image->store('cars/gallery', 'public');

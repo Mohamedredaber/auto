@@ -47,7 +47,9 @@
   font-size: 14px;
   color: #ffffff;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   font-family: inherit;
 }
 
@@ -90,12 +92,14 @@
   padding: 32px;
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition: all 0.3s ease;
+  background: rgba(220, 38, 38, 0.02);
 }
 
 .image-upload-area:hover {
   border-color: #dc2626;
-  background: rgba(220, 38, 38, 0.05);
+  background: rgba(220, 38, 38, 0.08);
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.1);
 }
 
 .image-upload-area input[type="file"] {
@@ -188,8 +192,13 @@
 
 .btn-submit:hover:not(:disabled) {
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35);
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
 }
 
 .btn-submit:disabled {

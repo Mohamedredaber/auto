@@ -52,7 +52,7 @@ Route::middleware(['auth:sanctum', 'role:admin_agency'])
             Route::get('/', [ReservationController::class, 'index']);
             Route::get('/{booking}', [ReservationController::class, 'show']);
             Route::patch('/{booking}', [ReservationController::class, 'update']);
-            Route::post('/{booking}/cancel', [ReservationController::class, 'cancel']);
+            Route::patch('/{booking}/cancel', [ReservationController::class, 'cancel']);
             Route::get('/stats/overview', [ReservationController::class, 'stats']);
             Route::get('/recent/{days?}', [ReservationController::class, 'recentBookings']);
     });

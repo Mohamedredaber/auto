@@ -50,13 +50,7 @@ class BookingService
     {
         $booking = $this->getUserBooking($id);
 
-        if (!in_array($booking->status, ['pending', 'confirmed'])) {
-            throw new HttpException(403, 'Impossible d\'annuler cette réservation');
-        }
-
-        if (strtotime($booking->start_date) < time()) {
-            throw new HttpException(403, 'La réservation a déjà commencé');
-        }
+     
         $booking->update(['status' => 'canceled']);
         return [
             'message' => 'Réservation annulée avec succès',

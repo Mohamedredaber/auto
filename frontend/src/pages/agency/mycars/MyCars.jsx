@@ -152,7 +152,7 @@ const MyCars = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <option value="">Tous les statuts</option>
-            <option value="available">Disponible</option>
+            <option value="disponible">Disponible</option>
             <option value="loué">Loué</option>
             <option value="indisponible">Indisponible</option>
           </select>
