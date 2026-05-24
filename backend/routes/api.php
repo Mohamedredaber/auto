@@ -12,6 +12,7 @@ use App\Http\Controllers\Agency\AgencyProfileController;
 use App\Http\Controllers\Agency\AgencyClientController;
 use App\Http\Controllers\Agency\DashboardController;
 use App\Http\Controllers\Public\AgencyPublicController;
+
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
     Route::get('/{id}', [CarListingController::class, 'show']);
@@ -82,3 +83,7 @@ if (env('APP_DEBUG')) {
         Route::get('/auto-test', [\App\Http\Controllers\Debug\AutoTestController::class, 'runAllTests']);
     });
 }
+
+Route::get('/test' , function () {
+    return response()->json(['message' => 'API is working!']);
+});
