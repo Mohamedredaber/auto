@@ -13,7 +13,7 @@ const ProfileHero = ({ agency }) => (
         </div>
         <h2 className="mt-4 text-xl font-bold flex items-center gap-2">
             {agency?.agency_name}
-            {agency?.is_verified && <ShieldCheck className="text-green-500 w-5 h-5" />}
+            {agency?.is_verified === 'verified' && <ShieldCheck className="text-green-500 w-5 h-5" />}
         </h2>
         <p className="text-gray-400 text-sm flex items-center justify-center gap-1">
             <MapPin size={14} /> {agency?.city}, Maroc

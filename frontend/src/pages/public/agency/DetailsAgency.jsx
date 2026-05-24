@@ -55,7 +55,7 @@ const AgencyProfile = () => {
         <div className="ap-hero-content">
           <div className="ap-logo-wrapper">
             <img src={agency.logo || '/default-logo.png'} alt={agency.name} />
-            {agency.is_verified && <span className="ap-verified-badge">✓</span>}
+            {agency.is_verified === 'verified' && <span className="ap-verified-badge">✓</span>}
           </div>
           <div className="ap-header-info">
             <h1 className="ap-agency-name">{agency.name}</h1>

@@ -31,7 +31,7 @@ const AgencyProfilePage = () => {
                 {/* Colonne de Gauche */}
                 <div className="lg:col-span-4 space-y-6">
                     <ProfileHero agency={agency} />
-                    <VerificationStatus isVerified={agency?.is_verified} />
+                    <VerificationStatus status={agency?.is_verified} />
                     {/* <VisibilityStats views="1,284" /> */}
                 </div>
 

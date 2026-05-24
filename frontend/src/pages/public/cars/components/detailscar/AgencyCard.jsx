@@ -17,9 +17,10 @@ export default function AgencyCard({ agency }) {
 
   const logoUrl = getLogoUrl(agency.logo);
   const initial = (agency.agency_name || "A")[0].toUpperCase();
+  const isVerified = agency.is_verified === 'verified';
 
   const BADGES = [
-    { label: "Agence vérifiée", active: agency.is_verified },
+    { label: "Agence vérifiée", active: isVerified },
     { label: "Support 24/7", active: true },
     { label: "Contrat digital", active: true },
     { label: "Paiement sécurisé", active: true },
