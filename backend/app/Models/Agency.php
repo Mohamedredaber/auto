@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Agency extends Model
 {
     use HasFactory;
+
+    public const STATUS_VERIFIED = 'verified';
+    public const STATUS_INVERIFIED = 'inverified';
+    public const STATUS_WAIT = 'wait';
+
     protected $fillable = [
         'agency_name',
         'city',
@@ -23,7 +28,6 @@ class Agency extends Model
     
 
     protected $casts = [
-        'is_verified'     => 'boolean',
         'accounts_social' => 'array',
         'latitude'        => 'float',
         'longitude'       => 'float',

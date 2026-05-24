@@ -58,7 +58,7 @@ class AuthService
                 'latitude'        => $data['latitude'] ?? 0,
                 'longitude'       => $data['longitude']      ?? 0,
                 'accounts_social' => $data['accounts_social'] ?? null,
-                'is_verified'     => false,
+                'is_verified'     => Agency::STATUS_WAIT ,
             ]);
 
             // 3️⃣ Liaison user → agence

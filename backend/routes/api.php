@@ -13,6 +13,7 @@ use App\Http\Controllers\Agency\AgencyClientController;
 use App\Http\Controllers\Agency\DashboardController;
 use App\Http\Controllers\Public\AgencyPublicController;
 
+
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
     Route::get('/{id}', [CarListingController::class, 'show']);
@@ -84,6 +85,11 @@ if (env('APP_DEBUG')) {
     });
 }
 
-Route::get('/test' , function () {
-    return response()->json(['message' => 'API is working!']);
-});
+Route::prefix('super-admin')
+    ->group(function () {
+        Route::put('/changeAgencyStatus', [\App\Http\Controllers\super_admin\adminController::class, 'changeAgencyStatus']);
+        Route::get('/agencies', [\App\Http\Controllers\Agency\Agencies::class, 'index']);
+        Route::get('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'show']);
+        Route::get('/agencies/stats', [\App\Http\Controllers\Agency\Agencies::class, 'stats']);
+        // Autres routes super admin à venir...
+    });

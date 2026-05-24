@@ -24,8 +24,8 @@ return new class extends Migration {
         $table->time('time_start');
         $table->time('time_end');
 
-        // Optionnels
-        $table->boolean('is_verified')->default(false);
+        // Statut de vérification
+        $table->enum('is_verified', ['verified', 'inverified', 'wait'])->default('wait');
         $table->string('logo');
         $table->json('accounts_social')->nullable();
 
