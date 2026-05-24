@@ -10,7 +10,7 @@ import { logoutThunk } from '../../../features/auth/authThunks';
 import { useNavigate } from 'react-router-dom';
 import '../../../styles/pages/dashboard.css'; 
 
-const Sidebar = () => {
+const Sidebaradmin = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -28,9 +28,11 @@ const Sidebar = () => {
 
   const agencyMenu = [
     { name: 'Dashboard', path: '/dashboard/agency', icon: DashboardIcon },
+    { name: 'Statistiques', path: '/dashboard/agency/statistics', icon: DashboardIcon },
     { name: 'Mes Voitures', path: '/dashboard/agency/cars', icon: CarIcon },
     { name: 'Réservations', path: '/dashboard/agency/reservations', icon: CalendarIcon },
     { name: 'Clients', path: '/dashboard/agency/clients', icon: UsersIcon },
+    { name: 'Profil', path: '/dashboard/agency/profile', icon: UsersIcon },
   ];
 
   return (
@@ -81,4 +83,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Sidebaradmin;

@@ -264,9 +264,8 @@
   margin-left: 4px;
 }
 
-/* Status Badge */
 .status-badge {
-  display: inline-block;
+  /* display: inline-block; */
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;

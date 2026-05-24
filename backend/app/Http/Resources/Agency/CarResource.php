@@ -23,8 +23,7 @@ class CarResource extends JsonResource
             'price_per_day'  => (float) $this->price_per_day,
             'status'         => $this->status,
             'additional_info'=> $this->additional_information,
-            
-            // URL de la cover
+            'description'    => $this->description,
             'cover_image_url'=> $this->coverImage 
                 ? asset('storage/' . $this->coverImage->url) 
                 : asset('images/default-car.png'),

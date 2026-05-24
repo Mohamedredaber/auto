@@ -36,67 +36,9 @@ const StarIcon = () => (
   </svg>
 )
 
-/* ══════════════════════════════════════
-   Panneau gauche décoratif
-══════════════════════════════════════ */
-function LeftPanel() {
-  return (
-    <div className="lp-left">
-      {/* Brand */}
-      <div className="lp-brand">
-        <div className="lp-brand-logo">
-          <div className="lp-brand-dot" />
-          AutoConnect
-        </div>
-      </div>
 
-      {/* Cartes stats flottantes */}
-      <div className="lp-stats">
-        <div className="lp-stat-card">
-          <div className="lp-stat-icon"><CarIcon /></div>
-          <div>
-            <div className="lp-stat-val">2 400+</div>
-            <div className="lp-stat-lbl">Véhicules disponibles</div>
-          </div>
-        </div>
-        <div className="lp-stat-card">
-          <div className="lp-stat-icon"><UsersIcon /></div>
-          <div>
-            <div className="lp-stat-val">18 000</div>
-            <div className="lp-stat-lbl">Clients satisfaits</div>
-          </div>
-        </div>
-        <div className="lp-stat-card">
-          <div className="lp-stat-icon" style={{ color: "#fbbf24" }}><StarIcon /></div>
-          <div>
-            <div className="lp-stat-val">4.9 / 5</div>
-            <div className="lp-stat-lbl">Note moyenne</div>
-          </div>
-        </div>
-      </div>
 
-      {/* Citation */}
-      <div className="lp-quote">
-        <div className="lp-quote-marks">"</div>
-        <p className="lp-quote-text">
-          La meilleure plateforme pour gérer ma flotte et trouver des clients en
-          quelques clics. Vraiment impressionnant.
-        </p>
-        <div className="lp-quote-author">
-          <div className="lp-quote-avatar">KA</div>
-          <div>
-            <div className="lp-quote-info-name">Karim Alaoui</div>
-            <div className="lp-quote-info-role">Gérant · AutoLux Marrakech</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
-/* ══════════════════════════════════════
-   Page Login principale
-══════════════════════════════════════ */
 export default function Login() {
   const dispatch    = useDispatch()
   const navigate    = useNavigate()
@@ -144,14 +86,10 @@ export default function Login() {
     <div className="lp-root">
       <div className="lp-page">
 
-        {/* ── PANEL GAUCHE ── */}
-        <LeftPanel />
 
-        {/* ── PANEL DROIT (formulaire) ── */}
         <div className="lp-right">
           <div className="lp-form-wrap lp-view">
 
-            {/* Header */}
             <div className="lp-fheader">
               <h1 className="lp-ftitle">
                 Bon retour{" "}
@@ -162,7 +100,6 @@ export default function Login() {
               </p>
             </div>
 
-            {/* Erreur globale */}
             {globalError && (
               <div className="lp-global-error">
                 <Icon.Error /> {globalError}
@@ -184,7 +121,6 @@ export default function Login() {
                 error={errors.email || apiErrors?.email?.[0]}
               />
 
-              {/* Mot de passe */}
               <div className="rp-group">
                 <label className="rp-label" htmlFor="lPass">Mot de passe</label>
                 <div className="rp-input-wrap">
@@ -205,7 +141,6 @@ export default function Login() {
                 )}
               </div>
 
-              {/* Remember me + Forgot password */}
               <div className="lp-remember">
                 <label className="lp-checkbox-wrap">
                   <input

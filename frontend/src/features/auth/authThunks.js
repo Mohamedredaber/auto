@@ -31,15 +31,12 @@ export const loginThunk = createAsyncThunk(
   },
 );
 
-/* ── REGISTER CLIENT ─────────────────────────────── */
 export const registerThunk = createAsyncThunk(
   "auth/register",
   async (userInfo, { rejectWithValue }) => {
     try {
-      // 1. Créer le compte — crée aussi la session (auth()->login($user))
       await register(userInfo);
 
-      // 2. Récupérer l'utilisateur via /me (session déjà active)
       const { data } = await me();
 
       return normalizeUser(data.data);
@@ -57,7 +54,6 @@ export const fetchMeThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await me();
-      // Retourne le UserResource directement — le slice l'exploitera
       return data.data;
     } catch (error) {
       return rejectWithValue(
@@ -67,7 +63,6 @@ export const fetchMeThunk = createAsyncThunk(
   },
 );
 
-/* ── LOGOUT ─────────────────────────────────────── */
 export const logoutThunk = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
@@ -75,7 +70,6 @@ export const logoutThunk = createAsyncThunk(
       await logout();
       return;
     } catch (error) {
-      // Même en cas d'erreur réseau, on considère le logout réussi côté client
       return rejectWithValue(
         error.response?.data ?? { message: error.message },
       );

@@ -1,0 +1,132 @@
+.bookings-container {
+  padding: 2rem;
+  background-color: var(--color-bg-primary);
+  min-height: 100vh;
+}
+
+.dash-header { margin-bottom: 3rem; }
+.dash-header h1 { font-size: 2.5rem; color: var(--color-text-primary); }
+.dash-header .accent { color: var(--color-blue-500); }
+.empty-state {
+  text-align: center;
+  display : flex ; 
+  flex-direction : column ;
+
+  color: var(--color-text-muted);
+  padding: 4rem 2rem;
+  border-radius: 12px;
+}
+.bookings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+/* Style de la Carte */
+.booking-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-blue-500);
+  background: var(--color-bg-card-hover);
+}
+
+.booking-card-image {
+  position: relative;
+  height: 200px;
+}
+
+.booking-card-image img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+.status-badge {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+.booking-card-content { padding: 1.5rem; }
+
+.model-text { color: var(--color-blue-400); font-weight: 300; }
+
+.booking-info-grid {
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.price-tag {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* Boutons */
+.booking-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+
+.btn-primary { background: var(--gradient-blue); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer;  }
+.btn-outline-danger { 
+  background: transparent; 
+  border: 1px solid var(--color-red-500); 
+  color: var(--color-red-500);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-outline-danger:hover { background: var(--color-red-500); color: white; }
+.canceled-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  
+  /* Couleurs basées sur tes variables */
+  background-color: var(--color-error-bg); /* Rouge très sombre transparent */
+  color: var(--color-red-400);            /* Rouge clair pour le texte */
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  /* Petit effet de profondeur */
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.1);
+  
+  /* Animation douce à l'apparition */
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

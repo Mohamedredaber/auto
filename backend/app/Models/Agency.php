@@ -36,7 +36,6 @@ class Agency extends Model
     {
         return $this->hasMany(User::class, 'agency_id');
     }
-        // L'admin de cette agence
     public function admin(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(User::class, 'agency_id');
@@ -46,5 +45,13 @@ class Agency extends Model
     public function getLogoUrlAttribute(): ?string
     {
         return $this->logo ? asset("storage/{$this->logo}") : null;
+    }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+    public function clients(){
+        return $this->hasManyThrough(User::class, Booking::class, 'agency_id', 'id', 'id', 'user_id')
+                    ->distinct();
     }
 }

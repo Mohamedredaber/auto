@@ -8,15 +8,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('cars', function (Blueprint $table) {
-            $table->id(); // id_car
-
-            // Relation agence
+            $table->id(); 
             $table->foreignId('agency_id')
                   ->constrained('agencies')
                   ->cascadeOnDelete();
-            // Informations voiture
             $table->string('category');          
-            $table->string('brand');             // Toyota, BMW...
+            $table->string('brand');     
             $table->string('model');         
             $table->year('year');
        
@@ -28,16 +25,11 @@ return new class extends Migration {
             $table->decimal('price_per_day', 8, 2);
             $table->enum('status', ['available', 'reserved', 'maintenance'])
                   ->default('reserved');
-            // Disponibilité 
             $table->date('available_from')->nullable();
             $table->date('available_to')->nullable();
 
-            // Infos supplémentaires
             $table->text('additional_information')->nullable();
-
             $table->timestamps();
-
-            // Index utiles
             $table->index(['agency_id', 'status']);
             $table->index('category');
         });

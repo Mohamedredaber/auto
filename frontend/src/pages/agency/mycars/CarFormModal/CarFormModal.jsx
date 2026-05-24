@@ -10,7 +10,10 @@ import {
   selectIsEditing,
 } from "../../../../features/agency/carSelectors";
 import { closeModals, clearErrors } from "../../../../features/agency/carSlice";
-import { createCarThunk, updateCarThunk } from "../../../../features/agency/carThunks";
+import {
+  createCarThunk,
+  updateCarThunk,
+} from "../../../../features/agency/carThunks";
 import CarFormFields from "./CarFormFields";
 import ImageUploadSection from "./ImageUploadSection";
 import FormErrorAlert from "./FormErrorAlert";
@@ -27,7 +30,10 @@ const INITIAL_DATA = {
   doors: 4,
   price_per_day: "",
   status: "available",
+  available_from: "",
+  available_to: "",
   additional_information: "",
+  description: "",
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -43,48 +49,48 @@ const buildFormData = (fields, coverFile, galleryFiles) => {
 
 const fileToPreview = (file) => URL.createObjectURL(file);
 
-// ─── Component ────────────────────────────────────────────────────────────────
 const CarFormModal = () => {
   const dispatch = useDispatch();
-  const isOpen    = useSelector(selectIsFormOpen);
+  const isOpen = useSelector(selectIsFormOpen);
   const isEditing = useSelector(selectIsEditing);
-  const car       = useSelector(selectSingleCar);
+  const car = useSelector(selectSingleCar);
   const isLoading = useSelector(selectCarLoading);
-  const errors    = useSelector(selectCarErrors);
+  const errors = useSelector(selectCarErrors);
 
-  const [formData, setFormData]           = useState(INITIAL_DATA);
-  const [coverFile, setCoverFile]         = useState(null);
-  const [coverPreview, setCoverPreview]   = useState(null);
-  const [galleryFiles, setGalleryFiles]   = useState([]);
+  const [formData, setFormData] = useState(INITIAL_DATA);
+  const [coverFile, setCoverFile] = useState(null);
+  const [coverPreview, setCoverPreview] = useState(null);
+  const [galleryFiles, setGalleryFiles] = useState([]);
   const [galleryPreviews, setGalleryPreviews] = useState([]);
 
   // ── Populate form when editing ─────────────────────────────────────────────
   useEffect(() => {
     if (isEditing && car) {
       setFormData({
-        brand:                  car.brand                  ?? "",
-        model:                  car.model                  ?? "",
-        category:               car.category               ?? "",
-        year:                   car.year                   ?? new Date().getFullYear(),
-        transmission:           car.transmission            ?? "",
-        fuel:                   car.fuel                   ?? "",
-        seats:                  car.seats                  ?? 5,
-        doors:                  car.doors                  ?? 4,
-        price_per_day:          car.price_per_day          ?? "",
-        status:                 car.status                 ?? "available",
+        brand: car.brand ?? "",
+        model: car.model ?? "",
+        category: car.category ?? "",
+        year: car.year ?? new Date().getFullYear(),
+        transmission: car.transmission ?? "",
+        fuel: car.fuel ?? "",
+        seats: car.seats ?? 5,
+        doors: car.doors ?? 4,
+        price_per_day: car.price_per_day ?? "",
+        status: car.status ?? "available",
+        available_from: car.available_from ?? "",
+        available_to: car.available_to ?? "",
         additional_information: car.additional_information ?? "",
+        description: car.description ?? "",
       });
     } else {
       setFormData(INITIAL_DATA);
     }
-    // Reset images on every open
     setCoverFile(null);
     setCoverPreview(null);
     setGalleryFiles([]);
     setGalleryPreviews([]);
   }, [isOpen, isEditing, car]);
 
-  // ── Cleanup object URLs ────────────────────────────────────────────────────
   useEffect(() => {
     return () => {
       if (coverPreview) URL.revokeObjectURL(coverPreview);
@@ -92,7 +98,6 @@ const CarFormModal = () => {
     };
   }, [coverPreview, galleryPreviews]);
 
-  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleFieldChange = useCallback((name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
@@ -134,7 +139,9 @@ const CarFormModal = () => {
     if (isEditing) {
       // Laravel needs _method spoofing for PUT with FormData
       fd.append("_method", "PUT");
-      const result = await dispatch(updateCarThunk({ id: car.id, formData: fd }));
+      const result = await dispatch(
+        updateCarThunk({ id: car.id, formData: fd }),
+      );
       if (!result.error) handleClose();
     } else {
       const result = await dispatch(createCarThunk(fd));
@@ -249,11 +256,19 @@ const CarFormModal = () => {
   };
 
   return (
-    <div style={overlayStyle} onClick={(e) => e.target === e.currentTarget && handleClose()}>
+    <div
+      style={overlayStyle}
+      onClick={(e) => e.target === e.currentTarget && handleClose()}
+    >
       <div style={modalStyle}>
-
         <div style={headerStyle}>
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "var(--space-3)",
+            }}
+          >
             <span style={{ fontSize: "20px" }}>🚗</span>
             <div>
               <h2
@@ -265,22 +280,46 @@ const CarFormModal = () => {
                   margin: 0,
                 }}
               >
-                {isEditing ? `Modifier — ${car?.brand} ${car?.model}` : "Ajouter un véhicule"}
+                {isEditing
+                  ? `Modifier — ${car?.brand} ${car?.model}`
+                  : "Ajouter un véhicule"}
               </h2>
-              <p style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)", margin: 0 }}>
-                {isEditing ? "Modifiez les informations du véhicule" : "Remplissez les informations du nouveau véhicule"}
+              <p
+                style={{
+                  fontSize: "var(--text-xs)",
+                  color: "var(--color-text-muted)",
+                  margin: 0,
+                }}
+              >
+                {isEditing
+                  ? "Modifiez les informations du véhicule"
+                  : "Remplissez les informations du nouveau véhicule"}
               </p>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "var(--space-3)",
+            }}
+          >
             <span style={badgeStyle}>{isEditing ? "Édition" : "Nouveau"}</span>
-            <button style={closeBtnStyle} onClick={handleClose}>✕</button>
+            <button style={closeBtnStyle} onClick={handleClose}>
+              ✕
+            </button>
           </div>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div style={bodyStyle}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--space-4)",
+              }}
+            >
               <FormErrorAlert errors={errors} />
               <CarFormFields data={formData} onChange={handleFieldChange} />
             </div>
@@ -296,7 +335,9 @@ const CarFormModal = () => {
               onGallerySelect={handleGallerySelect}
               onGalleryRemove={handleGalleryRemove}
               isEditing={isEditing}
-              existingCoverUrl={car?.cover_image?.url ? `/storage/${car.cover_image.url}` : null}
+              existingCoverUrl={
+                car?.cover_image?.url ? `/storage/${car.cover_image.url}` : null
+              }
             />
           </div>
 
@@ -308,7 +349,14 @@ const CarFormModal = () => {
             <button type="submit" style={submitBtnStyle} disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <span style={{ display: "inline-block", animation: "spin 1s linear infinite" }}>⏳</span>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      animation: "spin 1s linear infinite",
+                    }}
+                  >
+                    ⏳
+                  </span>
                   {isEditing ? "Mise à jour..." : "Ajout en cours..."}
                 </>
               ) : (

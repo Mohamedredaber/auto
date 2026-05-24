@@ -1,62 +1,52 @@
-/* =============================================
-   TOKENS — COLORS
-   AutoConnect | Palette Dark Theme
-   ============================================= */
-
+/* 
 :root {
-  /* === BACKGROUNDS === */
-  --color-bg-primary:       #0D0D0D;   /* fond principal */
-  --color-bg-secondary:     #141414;   /* fond sections */
-  --color-bg-card:          #1A1A1A;   /* cartes */
-  --color-bg-card-hover:    #222222;   /* cartes au survol */
-  --color-bg-input:         #1E1E1E;   /* champs formulaires */
-  --color-bg-navbar:        #0F0F0FCC; /* navbar (transparence) */
-  --color-bg-overlay:       #000000AA; /* overlay modals */
+  --color-bg-primary:       #0D0D0D;   
+  --color-bg-secondary:     #141414;   
+  --color-bg-card:          #1A1A1A;   
+  --color-bg-card-hover:    #222222; 
+  --color-bg-input:         #1E1E1E;  
+  --color-bg-navbar:        #0F0F0FCC; 
+  --color-bg-overlay:       #000000AA;
 
-  /* === ACCENT BLEU (remplace le mauve) === */
   --color-blue-50:          #EFF6FF;
   --color-blue-100:         #DBEAFE;
   --color-blue-400:         #60A5FA;
-  --color-blue-500:         #3B82F6;   /* bleu principal */
-  --color-blue-600:         #2563EB;   /* bleu hover */
-  --color-blue-700:         #1D4ED8;   /* bleu actif / pressed */
-  --color-blue-900:         #1E3A8A;   /* bleu très foncé */
+  --color-blue-500:         #3B82F6;  
+  --color-blue-600:         #2563EB;   
+  --color-blue-700:         #1D4ED8;   
+  --color-blue-900:         #1E3A8A;  
 
-  /* === ACCENT ROUGE (boutons CTA, badges) === */
   --color-red-400:          #F87171;
-  --color-red-500:          #EF4444;   /* rouge principal */
-  --color-red-600:          #DC2626;   /* rouge hover */
-  --color-red-700:          #B91C1C;   /* rouge actif */
+  --color-red-500:          #EF4444; 
+  --color-red-600:          #DC2626;  
+  --color-red-700:          #B91C1C;   
 
-  /* === TEXTE === */
-  --color-text-primary:     #FFFFFF;   /* titres principaux */
-  --color-text-secondary:   #D1D5DB;   /* texte courant */
-  --color-text-muted:       #6B7280;   /* texte discret */
-  --color-text-disabled:    #374151;   /* désactivé */
-  --color-text-inverse:     #0D0D0D;   /* texte sur fond clair */
+  --color-text-primary:     #FFFFFF;  
+  --color-text-secondary:   #D1D5DB;   
+  --color-text-disabled:    #374151;   
+  --color-text-inverse:     #0D0D0D;   
 
-  /* === BORDURES === */
-  --color-border:           #2A2A2A;   /* bordure standard */
-  --color-border-subtle:    #1F1F1F;   /* bordure très subtile */
-  --color-border-blue:      #2563EB44; /* bordure accent bleu */
-  --color-border-focus:     #3B82F6;   /* focus ring */
+  --color-border:           #2A2A2A;  
+  --color-border-subtle:    #1F1F1F;   
+  --color-border-blue:      #2563EB44; 
+  --color-border-focus:     #3B82F6;   
 
-  /* === ÉTATS === */
-  --color-success:          #10B981;   /* vert succès */
+  --color-success:          #10B981;  
   --color-success-bg:       #064E3B22;
-  --color-warning:          #F59E0B;   /* orange warning */
+  --color-warning:          #F59E0B;   
   --color-warning-bg:       #78350F22;
-  --color-error:            #EF4444;   /* rouge erreur */
+  --color-error:            #EF4444;   
   --color-error-bg:         #7F1D1D22;
-  --color-info:             #3B82F6;   /* bleu info */
+  --color-info:             #3B82F6;  
+
   --color-info-bg:          #1E3A8A22;
 
-  /* === BADGES DISPONIBILITÉ === */
+
   --color-badge-available:  #10B981;
   --color-badge-reserved:   #F59E0B;
   --color-badge-unavailable:#EF4444;
 
-  /* === GRADIENTS === */
+
   --gradient-blue:          linear-gradient(135deg, #2563EB, #3B82F6);
   --gradient-red:           linear-gradient(135deg, #DC2626, #EF4444);
   --gradient-dark:          linear-gradient(180deg, #141414 0%, #0D0D0D 100%);
@@ -64,7 +54,7 @@
   --gradient-card:          linear-gradient(180deg, transparent 40%, #0D0D0DCC 100%);
 }
 
-/* === LIGHT MODE (optionnel) === */
+
 [data-theme="light"] {
   --color-bg-primary:       #F9FAFB;
   --color-bg-secondary:     #FFFFFF;
@@ -84,4 +74,63 @@
 
   --gradient-hero:          linear-gradient(135deg, #F9FAFB 60%, #DBEAFE 100%);
   --gradient-dark:          linear-gradient(180deg, #F9FAFB 0%, #FFFFFF 100%);
+}
+   */
+
+  :root {
+  --color-bg-primary:       #0D0D0D;
+  --color-bg-secondary:     #141414;
+  --color-bg-card:          #1A1A1A;
+  --color-bg-card-hover:    #222222;
+  --color-bg-input:         #1E1E1E;
+  --color-bg-navbar:        #0F0F0FCC;
+  --color-bg-overlay:       #000000AA;
+
+  /* === PRIMARY (ROUGE BRAND) === */
+  --color-primary-400:      #F87171;
+  --color-primary-500:      #EF4444;
+  --color-primary-600:      #DC2626;
+  --color-primary-700:      #B91C1C;
+
+  /* === ACCENT NEUTRE (REMPLACE LE BLEU) === */
+  --color-accent-100:       #E5E7EB;
+  --color-accent-300:       #9CA3AF;
+  --color-accent-400:       #6B7280;
+  --color-accent-500:       #4B5563;
+  --color-accent-600:       #374151;
+  --color-accent-700:       #1F2937;
+
+  /* === TEXTE === */
+  --color-text-primary:     #FFFFFF;
+  --color-text-secondary:   #D1D5DB;
+  --color-text-muted:       #6B7280;
+  --color-text-disabled:    #374151;
+  --color-text-inverse:     #0D0D0D;
+
+  /* === BORDURES === */
+  --color-border:           #2A2A2A;
+  --color-border-subtle:    #1F1F1F;
+  --color-border-focus:     #EF4444;   /* focus = rouge maintenant */
+  --color-border-accent:    #4B556344;
+
+  /* === ÉTATS === */
+  --color-success:          #10B981;
+  --color-success-bg:       #064E3B22;
+  --color-warning:          #F59E0B;
+  --color-warning-bg:       #78350F22;
+  --color-error:            #EF4444;
+  --color-error-bg:         #7F1D1D22;
+  --color-info:             #9CA3AF;   /* info devient neutre */
+  --color-info-bg:          #1F293722;
+
+  /* === BADGES === */
+  --color-badge-available:  #10B981;
+  --color-badge-reserved:   #F59E0B;
+  --color-badge-unavailable:#EF4444;
+
+  /* === GRADIENTS === */
+  --gradient-primary:       linear-gradient(135deg, #DC2626, #EF4444);
+  --gradient-dark:          linear-gradient(180deg, #141414 0%, #0D0D0D 100%);
+  --gradient-hero:          linear-gradient(135deg, #0D0D0D 60%, #1F293722 100%);
+  --gradient-card:          linear-gradient(180deg, transparent 40%, #0D0D0DCC 100%);
 }

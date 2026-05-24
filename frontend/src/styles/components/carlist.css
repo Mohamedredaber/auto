@@ -1,0 +1,180 @@
+/* =============================================
+   CAR LIST GRID
+   ============================================= */
+
+.carlist__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-5);
+}
+
+/* animation item */
+.carlist__item {
+  animation: fadeUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* =============================================
+   SKELETON
+   ============================================= */
+
+.car-skeleton {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-subtle);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* image */
+.car-skeleton__image {
+  height: 180px;
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-input) 25%,
+    #2a2a2a 50%,
+    var(--color-bg-input) 75%
+  );
+}
+
+/* body */
+.car-skeleton__body {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* lines */
+.car-skeleton__line {
+  height: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-input);
+}
+
+.car-skeleton__line--title {
+  width: 60%;
+  height: 14px;
+}
+
+.car-skeleton__line--sub {
+  width: 40%;
+}
+
+/* specs */
+.car-skeleton__specs {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.car-skeleton__spec {
+  width: 60px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-input);
+}
+
+/* buttons */
+.car-skeleton__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+.car-skeleton__btn {
+  flex: 1;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-input);
+}
+
+/* shimmer animation */
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* =============================================
+   EMPTY STATE
+   ============================================= */
+
+.carlist__empty {
+  text-align: center;
+  padding: var(--space-16);
+  color: var(--color-text-secondary);
+}
+
+.carlist__empty-icon {
+  font-size: 40px;
+  margin-bottom: var(--space-3);
+}
+
+.carlist__empty-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.carlist__empty-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+/* =============================================
+   ERROR STATE
+   ============================================= */
+
+.carlist__error {
+  text-align: center;
+  padding: var(--space-16);
+  border: 1px solid var(--color-error);
+  background: var(--color-error-bg);
+  border-radius: var(--radius-lg);
+}
+
+.carlist__error-icon {
+  font-size: 40px;
+  margin-bottom: var(--space-3);
+}
+
+.carlist__error-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-error);
+}
+
+.carlist__error-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-2);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+
+@media (max-width: 768px) {
+  .carlist__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -3,7 +3,7 @@ import { useDispatch }         from "react-redux"
 import { clearErrors }         from "../../features/auth/authSlice"
 import { ViewType, ViewClient, ViewSuccess } from "./components"
 import RegisterAgency          from "./components/RegisterAgency"
-
+import '../../styles/pages/register.css'
 /* ══════════════════════════════════════════════════════════════
    Register — composant parent
    Views :

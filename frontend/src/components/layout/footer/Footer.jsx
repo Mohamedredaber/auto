@@ -1,9 +1,81 @@
-import { NavLink } from "react-router-dom"
-function Footer() {
+import React from 'react';
+import { 
+  FacebookIcon, 
+  InstagramIcon, 
+  TwitterIcon, 
+  MailIcon, 
+  PhoneIcon, 
+  MapPinIcon 
+} from './icon'; 
+import './footer.css'; 
+
+const Footer = () => {
   return (
-    <div>
-        footer 
-    </div>
-  )
-}
-export default Footer
+    <footer className="footer">
+      <div className="footer-content">
+
+        {/* Section Marque & Social */}
+        <div className="footer-brand">
+          <div className="logo">
+            <span className="logo-text">AutoConnect</span>
+          </div>
+          <p className="brand-description">
+            Premium car rental services in Morocco. Connecting you with the best agencies for your journey.
+          </p>
+          <div className="social-links">
+            <FacebookIcon width={20} stroke="var(--color-text-secondary)" className="social-icon" />
+            <InstagramIcon width={20} stroke="var(--color-text-secondary)" className="social-icon" />
+            <TwitterIcon width={20} stroke="var(--color-text-secondary)" className="social-icon" />
+          </div>
+        </div>
+
+        {/* Liens Rapides */}
+        <div className="footer-links-group">
+          <div className="footer-column">
+            <h4>Quick Links</h4>
+            <ul>
+              <li>Home</li>
+              <li>Browse Cars</li>
+              <li>Contact Us</li>
+              <li>Register Agency</li>
+            </ul>
+          </div>
+          <div className="footer-column">
+            <h4>Support</h4>
+            <ul>
+              <li>Help Center</li>
+              <li>Terms of Service</li>
+              <li>Privacy Policy</li>
+              <li>Rental Agreement</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Section Contact */}
+        <div className="footer-column">
+          <h4>Contact</h4>
+          <ul className="contact-list">
+            <li>
+              <MapPinIcon width={18} stroke="var(--color-red-500)" /> 
+              <span>Casablanca, Morocco</span>
+            </li>
+            <li>
+              <PhoneIcon width={18} stroke="var(--color-red-500)" /> 
+              <span>+212 600 00 00 00</span>
+            </li>
+            <li>
+              <MailIcon width={18} stroke="var(--color-red-500)" /> 
+              <span>support@autoconnect.ma</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="footer-bottom">
+        <p>© 2026 AutoConnect. All rights reserved.</p>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

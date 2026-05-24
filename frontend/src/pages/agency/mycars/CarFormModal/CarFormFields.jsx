@@ -1,88 +1,56 @@
-// components/cars/form/CarFormFields.jsx
+import React from 'react';
+import './CarForm.css';
 
-const fieldStyle = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "var(--space-1)",
-};
-
-const labelStyle = {
-  fontSize: "var(--text-sm)",
-  fontWeight: "var(--weight-medium)",
-  color: "var(--color-text-secondary)",
-};
-
-const inputStyle = {
-  background: "var(--color-bg-input)",
-  border: "1px solid var(--color-border)",
-  borderRadius: "var(--radius-sm)",
-  padding: "var(--space-2) var(--space-3)",
-  color: "var(--color-text-primary)",
-  fontSize: "var(--text-sm)",
-  outline: "none",
-  width: "100%",
-  fontFamily: "var(--font-body)",
-  transition: "border-color var(--transition-fast)",
-};
-
-const selectStyle = {
-  ...inputStyle,
-  cursor: "pointer",
-};
-
-const gridStyle = {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: "var(--space-4)",
-};
-
-const Field = ({ label, required, children }) => (
-  <div style={fieldStyle}>
-    <label style={labelStyle}>
-      {label}
-      {required && (
-        <span style={{ color: "var(--color-red-500)", marginLeft: "2px" }}>*</span>
-      )}
-    </label>
-    {children}
-  </div>
-);
+const CAR_FEATURES = [
+  { id: "climatisation", label: "Climatisation Bi-zone" },
+  { id: "gps", label: "GPS Intégré" },
+  { id: "bluetooth", label: "Bluetooth / CarPlay" },
+  { id: "toit_panoramique", label: "Toit Panoramique" },
+  { id: "camera_recul", label: "Caméra de recul" },
+  { id: "cuir", label: "Sièges en cuir" },
+  { id: "assurance", label: "Assurance Premium" },
+  { id: "kilometrage", label: "Kilométrage illimité" },
+];
 
 const CarFormFields = ({ data, onChange }) => {
-  const handle = (e) => {
-    const { name, value } = e.target;
-    onChange(name, value);
+  
+  const handle = (e) => onChange(e.target.name, e.target.value);
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    const currentFeatures = data.additional_information ? data.additional_information.split(',') : [];
+    
+    let updated;
+    if (checked) {
+      updated = [...currentFeatures, value];
+    } else {
+      updated = currentFeatures.filter(id => id !== value);
+    }
+    
+    onChange("additional_information", updated.join(','));
   };
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
+  const selectedFeatures = data.additional_information ? data.additional_information.split(',') : [];
 
-      {/* Brand + Model */}
-      <div style={gridStyle}>
-        <Field label="Marque" required>
-          <input
-            style={inputStyle}
-            name="brand"
-            value={data.brand}
-            onChange={handle}
-            placeholder="ex: BMW"
-          />
-        </Field>
-        <Field label="Modèle" required>
-          <input
-            style={inputStyle}
-            name="model"
-            value={data.model}
-            onChange={handle}
-            placeholder="ex: Série 5"
-          />
-        </Field>
+  return (
+    <div className="car-form-wrapper">
+      
+      <div className="form-grid-2">
+        <div className="form-field">
+          <label className="form-label">Marque <span className="required-star">*</span></label>
+          <input className="form-input" name="brand" value={data.brand} onChange={handle} placeholder="ex: BMW" />
+        </div>
+        <div className="form-field">
+          <label className="form-label">Modèle <span className="required-star">*</span></label>
+          <input className="form-input" name="model" value={data.model} onChange={handle} placeholder="ex: Série 5" />
+        </div>
       </div>
 
-      {/* Category + Year */}
-      <div style={gridStyle}>
-        <Field label="Catégorie" required>
-          <select style={selectStyle} name="category" value={data.category} onChange={handle}>
+      {/* SECTION: TECHNIQUE */}
+      <div className="form-grid-2">
+         <div className="form-field">
+          <label className="form-label">Catégorie <span className="required-star">*</span></label>
+          <select className="form-select" name="category" value={data.category} onChange={handle}>
             <option value="">Sélectionner...</option>
             <option value="sedan">Berline</option>
             <option value="suv">SUV</option>
@@ -91,97 +59,78 @@ const CarFormFields = ({ data, onChange }) => {
             <option value="convertible">Cabriolet</option>
             <option value="pickup">Pickup</option>
           </select>
-        </Field>
-        <Field label="Année" required>
-          <input
-            style={inputStyle}
-            name="year"
-            type="number"
-            value={data.year}
-            onChange={handle}
-            min={1990}
-            max={new Date().getFullYear() + 1}
-            placeholder={new Date().getFullYear()}
-          />
-        </Field>
-      </div>
-
-      {/* Transmission + Fuel */}
-      <div style={gridStyle}>
-        <Field label="Transmission" required>
-          <select style={selectStyle} name="transmission" value={data.transmission} onChange={handle}>
-            <option value="">Sélectionner...</option>
-            <option value="manual">Manuelle</option>
-            <option value="automatic">Automatique</option>
-          </select>
-        </Field>
-        <Field label="Carburant" required>
-          <select style={selectStyle} name="fuel" value={data.fuel} onChange={handle}>
+        </div>
+        <div className="form-field">
+          <label className="form-label">Carburant <span className="required-star">*</span></label>
+          <select className="form-select" name="fuel" value={data.fuel} onChange={handle}>
             <option value="">Sélectionner...</option>
             <option value="diesel">Diesel</option>
             <option value="gasoline">Essence</option>
             <option value="hybrid">Hybride</option>
             <option value="electric">Électrique</option>
           </select>
-        </Field>
+        </div>
       </div>
 
-      {/* Seats + Doors + Price */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "var(--space-4)" }}>
-        <Field label="Places" required>
-          <input
-            style={inputStyle}
-            name="seats"
-            type="number"
-            value={data.seats}
-            onChange={handle}
-            min={1}
-            max={10}
-          />
-        </Field>
-        <Field label="Portes" required>
-          <input
-            style={inputStyle}
-            name="doors"
-            type="number"
-            value={data.doors}
-            onChange={handle}
-            min={2}
-            max={5}
-          />
-        </Field>
-        <Field label="Prix / jour (MAD)" required>
-          <input
-            style={inputStyle}
-            name="price_per_day"
-            type="number"
-            value={data.price_per_day}
-            onChange={handle}
-            min={0}
-            placeholder="ex: 850"
-          />
-        </Field>
+      <div className="form-grid-3">
+        <div className="form-field">
+          <label className="form-label">Année <span className="required-star">*</span></label>
+          <input className="form-input" type="number" name="year" value={data.year} onChange={handle} />
+        </div>
+        <div className="form-field">
+          <label className="form-label">Transmission <span className="required-star">*</span></label>
+          <select className="form-select" name="transmission" value={data.transmission} onChange={handle}>
+            <option value="manual">Manuelle</option>
+            <option value="automatic">Automatique</option>
+          </select>
+        </div>
+        <div className="form-field">
+          <label className="form-label">Prix / jour (MAD) <span className="required-star">*</span></label>
+          <input className="form-input" type="number" name="price_per_day" value={data.price_per_day} onChange={handle} placeholder="ex: 450" />
+        </div>
       </div>
 
-      {/* Status */}
-      <Field label="Statut" required>
-        <select style={selectStyle} name="status" value={data.status} onChange={handle}>
-          <option value="available">Disponible</option>
-          <option value="reserved">Loué</option>
-          <option value="maintenance">En maintenance</option>
-        </select>
-      </Field>
+      {/* SECTION: DISPONIBILITÉ */}
+      <div className="form-grid-2">
+        <div className="form-field">
+          <label className="form-label">Disponible du <span className="required-star">*</span></label>
+          <input className="form-input" type="date" name="available_from" value={data.available_from} onChange={handle} />
+        </div>
+        <div className="form-field">
+          <label className="form-label">Disponible au <span className="required-star">*</span></label>
+          <input className="form-input" type="date" name="available_to" value={data.available_to} onChange={handle} />
+        </div>
+      </div>
 
-      {/* Additional Info */}
-      <Field label="Informations supplémentaires">
+      {/* SECTION: ÉQUIPEMENTS */}
+      <div className="form-field">
+        <label className="form-label">Équipements & Services</label>
+        <div className="features-grid">
+          {CAR_FEATURES.map((f) => (
+            <label key={f.id} className="feature-item">
+              <input
+                type="checkbox"
+                className="feature-checkbox"
+                value={f.id}
+                checked={selectedFeatures.includes(f.id)}
+                onChange={handleCheckboxChange}
+              />
+              <span className="feature-label">{f.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="form-field">
+        <label className="form-label">Notes ou remarques</label>
         <textarea
-          style={{ ...inputStyle, resize: "vertical", minHeight: "72px" }}
-          name="additional_information"
-          value={data.additional_information}
+          className="form-textarea"
+          name="description"
+          value={data.description}
           onChange={handle}
-          placeholder="Options, équipements, remarques..."
+          placeholder="Détails supplémentaires..."
         />
-      </Field>
+      </div>
     </div>
   );
 };
