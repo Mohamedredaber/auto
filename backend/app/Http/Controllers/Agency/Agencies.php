@@ -8,6 +8,22 @@ use App\Models\Agency;
 
 class Agencies extends Controller
 {
+    public function cities()
+    {
+        $cities = Agency::query()
+            ->whereNotNull('city')
+            ->where('city', '!=', '')
+            ->distinct()
+            ->orderBy('city')
+            ->pluck('city');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Liste des villes récupérée.',
+            'data' => $cities,
+        ]);
+    }
+
     public function stats(){
         
         return response()->json([
@@ -38,6 +54,7 @@ class Agencies extends Controller
         $perPage = $validated['per_page'] ?? 10;
 
         $query = Agency::query()
+        ->withCount('cars')
         ->when($name, function ($q, $name) {
             $q->where('agency_name', 'like', '%' . $name . '%');
         })
@@ -61,11 +78,36 @@ class Agencies extends Controller
 
     {
         $agency = Agency::find($id);
+        if (!$agency) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Agence introuvable.',
+            ], 404);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Détails de l\'agence récupérés.',
             'data' => $agency
         ]);
       
+    }
+
+    public function destroy($id)
+    {
+        $agency = Agency::find($id);
+        if (!$agency) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Agence introuvable.',
+            ], 404);
+        }
+
+        $agency->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Agence supprimée avec succès.',
+        ]);
     }
 }

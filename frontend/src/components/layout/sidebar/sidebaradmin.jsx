@@ -26,11 +26,9 @@ const Sidebar = () => {
   };
 
 
-  const agencyMenu = [
-    { name: 'Dashboard', path: '/dashboard/agency', icon: DashboardIcon },
-    { name: 'Mes Voitures', path: '/dashboard/agency/cars', icon: CarIcon },
-    { name: 'Réservations', path: '/dashboard/agency/reservations', icon: CalendarIcon },
-    { name: 'Clients', path: '/dashboard/agency/clients', icon: UsersIcon },
+  const adminMenu = [
+    { name: 'Dashboard', path: '/dashboard/admin', icon: DashboardIcon },
+    { name: 'Agences', path: '/dashboard/admin/agencies', icon: UsersIcon },
   ];
 
   return (
@@ -45,9 +43,9 @@ const Sidebar = () => {
 
       {/* Menu Navigation */}
       <nav className="nav-menu">
-        <p className="nav-label">Gestion Agence</p>
+        <p className="nav-label">Administration</p>
         <ul className="nav-list">
-          {agencyMenu.map((item) => {
+          {adminMenu.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
 

@@ -32,6 +32,10 @@ class Agency extends Model
         'latitude'        => 'float',
         'longitude'       => 'float',
     ];
+
+    protected $appends = [
+        'logo_url',
+    ];
     public function cars()
     {
         return $this->hasMany(Car::class);

@@ -13,6 +13,7 @@ const TopBar = () => {
     <header className="top-bar">
       <div className="top-bar-left">
         {/* Hna t9der t-zid path bhal: Dashboard > Overview */}
+        
       </div>
 
       <div className="top-bar-right">
@@ -32,13 +33,15 @@ const TopBar = () => {
               <span className="user-role">{ role === "agency_manager" ? "Agency Manager" : "dashboard user"   }</span>
           </div>
           
-     
+    
       {role === "agency_manager" && agency &&
           <div className="agency-avatar"> 
             <img
               src={agency?.logo_url}
               alt={agency?.agency_name || "Logo"}        />
           </div>}
+        
+          
         </div>
       </div>
     </header>

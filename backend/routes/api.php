@@ -88,8 +88,10 @@ if (env('APP_DEBUG')) {
 Route::prefix('super-admin')
     ->group(function () {
         Route::put('/changeAgencyStatus', [\App\Http\Controllers\super_admin\adminController::class, 'changeAgencyStatus']);
-        Route::get('/agencies', [\App\Http\Controllers\Agency\Agencies::class, 'index']);
-        Route::get('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'show']);
+        Route::get('/agencies/cities', [\App\Http\Controllers\Agency\Agencies::class, 'cities']);
         Route::get('/agencies/stats', [\App\Http\Controllers\Agency\Agencies::class, 'stats']);
+        Route::get('/agencies', [\App\Http\Controllers\Agency\Agencies::class, 'index']);
+        Route::delete('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'destroy']);
+        Route::get('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'show']);
         // Autres routes super admin à venir...
     });
