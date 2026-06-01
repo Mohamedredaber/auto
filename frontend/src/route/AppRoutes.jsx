@@ -27,6 +27,7 @@ import AgencyProfilePage from "../pages/agency/profile/AgencyProfilePage";
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdminAgencies from "../pages/admin/Agencies";
 import AdminCreateAgency from "../pages/admin/CreateAgency";
+import AdminAgencyDetails from "../pages/admin/AgencyDetails";
 import Reservations from "../pages/client/reservation/ReservationPage";
 import ReservationsClientDash from "../pages/client/reservation/ReservationsClientDash";
 import NotFound from "../pages/errors/NotFound";
@@ -103,6 +104,7 @@ export default function AppRoutes() {
           <Route element={<AdminLayout />}>
             <Route path="/dashboard/admin" element={<AdminDashboard />} />
             <Route path="/dashboard/admin/agencies" element={<AdminAgencies />} />
+            <Route path="/dashboard/admin/agencies/:id" element={<AdminAgencyDetails />} />
             <Route path="/dashboard/admin/agencies/new" element={<AdminCreateAgency />} />
           </Route>
         </Route>

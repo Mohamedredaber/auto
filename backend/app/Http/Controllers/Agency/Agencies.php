@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agency;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Agency;
+use Illuminate\Support\Facades\Storage;
 
 class Agencies extends Controller
 {
@@ -73,11 +74,43 @@ class Agencies extends Controller
             'data' => $agencies
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'agency_name' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:100'],
+            'address' => ['required', 'string'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
+            'time_start' => ['required'],
+            'time_end' => ['required'],
+            'is_verified' => ['nullable', 'in:verified,inverified,wait'],
+            'accounts_social' => ['nullable', 'array'],
+            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+        ]);
+
+        if ($request->hasFile('logo')) {
+            $validated['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        if (!isset($validated['is_verified'])) {
+            $validated['is_verified'] = Agency::STATUS_WAIT;
+        }
+
+        $agency = Agency::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Agence créée avec succès.',
+            'data' => $agency,
+        ], 201);
+    }
     
     public function show($id)
 
     {
-        $agency = Agency::find($id);
+        $agency = Agency::find($id)->loadCount('cars');
         if (!$agency) {
             return response()->json([
                 'success' => false,
@@ -91,6 +124,45 @@ class Agencies extends Controller
             'data' => $agency
         ]);
       
+    }
+
+    public function update(Request $request, $id)
+    {
+        $agency = Agency::find($id);
+        if (!$agency) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Agence introuvable.',
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'agency_name' => ['sometimes', 'required', 'string', 'max:255'],
+            'city' => ['sometimes', 'required', 'string', 'max:100'],
+            'address' => ['sometimes', 'required', 'string'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
+            'time_start' => ['sometimes', 'required'],
+            'time_end' => ['sometimes', 'required'],
+            'is_verified' => ['sometimes', 'required', 'in:verified,inverified,wait'],
+            'accounts_social' => ['nullable', 'array'],
+            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+        ]);
+
+        if ($request->hasFile('logo')) {
+            if ($agency->logo) {
+                Storage::disk('public')->delete($agency->logo);
+            }
+            $validated['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        $agency->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Agence mise à jour avec succès.',
+            'data' => $agency->fresh(),
+        ]);
     }
 
     public function destroy($id)

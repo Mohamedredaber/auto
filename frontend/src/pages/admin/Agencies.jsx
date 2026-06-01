@@ -1,7 +1,30 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Search, Filter, Plus, Building2, ShieldCheck, ShieldX, Clock, Eye, Edit2, Trash2, Car } from "lucide-react";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
+import AgencyForm from "../../components/admin/AgencyForm";
+import {
+  fetchAdminAgenciesThunk,
+  fetchAdminAgenciesCitiesThunk,
+  fetchAdminAgenciesStatsThunk,
+  deleteAdminAgencyThunk,
+  createAdminAgencyThunk,
+  updateAdminAgencyThunk,
+} from "../../features/adminAgencies/adminAgenciesThunks";
+import {
+  selectAdminAgencies,
+  selectAdminAgenciesPagination,
+  selectAdminAgenciesStats,
+  selectAdminAgenciesCities,
+  selectAdminAgenciesLoading,
+  selectAdminAgenciesError,
+  selectAdminAgenciesFilters,
+  selectAdminAgenciesDeleting,
+  selectAdminAgenciesSaving,
+  selectAdminAgenciesSaveError,
+} from "../../features/adminAgencies/adminAgenciesSelectors";
+import { setFilters, resetFilters } from "../../features/adminAgencies/adminAgenciesSlice";
 import "../../styles/pages/AdminAgenciesPage.css";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -12,128 +35,57 @@ const STATUS_LABELS = {
   wait: "En attente",
 };
 
-const DEFAULT_STATS = {
-  total_agencies: 0,
-  total_agencies_verified: 0,
-  total_agencies_inverified: 0,
-  total_agencies_wait: 0,
-};
-
-function buildQuery(params) {
-  const query = new URLSearchParams();
-  Object.entries(params).forEach(([key, value]) => {
-    if (value === null || value === undefined || value === "") return;
-    query.set(key, value);
-  });
-  return query.toString();
-}
-
 function formatHour(time) {
   if (!time) return "-";
   return time.length >= 5 ? time.slice(0, 5) : time;
 }
 
 export default function AdminAgencies() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [stats, setStats] = useState(DEFAULT_STATS);
-  const [agencies, setAgencies] = useState([]);
-  const [pagination, setPagination] = useState(null);
-  const [cities, setCities] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const stats = useSelector(selectAdminAgenciesStats);
+  const agencies = useSelector(selectAdminAgencies);
+  const pagination = useSelector(selectAdminAgenciesPagination);
+  const cities = useSelector(selectAdminAgenciesCities);
+  const loading = useSelector(selectAdminAgenciesLoading);
+  const error = useSelector(selectAdminAgenciesError);
+  const filters = useSelector(selectAdminAgenciesFilters);
+  const deleting = useSelector(selectAdminAgenciesDeleting);
+  const saving = useSelector(selectAdminAgenciesSaving);
+  const saveError = useSelector(selectAdminAgenciesSaveError);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedAgency, setSelectedAgency] = useState(null);
-  const [deleting, setDeleting] = useState(false);
   const [brokenLogos, setBrokenLogos] = useState({});
-
-  const [filters, setFilters] = useState({
-    name: "",
-    city: "",
-    is_verified: "",
-    per_page: 10,
-  });
-
-  const queryString = useMemo(() => buildQuery(filters), [filters]);
-
-  const fetchStats = async () => {
-    try {
-      const response = await fetch(`${API_BASE}/api/super-admin/agencies/stats`, {
-        credentials: "include",
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload?.message || "Erreur stats");
-      setStats(payload?.data || DEFAULT_STATS);
-    } catch (err) {
-      setStats(DEFAULT_STATS);
-    }
-  };
-
-  const fetchAgencies = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${API_BASE}/api/super-admin/agencies?${queryString}`, {
-        credentials: "include",
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload?.message || "Erreur liste agences");
-      setAgencies(payload?.data?.data || []);
-      setPagination(payload?.data || null);
-    } catch (err) {
-      setError(err?.message || "Erreur lors du chargement");
-      setAgencies([]);
-      setPagination(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchCities = async () => {
-    try {
-      const response = await fetch(`${API_BASE}/api/super-admin/agencies/cities`, {
-        credentials: "include",
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload?.message || "Erreur villes");
-      setCities(payload?.data || []);
-    } catch (err) {
-      setCities([]);
-    }
-  };
+  const [formOpen, setFormOpen] = useState(false);
+  const [formMode, setFormMode] = useState("create");
+  const [formAgency, setFormAgency] = useState(null);
 
   useEffect(() => {
-    fetchStats();
-    fetchCities();
-  }, []);
+    dispatch(fetchAdminAgenciesStatsThunk());
+    dispatch(fetchAdminAgenciesCitiesThunk());
+  }, [dispatch]);
 
   useEffect(() => {
-    fetchAgencies();
-  }, [queryString]);
+    dispatch(fetchAdminAgenciesThunk(filters));
+  }, [dispatch, filters]);
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
-    setFilters((prev) => ({
-      ...prev,
+    dispatch(setFilters({
       [name]: value,
+      page: "",
     }));
   };
 
   const handleReset = () => {
-    setFilters({
-      name: "",
-      city: "",
-      is_verified: "",
-      per_page: 10,
-    });
+    dispatch(resetFilters());
   };
 
   const handlePage = (url) => {
     if (!url) return;
     const [, query] = url.split("?");
     const params = new URLSearchParams(query || "");
-    setFilters((prev) => ({
-      ...prev,
-      per_page: prev.per_page,
+    dispatch(setFilters({
       page: params.get("page") || "",
     }));
   };
@@ -141,6 +93,62 @@ export default function AdminAgencies() {
   const handleDeleteClick = (agency) => {
     setSelectedAgency(agency || null);
     setConfirmOpen(true);
+  };
+
+  const handleDetailsClick = (agency) => {
+    if (agency?.id) {
+      navigate(`/dashboard/admin/agencies/${agency.id}`);
+    }
+  };
+
+  const handleCreateClick = () => {
+    setFormMode("create");
+    setFormAgency(null);
+    setFormOpen(true);
+  };
+
+  const handleEditClick = (agency) => {
+    setFormMode("edit");
+    setFormAgency(agency || null);
+    setFormOpen(true);
+  };
+
+  const handleFormClose = () => {
+    if (saving) return;
+    setFormOpen(false);
+    setFormAgency(null);
+  };
+
+  const handleFormSubmit = async (values) => {
+    const payload = new FormData();
+    payload.append("agency_name", values.agency_name);
+    payload.append("city", values.city);
+    payload.append("address", values.address);
+    payload.append("time_start", values.time_start);
+    payload.append("time_end", values.time_end);
+    payload.append("is_verified", values.is_verified || "wait");
+    if (values.latitude !== "") payload.append("latitude", values.latitude);
+    if (values.longitude !== "") payload.append("longitude", values.longitude);
+    if (values.logo) payload.append("logo", values.logo);
+
+    try {
+      if (formMode === "edit" && formAgency?.id) {
+        await dispatch(
+          updateAdminAgencyThunk({
+            id: formAgency.id,
+            payload,
+          }),
+        ).unwrap();
+      } else {
+        await dispatch(createAdminAgencyThunk(payload)).unwrap();
+      }
+      setFormOpen(false);
+      setFormAgency(null);
+      dispatch(fetchAdminAgenciesThunk(filters));
+      dispatch(fetchAdminAgenciesStatsThunk());
+    } catch (err) {
+      window.alert(err?.message || "Erreur lors de l'enregistrement");
+    }
   };
 
   const handleDeleteCancel = () => {
@@ -151,26 +159,14 @@ export default function AdminAgencies() {
 
   const handleDeleteConfirm = async () => {
     if (!selectedAgency?.id) return;
-    setDeleting(true);
-
     try {
-      const response = await fetch(
-        `${API_BASE}/api/super-admin/agencies/${selectedAgency.id}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        },
-      );
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload?.message || "Erreur suppression");
+      await dispatch(deleteAdminAgencyThunk(selectedAgency.id)).unwrap();
       setConfirmOpen(false);
       setSelectedAgency(null);
-      await fetchAgencies();
-      await fetchStats();
+      dispatch(fetchAdminAgenciesThunk(filters));
+      dispatch(fetchAdminAgenciesStatsThunk());
     } catch (err) {
       window.alert(err?.message || "Erreur lors de la suppression");
-    } finally {
-      setDeleting(false);
     }
   };
 
@@ -209,7 +205,7 @@ export default function AdminAgencies() {
         </div>
         <button
           className="btn-add"
-          onClick={() => navigate("/dashboard/admin/agencies/new")}
+          onClick={handleCreateClick}
         >
           <Plus size={16} />
           Creer une agence
@@ -314,6 +310,7 @@ export default function AdminAgencies() {
           <h2>Liste des agences</h2>
           {loading && <span className="table-status">Chargement...</span>}
           {error && <span className="table-status error">{error}</span>}
+          {saveError && <span className="table-status error">{saveError}</span>}
         </div>
 
         <div className="table-wrapper">
@@ -387,10 +384,18 @@ export default function AdminAgencies() {
                       </td>
                       <td>
                         <div className="actions-cell">
-                          <button className="icon-btn" title="Voir">
+                          <button
+                            className="icon-btn"
+                            title="Voir"
+                            onClick={() => handleDetailsClick(agency)}
+                          >
                             <Eye size={16} />
                           </button>
-                          <button className="icon-btn" title="Modifier">
+                          <button
+                            className="icon-btn"
+                            title="Modifier"
+                            onClick={() => handleEditClick(agency)}
+                          >
                             <Edit2 size={16} />
                           </button>
                           <button
@@ -445,6 +450,14 @@ export default function AdminAgencies() {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
         loading={deleting}
+      />
+      <AgencyForm
+        isOpen={formOpen}
+        mode={formMode}
+        initialData={formAgency}
+        onSubmit={handleFormSubmit}
+        onClose={handleFormClose}
+        saving={saving}
       />
     </div>
   );

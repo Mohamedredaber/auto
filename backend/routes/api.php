@@ -91,6 +91,9 @@ Route::prefix('super-admin')
         Route::get('/agencies/cities', [\App\Http\Controllers\Agency\Agencies::class, 'cities']);
         Route::get('/agencies/stats', [\App\Http\Controllers\Agency\Agencies::class, 'stats']);
         Route::get('/agencies', [\App\Http\Controllers\Agency\Agencies::class, 'index']);
+        Route::post('/agencies', [\App\Http\Controllers\Agency\Agencies::class, 'store']);
+        Route::put('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'update']);
+        Route::patch('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'update']);
         Route::delete('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'destroy']);
         Route::get('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'show']);
         // Autres routes super admin à venir...
