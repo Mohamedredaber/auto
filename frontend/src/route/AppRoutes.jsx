@@ -24,7 +24,6 @@ import AgencyDashboard from "../pages/agency/dashboard/Dashboard";
 import ReservationDashAgency from "../pages/agency/reservation/ReservationDashAgency"; 
 import AgencyClient from "../pages/agency/client/AgencyClient";
 import AgencyProfilePage from "../pages/agency/profile/AgencyProfilePage";
-import AdminDashboard from "../pages/admin/Dashboard";
 import Reservations from "../pages/client/reservation/ReservationPage";
 import ReservationsClientDash from "../pages/client/reservation/ReservationsClientDash";
 import NotFound from "../pages/errors/NotFound";
@@ -35,6 +34,16 @@ import { ROLES } from "../constants/roles";
 import MyCars from "../pages/agency/mycars/Mycars";
 import ReservationPage from "../pages/client/reservation/ReservationPage";
 import StatisticsPage from "../pages/agency/statistique/StatisticsPage";
+
+// Admin Imports
+import AdminDashboard from "../features/admin/dashboard/AdminDashboard";
+import AdminAgencies from "../features/admin/agencies/AdminAgencies";
+import AdminCars from "../features/admin/cars/AdminCars";
+import AdminReservations from "../features/admin/reservations/AdminReservations";
+import AdminUsers from "../features/admin/users/AdminUsers";
+import AdminStatistics from "../features/admin/statistics/AdminStatistics";
+import AdminSettings from "../features/admin/settings/AdminSettings";
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -99,6 +108,12 @@ export default function AppRoutes() {
         <Route element={<RoleRoute allowedRoles={[ROLES.SUPER_ADMIN]} />}>
           <Route element={<AdminLayout />}>
             <Route path="/dashboard/admin" element={<AdminDashboard />} />
+            <Route path="/dashboard/admin/agencies" element={<AdminAgencies />} />
+            <Route path="/dashboard/admin/cars" element={<AdminCars />} />
+            <Route path="/dashboard/admin/reservations" element={<AdminReservations />} />
+            <Route path="/dashboard/admin/users" element={<AdminUsers />} />
+            <Route path="/dashboard/admin/statistics" element={<AdminStatistics />} />
+            <Route path="/dashboard/admin/settings" element={<AdminSettings />} />
           </Route>
         </Route>
       </Route>

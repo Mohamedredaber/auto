@@ -16,7 +16,7 @@ const ReservationsClientDash = () => {
     dispatch(fetchUserBookings());
   }, [dispatch]);
 
-  const handleCancel = (id) => {
+  const handleCancel = (id) => {  
     if (window.confirm("Voulez-vous vraiment annuler cette réservation ?")) {
       console.log(`Annulation de la réservation ${id}...`);
       dispatch(cancelBookingThunk(id));
