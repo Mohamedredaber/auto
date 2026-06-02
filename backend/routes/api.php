@@ -38,6 +38,7 @@ Route::post('/createbookings', [BookingController::class, 'store']);
 Route::middleware(['auth:sanctum', 'role:admin_agency'])
 ->prefix('agency') 
 ->group(function () {
+    Route::get('/statistics/export', [StatisticsController::class, 'exportReport']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/clients', [AgencyClientController::class, 'index']);
     Route::get('/clients/recent', [AgencyClientController::class, 'recent']);
