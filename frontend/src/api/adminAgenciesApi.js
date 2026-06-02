@@ -46,3 +46,9 @@ export const updateAdminAgency = async (id, data) => {
   }
   return api.put(`/super-admin/agencies/${id}`, data);
 };
+
+
+export const fetchAdminAgenciesNames= async () => {
+  await getCsrfToken();
+  return api.get("/super-admin/agencies/names");
+};

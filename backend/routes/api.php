@@ -90,11 +90,19 @@ Route::prefix('super-admin')
         Route::put('/changeAgencyStatus', [\App\Http\Controllers\super_admin\adminController::class, 'changeAgencyStatus']);
         Route::get('/agencies/cities', [\App\Http\Controllers\Agency\Agencies::class, 'cities']);
         Route::get('/agencies/stats', [\App\Http\Controllers\Agency\Agencies::class, 'stats']);
+        Route::get('agencies/names', [\App\Http\Controllers\Agency\Agencies::class, 'getNamesOfAgencies']);
+
         Route::get('/agencies', [\App\Http\Controllers\Agency\Agencies::class, 'index']);
         Route::post('/agencies', [\App\Http\Controllers\Agency\Agencies::class, 'store']);
         Route::put('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'update']);
         Route::patch('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'update']);
         Route::delete('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'destroy']);
         Route::get('/agencies/{id}', [\App\Http\Controllers\Agency\Agencies::class, 'show']);
-        // Autres routes super admin à venir...
+
+        Route::get('/cars/stats', [\App\Http\Controllers\super_admin\AdminCarController::class, 'stats']);
+        Route::get('/cars', [\App\Http\Controllers\super_admin\AdminCarController::class, 'index']);
+        Route::get('/cars/{id}', [\App\Http\Controllers\super_admin\AdminCarController::class, 'show']);
+        Route::post('/cars', [\App\Http\Controllers\super_admin\AdminCarController::class, 'store']);
+        Route::put('/cars/{id}', [\App\Http\Controllers\super_admin\AdminCarController::class, 'update']);
+        Route::delete('/cars/{id}', [\App\Http\Controllers\super_admin\AdminCarController::class, 'destroy']);
     });

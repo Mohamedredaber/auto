@@ -182,4 +182,19 @@ class Agencies extends Controller
             'message' => 'Agence supprimée avec succès.',
         ]);
     }
+        public function getNamesOfAgencies()
+        {
+            $agencies = Agency::query()
+                ->select('id', 'agency_name')
+                ->whereNotNull('agency_name')
+                ->where('agency_name', '!=', '')
+                ->orderBy('agency_name')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Liste des agences récupérée.',
+                'data' => $agencies,
+            ]);
+        }
 }

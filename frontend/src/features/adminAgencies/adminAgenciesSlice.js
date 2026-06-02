@@ -36,6 +36,7 @@ const adminAgenciesSlice = createSlice({
     saving: false,
     saveError: null,
     filters: initialFilters,
+    names: [],
   },
   reducers: {
     setFilters: (state, action) => {
@@ -112,7 +113,8 @@ const adminAgenciesSlice = createSlice({
       .addCase(updateAdminAgencyThunk.rejected, (state, action) => {
         state.saving = false;
         state.saveError = action.payload?.message || "Erreur lors de l'enregistrement";
-      });
+      })
+   
   },
 });
 

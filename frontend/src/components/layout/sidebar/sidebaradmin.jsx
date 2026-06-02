@@ -29,6 +29,7 @@ const Sidebar = () => {
   const adminMenu = [
     { name: 'Dashboard', path: '/dashboard/admin', icon: DashboardIcon },
     { name: 'Agences', path: '/dashboard/admin/agencies', icon: UsersIcon },
+    { name: 'Voitures', path: '/dashboard/admin/cars', icon: CarIcon },
   ];
 
   return (

@@ -26,6 +26,7 @@ import AgencyClient from "../pages/agency/client/AgencyClient";
 import AgencyProfilePage from "../pages/agency/profile/AgencyProfilePage";
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdminAgencies from "../pages/admin/Agencies";
+import AdminCars from "../pages/admin/Cars";
 import AdminCreateAgency from "../pages/admin/CreateAgency";
 import AdminAgencyDetails from "../pages/admin/AgencyDetails";
 import Reservations from "../pages/client/reservation/ReservationPage";
@@ -106,6 +107,7 @@ export default function AppRoutes() {
             <Route path="/dashboard/admin/agencies" element={<AdminAgencies />} />
             <Route path="/dashboard/admin/agencies/:id" element={<AdminAgencyDetails />} />
             <Route path="/dashboard/admin/agencies/new" element={<AdminCreateAgency />} />
+            <Route path="/dashboard/admin/cars" element={<AdminCars />} />
           </Route>
         </Route>
       </Route>
