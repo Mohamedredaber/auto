@@ -22,10 +22,6 @@ const StatisticsPage = () => {
     const charts = useSelector(selectStatsCharts);
     const topCars = useSelector(selectTopCars);
     const loading = useSelector(selectStatsLoading);
-// Dans ton composant Statistics.jsx
-
-
-
 
     useEffect(() => {
         dispatch(fetchAgencyStatistics());

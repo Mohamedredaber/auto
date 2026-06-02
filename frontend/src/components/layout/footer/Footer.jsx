@@ -8,7 +8,7 @@ import {
   MapPinIcon 
 } from './icon'; 
 import './footer.css'; 
-
+import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer className="footer">
@@ -34,19 +34,19 @@ const Footer = () => {
           <div className="footer-column">
             <h4>Quick Links</h4>
             <ul>
-              <li>Home</li>
-              <li>Browse Cars</li>
-              <li>Contact Us</li>
-              <li>Register Agency</li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/cars">Cars</Link></li>
+              <li><Link to="/contact">Contact Us</Link></li>
+              <li><Link to="/register-agency">Register Agency</Link></li>
             </ul>
           </div>
           <div className="footer-column">
             <h4>Support</h4>
             <ul>
-              <li>Help Center</li>
-              <li>Terms of Service</li>
-              <li>Privacy Policy</li>
-              <li>Rental Agreement</li>
+              <li><Link to="/help">Help Center</Link></li>
+              <li><Link to="/terms">Terms of Service</Link></li>
+              <li><Link to="/privacy">Privacy Policy</Link></li>
+              <li><Link to="/rental">Rental Agreement</Link></li>
             </ul>
           </div>
         </div>
