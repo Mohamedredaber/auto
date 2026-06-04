@@ -13,6 +13,7 @@ use App\Http\Controllers\Agency\AgencyClientController;
 use App\Http\Controllers\Agency\DashboardController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Public\AgencyPublicController;
+use App\Http\Controllers\ContactController;
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
     Route::get('/{id}', [CarListingController::class, 'show']);
@@ -85,3 +86,15 @@ if (env('APP_DEBUG')) {
         Route::get('/auto-test', [\App\Http\Controllers\Debug\AutoTestController::class, 'runAllTests']);
     });
 }
+// routes/api.php
+
+// Public
+Route::post('/contact', [ContactController::class, 'store']);
+
+// Admin (protégé)
+Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+    Route::get('/contact',              [ContactController::class, 'index']);
+    Route::get('/contact/{contact}',    [ContactController::class, 'show']);
+    Route::post('/contact/{contact}/reply', [ContactController::class, 'reply']);
+    Route::delete('/contact/{contact}', [ContactController::class, 'destroy']);
+});

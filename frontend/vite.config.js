@@ -6,21 +6,14 @@ import { fileURLToPath, URL } from "node:url"; // ← زيد هاد السطر
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    react({
-      babel: {
-        plugins: [["babel-plugin-react-compiler"]],
-      },
-    }),
-  ],
+  plugins: [tailwindcss(), react()],
 
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
   },
-server: {
+  server: {
     port: 5173,
     proxy: {
       "/sanctum": {

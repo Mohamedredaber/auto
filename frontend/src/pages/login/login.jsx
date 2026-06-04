@@ -169,11 +169,11 @@ export default function Login() {
                   )}
                 </button>
 
-                <div className="lp-or"><span>ou continuer avec</span></div>
+                {/* <div className="lp-or"><span>ou continuer avec</span></div>
 
                 <button type="button" className="lp-btn lp-btn-google">
                   <Icon.Google /> Connexion avec Google
-                </button>
+                </button> */}
               </div>
 
             </form>

@@ -31,7 +31,7 @@ const Sidebarclient  = () => {
     { name: 'Dashboard', path: '/dashboard/client', icon: DashboardIcon },
     { name: 'Réservations', path: '/dashboard/client/reservations', icon: CalendarIcon },
     { name : "profil", path : "/dashboard/client/profile", icon : UsersIcon},
-    { name : "settings", path : "/dashboard/client/settings", icon : SettingsIcon},
+    // { name : "settings", path : "/dashboard/client/settings", icon : SettingsIcon},
   ];
 
   return (

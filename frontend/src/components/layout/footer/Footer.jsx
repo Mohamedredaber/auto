@@ -20,8 +20,7 @@ const Footer = () => {
             <span className="logo-text">AutoConnect</span>
           </div>
           <p className="brand-description">
-            Premium car rental services in Morocco. Connecting you with the best agencies for your journey.
-          </p>
+Trouvez les meilleures agences de location de voitures au Maroc et voyagez en toute sérénité.          </p>
           <div className="social-links">
             <FacebookIcon width={20} stroke="var(--color-text-secondary)" className="social-icon" />
             <InstagramIcon width={20} stroke="var(--color-text-secondary)" className="social-icon" />
@@ -40,7 +39,7 @@ const Footer = () => {
               <li><Link to="/register-agency">Register Agency</Link></li>
             </ul>
           </div>
-          <div className="footer-column">
+          {/* <div className="footer-column">
             <h4>Support</h4>
             <ul>
               <li><Link to="/help">Help Center</Link></li>
@@ -48,11 +47,11 @@ const Footer = () => {
               <li><Link to="/privacy">Privacy Policy</Link></li>
               <li><Link to="/rental">Rental Agreement</Link></li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         {/* Section Contact */}
-        <div className="footer-column">
+        {/* <div className="footer-column">
           <h4>Contact</h4>
           <ul className="contact-list">
             <li>
@@ -68,7 +67,7 @@ const Footer = () => {
               <span>support@autoconnect.ma</span>
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
 
       <div className="footer-bottom">

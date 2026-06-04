@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { SearchIcon } from "../../../../../components/layout/icons/index";
 import { Button } from "../../../../../components/ui";
 import "../../../../../styles/components/filterbar.css";
@@ -53,6 +53,11 @@ const PRICE_MAX_DEFAULT = 3000;
 /* ─── Component ─────────────────────────────────────── */
 export default function FilterBar({ filters, onChange }) {
   const [search, setSearch] = useState(filters.search ?? "");
+
+  // Sync internal search state when filters prop changes (e.g. navigation from Home)
+  useEffect(() => {
+    setSearch(filters.search ?? "");
+  }, [filters.search]);
 
   /* Debounce manuel sur le search */
   const handleSearchChange = useCallback(
@@ -154,8 +159,6 @@ export default function FilterBar({ filters, onChange }) {
             ))}
           </select>
         </div>
-
-
 
         {/* Carburant */}
         <div className="filterbar__select-wrap">

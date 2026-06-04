@@ -1,9 +1,7 @@
 /* =============================================
-   PAGE — CAR DETAILS
-   AutoConnect
-   ============================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Sora:wght@400;600;700&display=swap');
+  PAGE — CAR DETAILS
+  AutoConnect
+  ============================================= */
 
 /* ---- Base Layout ---- */
 .car-details {
@@ -49,7 +47,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .car-details__error {
@@ -73,7 +73,9 @@
   font-weight: var(--weight-medium);
   transition: background var(--transition-fast);
 }
-.car-details__btn-back:hover { background: var(--color-red-600); }
+.car-details__btn-back:hover {
+  background: var(--color-red-600);
+}
 
 /* ============================================================
    BREADCRUMB
@@ -93,9 +95,16 @@
   text-decoration: none;
   transition: color var(--transition-fast);
 }
-.breadcrumb__link:hover { color: var(--color-text-primary); }
-.breadcrumb__separator { opacity: 0.4; }
-.breadcrumb__current { color: var(--color-text-secondary); font-weight: var(--weight-medium); }
+.breadcrumb__link:hover {
+  color: var(--color-text-primary);
+}
+.breadcrumb__separator {
+  opacity: 0.4;
+}
+.breadcrumb__current {
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+}
 
 /* ============================================================
    HEADER (titre + badge)
@@ -157,7 +166,7 @@
   letter-spacing: var(--tracking-wide);
 }
 .car-details__status::before {
-  content: '';
+  content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -209,8 +218,8 @@
   position: absolute;
   top: var(--space-4);
   left: var(--space-4);
-  background: linear-gradient(135deg, #B8860B, #FFD700);
-  color: #0D0D0D;
+  background: linear-gradient(135deg, #b8860b, #ffd700);
+  color: #0d0d0d;
   font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   padding: var(--space-1) var(--space-3);
@@ -230,7 +239,7 @@
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .image-gallery__thumbs {
@@ -282,7 +291,9 @@
   gap: var(--space-2);
   color: var(--color-text-primary);
 }
-.key-specs__title svg { color: var(--color-red-500); }
+.key-specs__title svg {
+  color: var(--color-red-500);
+}
 
 .key-specs__grid {
   display: grid;
@@ -297,7 +308,9 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  transition: border-color var(--transition-fast), background var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
 }
 .key-specs__item:hover {
   background: var(--color-bg-card-hover);
@@ -343,7 +356,9 @@
   align-items: center;
   gap: var(--space-2);
 }
-.additional-info__title svg { color: var(--color-red-500); }
+.additional-info__title svg {
+  color: var(--color-red-500);
+}
 
 .additional-info__tags {
   display: flex;
@@ -388,7 +403,9 @@
   align-items: center;
   gap: var(--space-2);
 }
-.about-section__title svg { color: var(--color-red-500); }
+.about-section__title svg {
+  color: var(--color-red-500);
+}
 
 .about-section__text {
   font-size: var(--text-base);
@@ -452,7 +469,9 @@
   align-items: center;
   gap: var(--space-2);
 }
-.agency-card__title svg { color: var(--color-red-500); }
+.agency-card__title svg {
+  color: var(--color-red-500);
+}
 
 .agency-card__header {
   display: flex;
@@ -524,7 +543,10 @@
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
 }
-.agency-card__badge svg { color: var(--color-success); flex-shrink: 0; }
+.agency-card__badge svg {
+  color: var(--color-success);
+  flex-shrink: 0;
+}
 
 .agency-card__hours {
   display: flex;
@@ -537,8 +559,12 @@
   border-bottom: 1px solid var(--color-border);
   margin-bottom: var(--space-4);
 }
-.agency-card__hours svg { color: var(--color-primary-500); }
-.agency-card__hours strong { color: var(--color-text-primary); }
+.agency-card__hours svg {
+  color: var(--color-primary-500);
+}
+.agency-card__hours strong {
+  color: var(--color-text-primary);
+}
 
 .agency-card__link {
   display: block;
@@ -603,7 +629,9 @@
   font-size: var(--text-sm);
   color: var(--color-text-muted);
 }
-.pricing-card__stars { color: var(--color-warning); }
+.pricing-card__stars {
+  color: var(--color-warning);
+}
 
 .pricing-card__body {
   padding: var(--space-5);
@@ -662,10 +690,20 @@
   font-size: var(--text-sm);
   border-bottom: 1px solid var(--color-border);
 }
-.pricing-card__breakdown-row:last-child { border-bottom: none; }
-.pricing-card__breakdown-label { color: var(--color-text-muted); }
-.pricing-card__breakdown-value { color: var(--color-text-secondary); font-weight: var(--weight-medium); }
-.pricing-card__breakdown-value--free { color: var(--color-success); font-weight: var(--weight-semibold); }
+.pricing-card__breakdown-row:last-child {
+  border-bottom: none;
+}
+.pricing-card__breakdown-label {
+  color: var(--color-text-muted);
+}
+.pricing-card__breakdown-value {
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+}
+.pricing-card__breakdown-value--free {
+  color: var(--color-success);
+  font-weight: var(--weight-semibold);
+}
 
 .pricing-card__total-row {
   display: flex;
@@ -678,7 +716,10 @@
   font-weight: var(--weight-bold);
   border: 1px solid var(--color-border);
 }
-.pricing-card__total-label { font-size: var(--text-md); color: var(--color-text-primary); }
+.pricing-card__total-label {
+  font-size: var(--text-md);
+  color: var(--color-text-primary);
+}
 .pricing-card__total-value {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
@@ -709,7 +750,9 @@
   transform: translateY(-2px);
   box-shadow: var(--shadow-red);
 }
-.pricing-card__cta:active { transform: translateY(0); }
+.pricing-card__cta:active {
+  transform: translateY(0);
+}
 .pricing-card__cta:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -745,7 +788,10 @@
   color: var(--color-text-secondary);
   margin-bottom: var(--space-2);
 }
-.pricing-card__condition svg { color: var(--color-success); flex-shrink: 0; }
+.pricing-card__condition svg {
+  color: var(--color-success);
+  flex-shrink: 0;
+}
 .pricing-card__conditions-link {
   display: inline-block;
   margin-top: var(--space-2);
@@ -754,24 +800,44 @@
   text-decoration: none;
   cursor: pointer;
 }
-.pricing-card__conditions-link:hover { text-decoration: underline; }
+.pricing-card__conditions-link:hover {
+  text-decoration: underline;
+}
 
 @media (max-width: 1024px) {
   .car-details__container {
     grid-template-columns: 1fr;
   }
-  .pricing-card { position: static; }
-  .car-details__sidebar { order: -1; }
-  .about-section__perks { grid-template-columns: repeat(2, 1fr); }
+  .pricing-card {
+    position: static;
+  }
+  .car-details__sidebar {
+    order: -1;
+  }
+  .about-section__perks {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
-  .car-details__container { padding: var(--space-4); }
-  .car-details__title { font-size: var(--text-3xl); }
-  .key-specs__grid { grid-template-columns: 1fr; }
-  .about-section__perks { grid-template-columns: 1fr; }
-  .agency-card__badges { grid-template-columns: 1fr; }
-  .image-gallery__thumbs { grid-template-columns: repeat(3, 1fr); }
+  .car-details__container {
+    padding: var(--space-4);
+  }
+  .car-details__title {
+    font-size: var(--text-3xl);
+  }
+  .key-specs__grid {
+    grid-template-columns: 1fr;
+  }
+  .about-section__perks {
+    grid-template-columns: 1fr;
+  }
+  .agency-card__badges {
+    grid-template-columns: 1fr;
+  }
+  .image-gallery__thumbs {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 .car-details__no-booking {
   background: #12121a;
