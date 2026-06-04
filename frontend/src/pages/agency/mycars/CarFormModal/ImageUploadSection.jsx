@@ -1,5 +1,6 @@
 // components/cars/form/ImageUploadSection.jsx
 import { useRef, useState } from "react";
+import { Image, Images  } from "lucide-react";
 
 const UploadBox = ({ label, required, preview, onSelect, onRemove, multiple = false, hint }) => {
   const inputRef = useRef();
@@ -73,7 +74,7 @@ const UploadBox = ({ label, required, preview, onSelect, onRemove, multiple = fa
           </div>
         ) : !multiple ? (
           <div>
-            <div style={{ fontSize: "24px", marginBottom: "var(--space-2)" }}>📷</div>
+            <div style={{ fontSize: "24px", marginBottom: "var(--space-2)" }}><Image size={20} /></div>
             <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)" }}>
               Glisser ou cliquer pour ajouter
             </p>
@@ -123,7 +124,7 @@ const UploadBox = ({ label, required, preview, onSelect, onRemove, multiple = fa
           </div>
         ) : multiple ? (
           <div>
-            <div style={{ fontSize: "24px", marginBottom: "var(--space-2)" }}>🖼️</div>
+            <div style={{ fontSize: "24px", marginBottom: "var(--space-2)"  }}><Images size={20} /></div>
             <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)" }}>
               Glisser ou cliquer (plusieurs images)
             </p>

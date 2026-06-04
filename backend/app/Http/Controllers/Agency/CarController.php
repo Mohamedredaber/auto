@@ -102,6 +102,8 @@ class CarController extends Controller
                 ->additional(['success' => true, 'message' => 'Véhicule mis à jour !']);
         });
     }
+
+    
     public function show(Car $car)
     {
         if ($car->agency_id !== Auth::user()->agency_id) {

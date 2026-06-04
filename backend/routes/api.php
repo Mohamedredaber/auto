@@ -105,4 +105,13 @@ Route::prefix('super-admin')
         Route::post('/cars', [\App\Http\Controllers\super_admin\AdminCarController::class, 'store']);
         Route::put('/cars/{id}', [\App\Http\Controllers\super_admin\AdminCarController::class, 'update']);
         Route::delete('/cars/{id}', [\App\Http\Controllers\super_admin\AdminCarController::class, 'destroy']);
+
+
+        Route::get('/users/stats', [\App\Http\Controllers\super_admin\AdminUserController::class, 'stats']);
+        Route::get('/users', [\App\Http\Controllers\super_admin\AdminUserController::class, 'index']);
+        Route::post('/users', [\App\Http\Controllers\super_admin\AdminUserController::class, 'store']);
+        Route::put('/users/{id}', [\App\Http\Controllers\super_admin\AdminUserController::class, 'update']);
+        Route::patch('/users/{id}', [\App\Http\Controllers\super_admin\AdminUserController::class, 'update']);
+        Route::delete('/users/{id}', [\App\Http\Controllers\super_admin\AdminUserController::class, 'destroy']);
+        Route::get('/users/{id}', [\App\Http\Controllers\super_admin\AdminUserController::class, 'show']);
     });

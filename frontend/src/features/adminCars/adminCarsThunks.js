@@ -92,15 +92,16 @@ export const fetchAdminCarThunk = createAsyncThunk(
 );
 
 export const fetchAdminAgenciesNamesThunk = createAsyncThunk(
-  "adminAgencies/fetchNames",
+  "adminCars/fetchAgenciesNames",
   async (_, { rejectWithValue }) => {
-    try {      const { data } = await fetchAdminAgenciesNames();
-    console.log("Fetched agencies names:", data.data);
+    try {
+      const { data } = await fetchAdminAgenciesNames();
+
       return data.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data ?? { message: error.message },
+        error.response?.data ?? { message: error.message }
       );
     }
-    },
+  }
 );

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Search, Filter, Plus, Building2, ShieldCheck, ShieldX, Clock, Eye, Edit2, Trash2, Car } from "lucide-react";
+import { Search, Filter, Plus, Building2, ShieldCheck, ShieldX, Clock, Eye, Edit, Trash2, Car } from "lucide-react";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import AgencyForm from "../../components/admin/AgencyForm";
+import Swal from "sweetalert2";
 import {
   fetchAdminAgenciesThunk,
   fetchAdminAgenciesCitiesThunk,
@@ -90,11 +91,47 @@ export default function AdminAgencies() {
     }));
   };
 
-  const handleDeleteClick = (agency) => {
-    setSelectedAgency(agency || null);
-    setConfirmOpen(true);
-  };
+  const handleDeleteAgency = async (agency) => {
+  const result = await Swal.fire({
+    title: "Supprimer l'agence ?",
+    text: `Voulez-vous vraiment supprimer l'agence "${agency.agency_name}" ? Cette action est irréversible.`,
+    icon: "warning",
 
+    showCancelButton: true,
+
+    confirmButtonText: "Supprimer",
+    cancelButtonText: "Annuler",
+
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#334155",
+
+    reverseButtons: true,
+
+    background: "#111827",
+    color: "#f9fafb",
+
+    customClass: {
+      popup: "dashboard-alert",
+    },
+  });
+
+  if (!result.isConfirmed) return;
+
+  const response = await dispatch(deleteAdminAgencyThunk(agency.id));
+
+  if (!response.error) {
+    await Swal.fire({
+      icon: "success",
+      title: "Agence supprimée",
+      text: "L'agence a été supprimée avec succès.",
+      timer: 1800,
+      showConfirmButton: false,
+
+      background: "#111827",
+      color: "#f9fafb",
+    });
+  }
+};
   const handleDetailsClick = (agency) => {
     if (agency?.id) {
       navigate(`/dashboard/admin/agencies/${agency.id}`);
@@ -383,28 +420,31 @@ export default function AdminAgencies() {
                           : "-"}
                       </td>
                       <td>
-                        <div className="actions-cell">
+                        <div className="table-actions">
                           <button
-                            className="icon-btn"
-                            title="Voir"
+                             className="action-btn view"
+                            aria-label="Voir détails"
+                            title="Voir détails"
                             onClick={() => handleDetailsClick(agency)}
                           >
                             <Eye size={16} />
                           </button>
                           <button
-                            className="icon-btn"
+                            className="action-btn edit"
                             title="Modifier"
                             onClick={() => handleEditClick(agency)}
                           >
-                            <Edit2 size={16} />
+                            <Edit size={16} />
                           </button>
+                        
                           <button
-                            className="icon-btn danger"
-                            title="Supprimer"
-                            onClick={() => handleDeleteClick(agency)}
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                                className="action-btn delete"
+                                title="Supprimer"
+                                onClick={() => handleDeleteAgency(agency)}
+                                >
+                                <Trash2 size={16} />
+                                </button>
+
                         </div>
                       </td>
                     </tr>
@@ -439,18 +479,7 @@ export default function AdminAgencies() {
           </div>
         )}
       </div>
-      <ConfirmDialog
-        isOpen={confirmOpen}
-        title="Supprimer l'agence"
-        message={`Voulez-vous vraiment supprimer l'agence "${
-          selectedAgency?.agency_name || ""
-        }" ? Cette action est irreversible.`}
-        confirmLabel="Supprimer"
-        cancelLabel="Annuler"
-        onConfirm={handleDeleteConfirm}
-        onCancel={handleDeleteCancel}
-        loading={deleting}
-      />
+      
       <AgencyForm
         isOpen={formOpen}
         mode={formMode}

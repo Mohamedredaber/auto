@@ -17,6 +17,17 @@ export const insertAdminCar = async (carData) => {
 
 export const updateAdminCar = async (carId, carData) => {
   await getCsrfToken();
+
+  if (carData instanceof FormData) {
+    carData.append("_method", "PUT");
+
+    return api.post(`/super-admin/cars/${carId}`, carData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
   return api.put(`/super-admin/cars/${carId}`, carData);
 };
 

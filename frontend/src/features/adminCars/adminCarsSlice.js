@@ -20,6 +20,14 @@ const DEFAULT_STATS = {
 const initialFilters = {
   search: "",
   status: "",
+  brand: "",
+  model: "",
+  version: "",
+  category: "",
+  year: "",
+  transmission: "",
+  fuel: "",
+  agency_name: "",
   per_page: 10,
   page: "",
 };
@@ -34,6 +42,8 @@ const adminCarsSlice = createSlice({
 
     listLoading: false,
     listError: null,
+    loading: false,
+    error: null,
 
     filters: initialFilters,
 
@@ -93,7 +103,7 @@ const adminCarsSlice = createSlice({
 
       .addCase(fetchAdminCarsThunk.fulfilled, (state, action) => {
         state.listLoading = false;
-        state.pagination = action.payload;
+        state.pagination = action.payload.pagination;
         state.cars = action.payload?.data || [];
       })
 
@@ -171,13 +181,14 @@ const adminCarsSlice = createSlice({
           "Erreur lors de la suppression de la voiture";
       })
 
-    .addCase(fetchAdminAgenciesNamesThunk.pending, (state) => {
+.addCase(fetchAdminAgenciesNamesThunk.pending, (state) => {
   state.agenciesLoading = true;
   state.agenciesError = null;
 })
 
 .addCase(fetchAdminAgenciesNamesThunk.fulfilled, (state, action) => {
   state.agenciesLoading = false;
+ 
   state.agencies = action.payload || [];
 })
 
@@ -199,3 +210,6 @@ export const {
 } = adminCarsSlice.actions;
 
 export default adminCarsSlice.reducer;
+
+
+

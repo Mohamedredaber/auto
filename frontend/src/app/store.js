@@ -10,9 +10,11 @@ import agencyClientsReducer from "../features/agency/agencyClientsSlice";
 import agencyStatsReducer from "../features/agency/agencyStatsSlice";
 import agencyProfileReducer from "../features/agency/agencyProfileSlice";
 import dashboardReducer from "../features/agency/dashboardSlice";
-import agencyPublicReducer from "../features/public/agencyPublicSlice"; // نضيفو الreducer ديال البروفايل العمومي ديال الوكالة
+import agencyPublicReducer from "../features/public/agencyPublicSlice";
 import adminAgenciesReducer from "../features/adminAgencies/adminAgenciesSlice";
 import adminCarsReducer from "../features/adminCars/adminCarsSlice";
+import adminUsersReducer from "../features/adminUsers/adminUsersSlice";
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -26,8 +28,9 @@ export const store = configureStore({
     agencyStats : agencyStatsReducer,
     agencyProfile : agencyProfileReducer  ,
     dashboard: dashboardReducer,
-    agencyPublic : agencyPublicReducer, // نضيفو الreducer ديال البروفايل العمومي ديال الوكالة
+    agencyPublic : agencyPublicReducer, 
     adminAgencies: adminAgenciesReducer,
     adminCars: adminCarsReducer,
+    adminUsers: adminUsersReducer,
     },
 });

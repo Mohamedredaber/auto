@@ -27,6 +27,7 @@ import AgencyProfilePage from "../pages/agency/profile/AgencyProfilePage";
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdminAgencies from "../pages/admin/Agencies";
 import AdminCars from "../pages/admin/Cars";
+import CarDetails from "../pages/admin/CarDetails";
 import AdminCreateAgency from "../pages/admin/CreateAgency";
 import AdminAgencyDetails from "../pages/admin/AgencyDetails";
 import Reservations from "../pages/client/reservation/ReservationPage";
@@ -39,6 +40,7 @@ import { ROLES } from "../constants/roles";
 import ReservationPage from "../pages/client/reservation/ReservationPage";
 import StatisticsPage from "../pages/agency/statistique/StatisticsPage";
 import MyCars from "../pages/agency/mycars/MyCars";
+import AdminUsers from "../pages/admin/AdminUsers";
 
 export default function AppRoutes() {
   return (
@@ -49,6 +51,7 @@ export default function AppRoutes() {
         <Route path="/cars" element={<Cars />} />
         <Route path="/cars/:id" element={<DetailsCars />} />
         <Route path="/agency/:id" element={<DetailsAgency />} />  
+        
         <Route element={<RoleRoute allowedRoles={[ROLES.CLIENT]} />}>
           <Route path="/reserve/:id" element={<ReservationPage />} />
         </Route>
@@ -108,6 +111,8 @@ export default function AppRoutes() {
             <Route path="/dashboard/admin/agencies/:id" element={<AdminAgencyDetails />} />
             <Route path="/dashboard/admin/agencies/new" element={<AdminCreateAgency />} />
             <Route path="/dashboard/admin/cars" element={<AdminCars />} />
+            <Route path="/dashboard/admin/cars/:id" element={<CarDetails />} />
+            <Route path="/dashboard/admin/users" element={<AdminUsers />} />
           </Route>
         </Route>
       </Route>

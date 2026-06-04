@@ -1,8 +1,7 @@
+import "./AdminCarFormModal.css";
 import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import Select from "react-select";
-import {selectAdminAgenciesNames} from "../../features/adminCars/adminCarsSelectors";
 
 import {
   selectAdminFormOpen,
@@ -10,7 +9,8 @@ import {
   selectAdminSelectedCar,
   selectAdminCarsLoading,
   selectAdminCarsError,
-  } from "../../features/adminCars/adminCarsSelectors";
+  selectAdminAgenciesNames,
+} from "../../features/adminCars/adminCarsSelectors";
 
 import {
   closeAdminCarModal,
@@ -25,6 +25,8 @@ import {
 import CarFormFields from "../../pages/agency/mycars/CarFormModal/CarFormFields";
 import ImageUploadSection from "../../pages/agency/mycars/CarFormModal/ImageUploadSection";
 import FormErrorAlert from "../../pages/agency/mycars/CarFormModal/FormErrorAlert";
+import { fetchAdminAgenciesNamesThunk } from "../../features/adminCars/adminCarsThunks";
+
 
 const INITIAL_DATA = {
   agency_id: "",
@@ -32,7 +34,7 @@ const INITIAL_DATA = {
   model: "",
   category: "",
   year: new Date().getFullYear(),
-  transmission: "",
+  transmission: "manual",
   fuel: "",
   seats: 5,
   doors: 4,
@@ -53,9 +55,7 @@ const buildFormData = (fields, coverFile, galleryFiles) => {
     }
   });
 
-  if (coverFile) {
-    fd.append("cover_image", coverFile);
-  }
+  if (coverFile) fd.append("cover_image", coverFile);
 
   galleryFiles.forEach((file) => {
     fd.append("images[]", file);
@@ -68,13 +68,14 @@ const fileToPreview = (file) => URL.createObjectURL(file);
 
 const AdminCarFormModal = () => {
   const dispatch = useDispatch();
-const agenciesOptions = useSelector(selectAdminAgenciesNames);
 
   const isOpen = useSelector(selectAdminFormOpen);
   const mode = useSelector(selectAdminFormMode);
   const car = useSelector(selectAdminSelectedCar);
   const isLoading = useSelector(selectAdminCarsLoading);
   const errors = useSelector(selectAdminCarsError);
+  const agencies = useSelector(selectAdminAgenciesNames);
+   
 
   const isEditing = mode === "edit";
 
@@ -83,11 +84,22 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
   const [coverPreview, setCoverPreview] = useState(null);
   const [galleryFiles, setGalleryFiles] = useState([]);
   const [galleryPreviews, setGalleryPreviews] = useState([]);
-  useEffect(() => {
-  console.log("Agencies for select (inside useEffect):", agenciesOptions);
-}, [agenciesOptions]);
+
+  const agencyOptions = agencies.map((agency) => ({
+    value: agency.id,
+    label: agency.agency_name,
+  }));
+
+  const selectedAgency =
+    agencyOptions.find(
+      (option) => option.value === Number(formData.agency_id)
+    ) || null;
+    useEffect(() => {
+    dispatch(fetchAdminAgenciesNamesThunk());
+    }, [dispatch]);
 
   useEffect(() => {
+    
     if (isEditing && car) {
       setFormData({
         agency_id: car.agency_id ?? car.agency?.id ?? "",
@@ -95,7 +107,7 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
         model: car.model ?? "",
         category: car.category ?? "",
         year: car.year ?? new Date().getFullYear(),
-        transmission: car.transmission ?? "",
+        transmission:  car.transmission ?? "",
         fuel: car.fuel ?? "",
         seats: car.seats ?? 5,
         doors: car.doors ?? 4,
@@ -170,7 +182,8 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
+    console.log("Submitting form with data:", formData);
     const fd = buildFormData(formData, coverFile, galleryFiles);
 
     if (isEditing) {
@@ -178,8 +191,8 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
 
       const result = await dispatch(
         updateAdminCarThunk({
-          id: car.id,
-          formData: fd,
+          carId: car.id,
+          carData: fd,
         })
       );
 
@@ -224,31 +237,6 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
     background: "var(--color-bg-secondary)",
   };
 
-  const badgeStyle = {
-    fontSize: "var(--text-xs)",
-    fontWeight: "var(--weight-semibold)",
-    padding: "3px 10px",
-    borderRadius: "var(--radius-full)",
-    background: isEditing ? "var(--color-info-bg)" : "var(--color-success-bg)",
-    color: isEditing ? "var(--color-info)" : "var(--color-success)",
-    border: `1px solid ${
-      isEditing ? "var(--color-info)" : "var(--color-success)"
-    }`,
-    textTransform: "uppercase",
-    letterSpacing: "var(--tracking-wider)",
-  };
-
-  const closeBtnStyle = {
-    background: "none",
-    border: "1px solid var(--color-border)",
-    borderRadius: "var(--radius-sm)",
-    color: "var(--color-text-muted)",
-    width: "32px",
-    height: "32px",
-    cursor: "pointer",
-    fontSize: "16px",
-  };
-
   const bodyStyle = {
     padding: "var(--space-6)",
     display: "grid",
@@ -265,16 +253,6 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
     gap: "var(--space-3)",
   };
 
-  const cancelBtnStyle = {
-    background: "none",
-    border: "1px solid var(--color-border)",
-    borderRadius: "var(--radius-sm)",
-    color: "var(--color-text-secondary)",
-    padding: "var(--space-2) var(--space-5)",
-    cursor: "pointer",
-    fontSize: "var(--text-sm)",
-  };
-
   const submitBtnStyle = {
     background: "var(--gradient-red)",
     border: "none",
@@ -287,8 +265,6 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
     opacity: isLoading ? 0.7 : 1,
   };
 
-
-
   return (
     <div
       style={overlayStyle}
@@ -296,44 +272,22 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
     >
       <div style={modalStyle}>
         <div style={headerStyle}>
-          <div style={{ display: "flex", gap: "var(--space-3)" }}>
-            <span style={{ fontSize: "20px" }}>🚗</span>
-
-            <div>
-              <h2
-                style={{
-                  fontFamily: "var(--font-heading)",
-                  fontSize: "var(--text-lg)",
-                  color: "var(--color-text-primary)",
-                  margin: 0,
-                }}
-              >
-                {isEditing
-                  ? `Modifier — ${car?.brand} ${car?.model}`
-                  : "Ajouter un véhicule"}
-              </h2>
-
-              <p
-                style={{
-                  fontSize: "var(--text-xs)",
-                  color: "var(--color-text-muted)",
-                  margin: 0,
-                }}
-              >
-                {isEditing
-                  ? "Admin peut modifier le véhicule et son agence"
-                  : "Admin peut ajouter un véhicule pour une agence"}
-              </p>
-            </div>
+          <div>
+            <h2 style={{ margin: 0 }}>
+              {isEditing
+                ? `Modifier — ${car?.brand} ${car?.model}`
+                : "Ajouter un véhicule"}
+            </h2>
+            <p style={{ margin: 0, color: "var(--color-text-muted)" }}>
+              {isEditing
+                ? "Modifier les informations du véhicule"
+                : "Ajouter une voiture pour une agence"}
+            </p>
           </div>
 
-          <div style={{ display: "flex", gap: "var(--space-3)" }}>
-            <span style={badgeStyle}>{isEditing ? "Édition" : "Nouveau"}</span>
-
-            <button style={closeBtnStyle} onClick={handleClose}>
-              ✕
-            </button>
-          </div>
+          <button type="button" onClick={handleClose}>
+            ✕
+          </button>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -352,16 +306,18 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
                   Agence <span className="required-star">*</span>
                 </label>
 
-                <input
-                  type="number"
-                  className="form-input"
-                  value={formData.agency_id}
-                  onChange={(e) =>
-                    handleFieldChange("agency_id", e.target.value)
-                  }
-                  placeholder="Ex: 1"
-                  required
-                />
+                <Select
+                    classNamePrefix="agency-select"
+                    options={agencyOptions}
+                    value={selectedAgency}
+                    onChange={(option) =>
+                        handleFieldChange("agency_id", option?.value || "")
+                    }
+                    placeholder="Rechercher une agence..."
+                    isSearchable
+                    isClearable
+                    noOptionsMessage={() => "Aucune agence trouvée"}
+                    />
               </div>
 
               <CarFormFields data={formData} onChange={handleFieldChange} />
@@ -378,13 +334,13 @@ const agenciesOptions = useSelector(selectAdminAgenciesNames);
               onGalleryRemove={handleGalleryRemove}
               isEditing={isEditing}
               existingCoverUrl={
-                car?.cover_image?.url ? `/storage/${car.cover_image.url}` : null
+                car?.images?.find((img) => img.is_cover == 1)?.url || null
               }
             />
           </div>
 
           <div style={footerStyle}>
-            <button type="button" style={cancelBtnStyle} onClick={handleClose}>
+            <button type="button" onClick={handleClose}>
               Annuler
             </button>
 

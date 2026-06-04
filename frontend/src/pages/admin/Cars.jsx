@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import { useEffect , useState} from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Search,
@@ -26,6 +28,7 @@ import {
   selectAdminCarsLoading,
   selectAdminCarsError,
   selectAdminCarsFilters,
+  
 } from "../../features/adminCars/adminCarsSelectors";
 import {
   setFilters,
@@ -48,12 +51,39 @@ const STATUS_LABELS = {
 
 export default function AdminCars() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const stats = useSelector(selectAdminCarsStats);
   const cars = useSelector(selectAdminCars);
   const pagination = useSelector(selectAdminCarsPagination);
   const loading = useSelector(selectAdminCarsLoading);
   const error = useSelector(selectAdminCarsError);
   const filters = useSelector(selectAdminCarsFilters);
+  
+  const [carToDelete, setCarToDelete] = useState(null);
+  const currentYear = new Date().getFullYear();
+    const yearOptions = Array.from({ length: 10 }, (_, index) => currentYear - index);
+
+    const categoryOptions = [
+    "sedan",
+    "suv",
+    "pickup",
+    "hatchback",
+    "coupe",
+    "van",
+    "luxury",
+    ];
+
+    const transmissionOptions = [
+    { value: "manual", label: "Manuelle" },
+    { value: "automatic", label: "Automatique" },
+    ];
+
+    const fuelOptions = [
+    { value: "diesel", label: "Diesel" },
+    { value: "gasoline", label: "Essence" },
+    { value: "hybrid", label: "Hybride" },
+    { value: "electric", label: "Électrique" },
+    ];
 
   useEffect(() => {
     dispatch(fetchAdminCarsStatsThunk());
@@ -92,21 +122,54 @@ const handleEdit = (car) => {
   dispatch(openAdminCarEditModal(car));
 };
 
-const handleDelete = async (carId) => {
-  const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cette voiture ?");
+const handleDelete = async (car) => {
+  const result = await Swal.fire({
+    title: "Supprimer le véhicule ?",
+    text: `Voulez-vous vraiment supprimer ${car.brand} ${car.model} ?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Oui, supprimer",
+    cancelButtonText: "Annuler",
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#334155",
+    background: "#111827",
+    color: "#f9fafb",
+  });
 
-  if (!confirmDelete) return;
+  if (!result.isConfirmed) return;
 
-  const result = await dispatch(deleteAdminCarThunk(carId));
+  const response = await dispatch(deleteAdminCarThunk(car.id));
+
+  if (!response.error) {
+    dispatch(fetchAdminCarsStatsThunk());
+
+    Swal.fire({
+      title: "Supprimé !",
+      text: "Le véhicule a été supprimé avec succès.",
+      icon: "success",
+      timer: 1600,
+      showConfirmButton: false,
+      background: "#111827",
+      color: "#f9fafb",
+    });
+  }
+};
+const confirmDelete = async () => {
+  const result = await dispatch(
+    deleteAdminCarThunk(carToDelete)
+  );
 
   if (!result.error) {
     dispatch(fetchAdminCarsStatsThunk());
+    setCarToDelete(null);
   }
 };
 
-const handleView = (car) => {
-  console.log("Car details:", car);
-};
+  const handleDetailsClick = (car) => {
+    if (car?.id) {
+      navigate(`/dashboard/admin/cars/${car.id}`);
+    }
+  };
 
 const getCoverImageUrl = (car) => {
   return car.images?.find((img) => img.is_cover == 1)?.url || null;
@@ -167,46 +230,143 @@ const getCoverImageUrl = (car) => {
           </div>
         </div>
       </div>
+<div className="admin-cars-filters">
+  <div className="filters-top">
+  <div className="search-box">
+    <input
+        type="text"
+        name="search"
+        value={filters.search}
+        onChange={handleFilterChange}
+        placeholder="Rechercher une voiture, agence, marque..."
+    />
+    <Search size={18} className="search-icon" />
+    </div>
 
-      <div className="admin-cars-filters">
-        <div className="search-box">
-          <input
-            type="text"
-            name="search"
-            value={filters.search}
-            onChange={handleFilterChange}
-            placeholder="Rechercher (marque, modele, agence)"
-          />
-          <Search size={16} className="search-icon" />
-        </div>
-        <div className="filter-group">
-          <Filter size={16} className="filter-icon" />
-          <span>Filtrer par:</span>
-          <select
-            name="status"
-            value={filters.status}
-            onChange={handleFilterChange}
-          >
-            <option value="">Tous les statuts</option>
-            <option value="available">Disponible</option>
-            <option value="reserved">Reservee</option>
-            <option value="maintenance">Maintenance</option>
-          </select>
-          <select
-            name="per_page"
-            value={filters.per_page}
-            onChange={handleFilterChange}
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-          </select>
-          <button className="btn-reset" onClick={handleReset}>
-            Reset
-          </button>
-        </div>
-      </div>
+    <button className="btn-reset" onClick={handleReset}>
+      Reset
+    </button>
+  </div>
+
+  <div className="filters-grid">
+    <input
+      type="text"
+      name="brand"
+      value={filters.brand}
+      onChange={handleFilterChange}
+      placeholder="Marque"
+      className="filter-input"
+    />
+
+    <input
+      type="text"
+      name="model"
+      value={filters.model}
+      onChange={handleFilterChange}
+      placeholder="Modèle"
+      className="filter-input"
+    />
+
+    <input
+      type="text"
+      name="version"
+      value={filters.version}
+      onChange={handleFilterChange}
+      placeholder="Version"
+      className="filter-input"
+    />
+
+    <input
+      type="text"
+      name="agency_name"
+      value={filters.agency_name}
+      onChange={handleFilterChange}
+      placeholder="Agence"
+      className="filter-input"
+    />
+
+    <select
+      name="category"
+      value={filters.category}
+      onChange={handleFilterChange}
+      className="filter-select"
+    >
+      <option value="">Toutes les catégories</option>
+      {categoryOptions.map((category) => (
+        <option key={category} value={category}>
+          {category}
+        </option>
+      ))}
+    </select>
+
+    <input
+      list="years-list"
+      name="year"
+      value={filters.year}
+      onChange={handleFilterChange}
+      placeholder="Année"
+      className="filter-input"
+    />
+
+    <datalist id="years-list">
+      {yearOptions.map((year) => (
+        <option key={year} value={year} />
+      ))}
+    </datalist>
+
+    <select
+      name="transmission"
+      value={filters.transmission}
+      onChange={handleFilterChange}
+      className="filter-select"
+    >
+      <option value="">Toutes transmissions</option>
+      {transmissionOptions.map((item) => (
+        <option key={item.value} value={item.value}>
+          {item.label}
+        </option>
+      ))}
+    </select>
+
+    <select
+      name="fuel"
+      value={filters.fuel}
+      onChange={handleFilterChange}
+      className="filter-select"
+    >
+      <option value="">Tous carburants</option>
+      {fuelOptions.map((item) => (
+        <option key={item.value} value={item.value}>
+          {item.label}
+        </option>
+      ))}
+    </select>
+
+    <select
+      name="status"
+      value={filters.status}
+      onChange={handleFilterChange}
+      className="filter-select"
+    >
+      <option value="">Tous les statuts</option>
+      <option value="available">Disponible</option>
+      <option value="reserved">Réservée</option>
+      <option value="maintenance">Maintenance</option>
+    </select>
+
+    <select
+      name="per_page"
+      value={filters.per_page}
+      onChange={handleFilterChange}
+      className="filter-select"
+    >
+      <option value={5}>5 lignes</option>
+      <option value={10}>10 lignes</option>
+      <option value={25}>25 lignes</option>
+      <option value={50}>50 lignes</option>
+    </select>
+  </div>
+</div>
 
       <div className="admin-cars-table">
         <div className="table-header">
@@ -279,9 +439,10 @@ const getCoverImageUrl = (car) => {
                     <td>
   <div className="table-actions">
     <button
-      className="action-btn view"
-      title="Voir détails"
-      onClick={() => handleView(car)}
+            className="action-btn view"
+            aria-label="Voir détails"
+            title="Voir détails"
+      onClick={() => handleDetailsClick(car)}
     >
       <Eye size={14} />
     </button>
@@ -295,12 +456,12 @@ const getCoverImageUrl = (car) => {
     </button>
 
     <button
-      className="action-btn delete"
-      title="Supprimer voiture"
-      onClick={() => handleDelete(car.id)}
-    >
-      <Trash2 size={14} />
-    </button>
+  className="action-btn delete"
+  title="Supprimer voiture"
+  onClick={() => handleDelete(car)}
+>
+  <Trash2 size={14} />
+</button>
   </div>
 </td>
 
@@ -311,7 +472,7 @@ const getCoverImageUrl = (car) => {
           </table>
         </div>
 
-        {pagination && (
+   {pagination && (
           <div className="pagination-container">
             <div className="pagination-info">
               Page {pagination.current_page} / {pagination.last_page}
@@ -334,7 +495,9 @@ const getCoverImageUrl = (car) => {
             </div>
           </div>
         )}
+        
       </div>
+  
       <AdminCarFormModal />
     </div>
   );

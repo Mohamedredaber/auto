@@ -51,6 +51,7 @@ const CarFormFields = ({ data, onChange }) => {
          <div className="form-field">
           <label className="form-label">Catégorie <span className="required-star">*</span></label>
           <select className="form-select" name="category" value={data.category} onChange={handle}>
+            {console.log("data.category:", data.category)}
             <option value="">Sélectionner...</option>
             <option value="sedan">Berline</option>
             <option value="suv">SUV</option>

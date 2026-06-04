@@ -48,7 +48,7 @@ export const selectAdminFormMode = (state) => state.adminCars.formMode;
 export const selectAdminSelectedCar = (state) => state.adminCars.selectedCar;
 
 export const selectAdminAgenciesNames = (state) =>
-  state.adminCars.agencies;
+  state.adminCars.agencies  || [];
 export const selectAdminAgenciesLoading = (state) =>
   state.adminCars.agenciesLoading;
 export const selectAdminAgenciesError = (state) =>

@@ -1,0 +1,159 @@
+.car-details-page {
+  padding: 24px;
+  background: #12121a;
+  min-height: 100vh;
+}
+
+.back-btn {
+  border: 1px solid #374151;
+  background: #1a1a24;
+  color: #f8fafc;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #374151;
+}
+
+.car-details-page h1 {
+  margin-bottom: 20px;
+  color: #f8fafc;
+  text-transform: capitalize;
+}
+
+.images-section {
+  margin-bottom: 28px;
+}
+
+.cover-box {
+  width: 100%;
+  max-width: 850px;
+  height: 420px;
+  background: #314e8d;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #374151;
+}
+
+.cover-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-box {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.gallery-box img {
+  width: 160px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #374151;
+}
+
+.details-table {
+  max-width: 850px;
+  background: #1a1a24;
+  border: 1px solid #374151;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.details-table div {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  border-bottom: 1px solid #374151;
+}
+
+.details-table div:last-child {
+  border-bottom: none;
+}
+
+.details-table span {
+  padding: 14px 16px;
+  background: #1f2937;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.details-table strong {
+  padding: 14px 16px;
+  color: #f8fafc;
+  font-weight: 500;
+}
+
+.text-section {
+  max-width: 850px;
+  background: #1a1a24;
+  border: 1px solid #374151;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.text-section h3 {
+  margin-bottom: 10px;
+  color: #f8fafc;
+}
+
+.text-section p {
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.car-state {
+  padding: 30px;
+  text-align: center;
+  color: #f8fafc;
+}
+
+.car-state.error {
+  color: #ef4444;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feature-line {
+  padding: 12px 14px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+.feature-line::before {
+  content: "✓ ";
+  color: #22c55e;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .cover-box {
+    height: 260px;
+  }
+
+  .details-table div {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-box img {
+    width: 100%;
+    height: 180px;
+  }
+}

@@ -1,0 +1,106 @@
+/* =============================================
+   REACT SELECT - AGENCY SELECT
+   ============================================= */
+
+.agency-select__control {
+  background-color: var(--color-bg-input) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-sm) !important;
+  min-height: 42px !important;
+  box-shadow: none !important;
+  transition: all var(--transition-fast);
+}
+
+.agency-select__control:hover {
+  border-color: var(--color-blue-500) !important;
+}
+
+.agency-select__control--is-focused {
+  border-color: var(--color-blue-500) !important;
+  box-shadow: 0 0 0 2px var(--color-info-bg) !important;
+}
+
+/* Input text */
+
+.agency-select__input-container {
+  color: var(--color-text-primary) !important;
+}
+
+.agency-select__single-value {
+  color: var(--color-text-primary) !important;
+}
+
+.agency-select__placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+/* Dropdown */
+
+.agency-select__menu {
+  background-color: var(--color-bg-card) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-sm) !important;
+  overflow: hidden;
+  z-index: 9999 !important;
+}
+
+.agency-select__menu-list {
+  padding: 0 !important;
+}
+
+/* Options */
+
+.agency-select__option {
+  background-color: var(--color-bg-card) !important;
+  color: var(--color-text-primary) !important;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.agency-select__option:hover,
+.agency-select__option--is-focused {
+  background-color: var(--color-bg-card-hover) !important;
+}
+
+.agency-select__option--is-selected {
+  background-color: var(--color-blue-500) !important;
+  color: #fff !important;
+}
+
+/* Indicators */
+
+.agency-select__dropdown-indicator {
+  color: var(--color-text-muted) !important;
+}
+
+.agency-select__dropdown-indicator:hover {
+  color: var(--color-text-primary) !important;
+}
+
+.agency-select__clear-indicator {
+  color: var(--color-text-muted) !important;
+}
+
+.agency-select__clear-indicator:hover {
+  color: var(--color-red-500) !important;
+}
+
+.agency-select__indicator-separator {
+  background-color: var(--color-border) !important;
+}
+
+/* Multi-select support (future) */
+
+.agency-select__multi-value {
+  background-color: var(--color-info-bg) !important;
+  border-radius: var(--radius-xs);
+}
+
+.agency-select__multi-value__label {
+  color: var(--color-info) !important;
+}
+
+.agency-select__multi-value__remove:hover {
+  background-color: var(--color-red-500) !important;
+  color: white !important;
+}
