@@ -327,6 +327,10 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+.date-filters {
+  display: flex;
+  gap: 12px;
+}
 
 @keyframes floatIn {
   from {

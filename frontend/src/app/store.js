@@ -14,6 +14,7 @@ import agencyPublicReducer from "../features/public/agencyPublicSlice";
 import adminAgenciesReducer from "../features/adminAgencies/adminAgenciesSlice";
 import adminCarsReducer from "../features/adminCars/adminCarsSlice";
 import adminUsersReducer from "../features/adminUsers/adminUsersSlice";
+import adminBookingsReducer from "../features/adminBookings/adminBookingsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -32,5 +33,6 @@ export const store = configureStore({
     adminAgencies: adminAgenciesReducer,
     adminCars: adminCarsReducer,
     adminUsers: adminUsersReducer,
+    adminBookings: adminBookingsReducer,
     },
 });

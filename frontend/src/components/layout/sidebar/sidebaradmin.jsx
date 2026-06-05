@@ -31,6 +31,7 @@ const Sidebar = () => {
     { name: 'Agences', path: '/dashboard/admin/agencies', icon: UsersIcon },
     { name: 'Voitures', path: '/dashboard/admin/cars', icon: CarIcon },
     { name: 'Utilisateurs', path: '/dashboard/admin/users', icon: UsersIcon },
+    { name: 'Réservations', path: '/dashboard/admin/bookings', icon: CalendarIcon },
   ];
 
   return (

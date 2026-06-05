@@ -1,0 +1,205 @@
+.booking-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 18, 26, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px;
+}
+
+.booking-form-modal {
+  width: 100%;
+  max-width: 780px;
+  background: #12121a;
+  border: 1px solid #374151;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+}
+
+.booking-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #374151;
+}
+
+.booking-modal-header h2 {
+  color: #f8fafc;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.booking-modal-header button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #374151;
+  background: #1a1a24;
+  color: #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.booking-modal-header button:hover {
+  background: #252533;
+}
+
+.booking-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.booking-form-modal label {
+  color: #cbd5e1;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.booking-form-modal input,
+.booking-form-modal select {
+  height: 44px;
+  background: #1a1a24;
+  color: #f8fafc;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 0 14px;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.booking-form-modal input:focus,
+.booking-form-modal select:focus {
+  border-color: #64748b;
+  box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.35);
+}
+
+.agency-select-container {
+  margin-top: 18px;
+}
+
+.react-select__control {
+  background: #1a1a24 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 10px !important;
+  min-height: 44px !important;
+  color: #fff !important;
+}
+
+.react-select__single-value,
+.react-select__input-container {
+  color: #fff !important;
+}
+
+.react-select__placeholder {
+  color: #cbd5e1 !important;
+}
+
+.react-select__menu {
+  background: #12121a !important;
+  border: 1px solid #374151 !important;
+  z-index: 9999 !important;
+}
+
+.react-select__menu-list {
+  background: #12121a !important;
+}
+
+.react-select__option {
+  background: #12121a !important;
+  color: #ffffff !important;
+}
+
+.react-select__option--is-focused {
+  background: #374151 !important;
+  color: #ffffff !important;
+}
+
+.react-select__option--is-selected {
+  background: #4b5563 !important;
+  color: #ffffff !important;
+}
+
+.react-select__indicator,
+.react-select__dropdown-indicator,
+.react-select__clear-indicator {
+  color: #cbd5e1 !important;
+}
+
+.react-select__indicator-separator {
+  background: #374151 !important;
+}
+
+.booking-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid #374151;
+}
+
+.btn-cancel,
+.btn-save {
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: #1a1a24;
+  color: #e5e7eb;
+  border: 1px solid #374151;
+}
+
+.btn-cancel:hover {
+  background: #252533;
+}
+
+.btn-save {
+  background: #374151;
+  color: #fff;
+  border: 1px solid #4b5563;
+}
+
+.btn-save:hover {
+  background: #4b5563;
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .booking-form-modal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .booking-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn-cancel,
+  .btn-save {
+    width: 100%;
+  }
+}

@@ -114,4 +114,12 @@ Route::prefix('super-admin')
         Route::patch('/users/{id}', [\App\Http\Controllers\super_admin\AdminUserController::class, 'update']);
         Route::delete('/users/{id}', [\App\Http\Controllers\super_admin\AdminUserController::class, 'destroy']);
         Route::get('/users/{id}', [\App\Http\Controllers\super_admin\AdminUserController::class, 'show']);
+
+        Route::get('/bookings/stats', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'stats']);
+        Route::get('/bookings', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'index']);
+        Route::post('/bookings', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'store']);
+        Route::get('/bookings/{id}', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'show']);
+        Route::put('/bookings/{id}', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'update']);
+        Route::patch('/bookings/{id}', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'update']);
+        Route::delete('/bookings/{id}', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'destroy']);
     });
