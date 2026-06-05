@@ -1,29 +1,169 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logoutThunk } from "../../features/auth/authThunks";
-import useAuth from "../../hooks/useAuth";
-// import "../../styles/dashboard.css";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getClientDashboard } from "../../features/client/clientThunks";
+import {
+  selectDashboardStats,
+  selectDashboardRecentActivity,
+  selectDashboardAccountHealth,
+  selectIsDashboardLoading,
+} from "../../features/client/clientSelectors";
+import { TrendingUp, DollarSign, Calendar, AlertCircle } from "lucide-react";
+import { Card } from "../../components/ui";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { user } = useAuth();
+  const stats = useSelector(selectDashboardStats);
+  const recentActivity = useSelector(selectDashboardRecentActivity);
+  const accountHealth = useSelector(selectDashboardAccountHealth);
+  const loading = useSelector(selectIsDashboardLoading);
 
-  const handleLogout = async () => {
-    await dispatch(logoutThunk());
-    navigate("/", { replace: true });
-  };
+  useEffect(() => {
+    dispatch(getClientDashboard());
+  }, [dispatch]);
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-text">Chargement du tableau de bord...</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="dashboard">
-      <h1>
-        Bienvenue sur votre tableau de bord, {user?.name || "Utilisateur"}!
-      </h1>
-      <p>Gérez vos réservations, consultez votre historique et plus encore.</p>
-      <button className="dashboard__logout-btn" onClick={handleLogout}>
-        Se déconnecter
-      </button>
+    <div className="dashboard-container">
+      {/* Header */}
+      <header className="dash-header">
+        <h1>
+          Tableau de <span className="accent">Bord</span>
+        </h1>
+        <p>Bienvenue, voir votre activité en un coup d'œil</p>
+      </header>
+
+      {/* Stats Cards */}
+      <div className="stats-grid">
+        {/* Total Bookings */}
+        <Card className="stat-card">
+          <div className="stat-card-header">
+            <span className="stat-card-title">Réservations</span>
+            <Calendar className="stat-card-icon" />
+          </div>
+          <div className="stat-card-value">{stats.total_bookings}</div>
+          <div className="stat-card-label">Total de réservations</div>
+        </Card>
+
+        {/* Total Spent */}
+        <Card className="stat-card">
+          <div className="stat-card-header">
+            <span className="stat-card-title">Budget</span>
+            <DollarSign className="stat-card-icon" />
+          </div>
+          <div className="stat-card-value">
+            {stats.total_spent.toLocaleString()}
+          </div>
+          <div className="stat-card-label">MAD dépensés</div>
+        </Card>
+
+        {/* Active Bookings */}
+        <Card className="stat-card">
+          <div className="stat-card-header">
+            <span className="stat-card-title">Actif</span>
+            <TrendingUp className="stat-card-icon" />
+          </div>
+          <div className="stat-card-value">{stats.active_bookings}</div>
+          <div className="stat-card-label">Réservations actives</div>
+        </Card>
+      </div>
+
+      {/* Account Health */}
+      <Card className="health-section">
+        <div className="health-header">
+          <h2 className="health-title">État du Profil</h2>
+          <AlertCircle className="health-icon" size={24} />
+        </div>
+        <div className="health-bar-container">
+          <div
+            className="health-bar-fill"
+            style={{ width: `${accountHealth}%` }}
+          ></div>
+        </div>
+        <p className="health-percentage">
+          Profil complété à <strong>{accountHealth}%</strong>
+        </p>
+      </Card>
+
+      {/* Recent Activity */}
+      {recentActivity ? (
+        <Card className="activity-section">
+          <h2 className="activity-title">Dernière Réservation</h2>
+          <div className="activity-content">
+            <div className="activity-image">
+              {recentActivity.car_image && (
+                <img
+                  src={recentActivity.car_image}
+                  alt={`${recentActivity.car_brand} ${recentActivity.car_model}`}
+                />
+              )}
+            </div>
+            <div className="activity-details">
+              <h3>
+                {recentActivity.car_brand} {recentActivity.car_model}
+              </h3>
+              <p className="activity-agency">
+                Chez{" "}
+                <span className="agency-name">
+                  {recentActivity.agency_name}
+                </span>
+              </p>
+
+              <div className="activity-dates">
+                <div className="activity-date-item">
+                  <span className="activity-date-label">Date de départ</span>
+                  <span className="activity-date-value">
+                    {new Date(recentActivity.start_date).toLocaleDateString(
+                      "fr-FR",
+                    )}
+                  </span>
+                </div>
+                <div className="activity-date-item">
+                  <span className="activity-date-label">Date de retour</span>
+                  <span className="activity-date-value">
+                    {new Date(recentActivity.end_date).toLocaleDateString(
+                      "fr-FR",
+                    )}
+                  </span>
+                </div>
+              </div>
+
+              <div className="activity-footer">
+                <div className="activity-price">
+                  <span className="activity-price-label">Prix total</span>
+                  <span className="activity-price-value">
+                    {recentActivity.total_price} MAD
+                  </span>
+                </div>
+                <span
+                  className={`status-badge-dashboard ${
+                    recentActivity.status === "completed"
+                      ? "status-completed"
+                      : recentActivity.status === "confirmed"
+                        ? "status-confirmed"
+                        : "status-pending"
+                  }`}
+                >
+                  {recentActivity.status}
+                </span>
+              </div>
+            </div>
+          </div>
+        </Card>
+      ) : (
+        <div className="empty-state">
+          <p>Aucune réservation trouvée.</p>
+        </div>
+      )}
+
+  
     </div>
   );
 };

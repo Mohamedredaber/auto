@@ -14,13 +14,13 @@ import "../../../styles/pages/reservation.css";
 
 export default function ReservationPage() {
   const { id } = useParams();
+  console.log("Car ID from URL:", id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   const user = useSelector(selectUser);
   const isLoading = useSelector(selectBookingLoading);
-  const car = useSelector(selectCarSelected);
 
   const {
     subtotal: stateSubtotal,
@@ -31,7 +31,7 @@ export default function ReservationPage() {
   useEffect(() => {
     if (id) dispatch(fetchcarselected(id));
   }, [id, dispatch]);
-
+  const car = useSelector(selectCarSelected);
   const alreadyBookedByUser = useMemo(() => {
     if (!user?.id || !car?.bookings?.length) return false;
     return car.bookings.some((b) => b.user_id === user.id);

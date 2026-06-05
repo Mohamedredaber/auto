@@ -1,5 +1,6 @@
 import React from "react";
-import { Calendar, MapPin, Car, CreditCard } from "lucide-react";
+import { Calendar, MapPin, CreditCard } from "lucide-react";
+import { Button } from "../../../../components/ui";
 
 const BookingCard = ({ booking, onCancel }) => {
   const {
@@ -67,14 +68,16 @@ const BookingCard = ({ booking, onCancel }) => {
         </div>
 
         <div className="booking-actions">
-          <button className="btn-secondary">Détails</button>
+          {/* <Button variant="secondary" size="sm">Details</Button> */}
           {status === "pending" && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               className="btn-outline-danger"
               onClick={() => onCancel(booking.id)}
             >
               Annuler
-            </button>
+            </Button>
           )}
           {status === "canceled" && (
             <span className="canceled-text">Réservation annulée</span>

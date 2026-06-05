@@ -286,6 +286,67 @@ api.get("/auth/me"); // Autre instance = cookies pas partagés!
 
 ---
 
+## 3.1 Structure du Projet Laravel
+
+```text
+backend/
+├── app/
+│   ├── Console/
+│   ├── Exceptions/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Auth/
+│   │   │   │   └── AuthController.php
+│   │   │   ├── Agency/
+│   │   │   │   ├── AgencyClientController.php
+│   │   │   │   ├── AgencyProfileController.php
+│   │   │   │   ├── CarController.php
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── ReservationController.php
+│   │   │   │   └── StatisticsController.php
+│   │   │   ├── client/
+│   │   │   │   ├── BookingController.php
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   └── ProfileController.php
+│   │   │   ├── Debug/
+│   │   │   │   ├── AutoTestController.php
+│   │   │   │   ├── DebugBookingController.php
+│   │   │   │   └── DiagnosticController.php
+│   │   │   ├── Public/
+│   │   │   │   ├── AgencyPublicController.php
+│   │   │   │   ├── BookingController.php
+│   │   │   │   └── CarListingController.php
+│   │   │   ├── ContactController.php
+│   │   │   └── Controller.php
+│   │   ├── Middleware/
+│   │   ├── Requests/
+│   │   └── Resources/
+│   ├── Mail/
+│   ├── Models/
+│   │   ├── Agency.php
+│   │   ├── Booking.php
+│   │   ├── Car.php
+│   │   ├── CarImage.php
+│   │   ├── ContactMessage.php
+│   │   └── User.php
+│   ├── Notifications/
+│   └── Providers/
+├── bootstrap/
+├── config/
+├── database/
+├── public/
+├── resources/
+├── routes/
+│   ├── api.php
+│   ├── channels.php
+│   ├── console.php
+│   └── web.php
+├── storage/
+└── tests/
+```
+
+Cette structure présente l’organisation réelle du backend Laravel dans le projet `auto`, avec les contrôleurs, modèles et routes principaux.
+
 ## 📐 Architecture après corrections
 
 ```

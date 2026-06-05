@@ -23,6 +23,7 @@
 @import './styles/base/global.css';
 
 /* === 3. COMPONENTS === */ 
+@import './components/ui/ui.css';
 @import './styles/components/button.css';
 @import './styles/components/card.css';
 @import './styles/components/navbar.css';

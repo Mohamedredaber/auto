@@ -92,7 +92,7 @@
   font-family: var(--font-mono);
   font-size: var(--text-md);
   font-weight: var(--weight-bold);
-  color: var(--color-blue-400);
+  color: var(--color-primary-500);
 }
 
 .car-card__price-unit {
@@ -127,7 +127,7 @@
 .car-card__spec-icon {
   width: 14px;
   height: 14px;
-  color: var(--color-blue-400);
+  color: var(--color-primary-500);
 }
 
 /* ───────── ACTIONS ───────── */
@@ -157,8 +157,8 @@
 }
 
 .car-card__btn--outline:hover {
-  border-color: var(--color-blue-500);
-  color: var(--color-blue-400);
+  border-color: var(--color-primary-500);
+  color: var(--color-primary-500);
 }
 
 /* primary */

@@ -18,14 +18,14 @@
 .avatar-large {
   width: 80px;
   height: 80px;
-  background: var(--gradient-blue);
+  background: var(--gradient-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
   font-weight: bold;
-  box-shadow: 0 0 15px var(--color-blue-600);
+  box-shadow: 0 0 15px var(--color-primary-600);
 }
 
 .header-text h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
@@ -36,7 +36,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--color-blue-600);
+  background: var(--color-primary-600);
   color: white;
   border: none;
   padding: 0.7rem 1.2rem;
@@ -45,7 +45,7 @@
   transition: 0.3s;
 }
 
-.btn-edit-toggle:hover { background: var(--color-blue-700); }
+.btn-edit-toggle:hover { background: var(--color-primary-700); }
 
 .profile-content-grid {
   display: grid;
@@ -65,7 +65,7 @@
   align-items: center;
   gap: 0.8rem;
   margin-bottom: 1.5rem;
-  color: var(--color-blue-400);
+  color: var(--color-primary-500);
 }
 
 .input-group { margin-bottom: 1.2rem; }
@@ -87,7 +87,7 @@
 }
 
 .input-group input.editable:focus {
-  border-color: var(--color-blue-500);
+  border-color: var(--color-primary-500);
   outline: none;
 }
 

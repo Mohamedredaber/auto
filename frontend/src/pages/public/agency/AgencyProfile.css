@@ -3,6 +3,14 @@
    AutoConnect — Public Agency Details
    ============================================= */
 
+/* ========== ROOT LAYOUT TOKENS ========== */
+:root {
+  --ap-max-width: 1440px;
+  --ap-px: clamp(1rem, 4vw, 3.5rem);
+  --ap-section-py: clamp(3rem, 6vw, 5rem);
+}
+
+/* ========== BASE CONTAINER ========== */
 .ap-container {
   min-height: 100vh;
   background: var(--color-bg-primary);
@@ -10,26 +18,59 @@
   font-family: var(--font-body);
 }
 
+/* Inner wrapper — centres content & constrains width */
+.ap-inner {
+  max-width: var(--ap-max-width);
+  margin: 0 auto;
+  padding-left: var(--ap-px);
+  padding-right: var(--ap-px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Prevent long content inside flex children from forcing horizontal overflow */
+.ap-hero-content > *,
+.ap-header-info,
+.ap-info-grid > *,
+.ap-fleet-grid > * {
+  min-width: 0;
+}
+
+/* Ensure long agency names / text wrap instead of expanding layout */
+.ap-agency-name {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* final safety: avoid page-level horizontal scroll caused by edge cases */
+.ap-container {
+  overflow-x: hidden;
+}
+
 /* ========== SKELETON LOADING ========== */
 .ap-skeleton-hero {
   height: 400px;
-  background: linear-gradient(90deg, #1F1F1F 25%, #2A2A2A 50%, #1F1F1F 75%);
+  background: linear-gradient(90deg, #1f1f1f 25%, #2a2a2a 50%, #1f1f1f 75%);
   background-size: 200% 100%;
-  animation: shimmer 2s infinite;
+  animation: ap-shimmer 2s infinite;
 }
 
 .ap-skeleton-content {
   height: 500px;
-  margin: var(--space-8);
-  background: linear-gradient(90deg, #1F1F1F 25%, #2A2A2A 50%, #1F1F1F 75%);
+  margin: var(--space-8) var(--ap-px);
+  background: linear-gradient(90deg, #1f1f1f 25%, #2a2a2a 50%, #1f1f1f 75%);
   background-size: 200% 100%;
-  animation: shimmer 2s infinite;
+  animation: ap-shimmer 2s infinite;
   border-radius: var(--radius-xl);
 }
 
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+@keyframes ap-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* ========== ERROR STATE ========== */
@@ -41,6 +82,7 @@
   min-height: 600px;
   gap: var(--space-6);
   text-align: center;
+  padding: var(--space-8) var(--ap-px);
 }
 
 .ap-error-icon {
@@ -52,21 +94,24 @@
   font-family: var(--font-heading);
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
+  margin: 0;
 }
 
 .ap-error-state p {
   color: var(--color-text-secondary);
   font-size: var(--text-base);
   max-width: 400px;
+  margin: 0;
 }
 
 /* ========== HERO SECTION ========== */
 .ap-hero {
   position: relative;
-  height: 400px;
+  min-height: 380px;
   display: flex;
   align-items: flex-end;
-  padding: var(--space-12) var(--space-8) var(--space-10);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-10);
   overflow: hidden;
   border-bottom: 1px solid var(--color-border);
 }
@@ -74,8 +119,18 @@
 .ap-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(13, 13, 13, 0.7), rgba(31, 41, 55, 0.3));
-  z-index: -1;
+  background: linear-gradient(
+    135deg,
+    rgba(13, 13, 13, 0.7),
+    rgba(31, 41, 55, 0.3)
+  );
+  z-index: 0;
+}
+
+/* Hero inner keeps content centred & padded */
+.ap-hero > .ap-inner {
+  position: relative;
+  z-index: 1;
 }
 
 .ap-hero-content {
@@ -83,20 +138,19 @@
   align-items: flex-end;
   gap: var(--space-8);
   width: 100%;
-  position: relative;
-  z-index: 1;
 }
 
+/* Logo */
 .ap-logo-wrapper {
   position: relative;
   width: 160px;
   height: 160px;
+  flex-shrink: 0;
   background: var(--color-bg-card);
   border-radius: var(--radius-2xl);
   padding: var(--space-3);
   border: 2px solid var(--color-border);
   box-shadow: var(--shadow-xl);
-  flex-shrink: 0;
 }
 
 .ap-logo-wrapper img {
@@ -122,6 +176,7 @@
   box-shadow: var(--shadow-lg);
 }
 
+/* Header text */
 .ap-header-info {
   display: flex;
   flex-direction: column;
@@ -146,6 +201,7 @@
 
 .ap-location-info svg {
   color: var(--color-primary-500);
+  flex-shrink: 0;
 }
 
 .ap-rating {
@@ -172,12 +228,16 @@
 
 /* ========== STATS SECTION ========== */
 .ap-stats-section {
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-10);
+}
+
+.ap-stats-section > .ap-inner {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-6);
-  padding: var(--space-10) var(--space-8);
-  background: var(--color-bg-secondary);
-  border-bottom: 1px solid var(--color-border);
 }
 
 .ap-stat-card {
@@ -211,17 +271,14 @@
   background: rgba(220, 38, 38, 0.1);
   color: var(--color-primary-500);
 }
-
 .ap-icon-clients {
   background: rgba(16, 185, 129, 0.1);
   color: var(--color-success);
 }
-
 .ap-icon-experience {
   background: rgba(245, 158, 11, 0.1);
   color: var(--color-warning);
 }
-
 .ap-icon-rating {
   background: rgba(249, 115, 22, 0.1);
   color: #f97316;
@@ -230,6 +287,7 @@
 .ap-stat-info {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .ap-stat-value {
@@ -248,16 +306,15 @@
 
 /* ========== INFO SECTION ========== */
 .ap-info-section {
-  padding: var(--space-12) var(--space-8);
   background: var(--color-bg-primary);
+  padding-top: var(--ap-section-py);
+  padding-bottom: var(--ap-section-py);
 }
 
 .ap-info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-8);
-  max-width: 1440px;
-  margin: 0 auto;
 }
 
 .ap-info-card {
@@ -318,7 +375,7 @@
   color: var(--color-primary-500);
 }
 
-/* Hours Grid */
+/* Hours */
 .ap-hours-grid {
   display: flex;
   flex-direction: column;
@@ -350,8 +407,10 @@
 
 /* ========== FLEET SECTION ========== */
 .ap-fleet-section {
-  padding: var(--space-12) var(--space-8);
   background: var(--color-bg-primary);
+  padding-top: var(--ap-section-py);
+  padding-bottom: var(--ap-section-py);
+  border-top: 1px solid var(--color-border);
 }
 
 .ap-fleet-header {
@@ -379,11 +438,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--space-6);
-  max-width: 1440px;
-  margin: 0 auto;
 }
 
-/* CAR CARDS */
+/* ========== CAR CARD ========== */
 .ap-car-card {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -527,7 +584,6 @@
 .ap-car-price {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 .ap-price-value {
@@ -596,9 +652,10 @@
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .ap-hero {
-    height: auto;
-    flex-direction: column;
-    padding: var(--space-6) var(--space-4) var(--space-8);
+    min-height: auto;
+    align-items: flex-start;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
   }
 
   .ap-hero-content {
@@ -616,9 +673,13 @@
     font-size: var(--text-2xl);
   }
 
-  .ap-stats-section {
+  .ap-location-info,
+  .ap-rating {
+    justify-content: center;
+  }
+
+  .ap-stats-section > .ap-inner {
     grid-template-columns: repeat(2, 1fr);
-    padding: var(--space-6);
     gap: var(--space-4);
   }
 
@@ -636,10 +697,6 @@
 }
 
 @media (max-width: 480px) {
-  .ap-hero {
-    padding: var(--space-4) var(--space-4) var(--space-6);
-  }
-
   .ap-logo-wrapper {
     width: 100px;
     height: 100px;
@@ -649,17 +706,16 @@
     font-size: var(--text-xl);
   }
 
-  .ap-stats-section {
+  .ap-stats-section > .ap-inner {
     grid-template-columns: 1fr;
     gap: var(--space-3);
-    padding: var(--space-4);
   }
 
   .ap-info-card {
     padding: var(--space-4);
   }
 
-  .ap-fleet-section {
-    padding: var(--space-6) var(--space-4);
+  .ap-car-body {
+    padding: var(--space-4);
   }
 }

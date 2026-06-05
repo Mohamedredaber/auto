@@ -26,7 +26,6 @@ export default function HeroSearch() {
       <div className="hero-search__overlay">
         <div className="hero-search__content">
           
-          <p className="hero-search__badge">#1 Location de voitures au Maroc</p>
 
           <h1 className="hero-search__title">
             Trouver la voiture <span>parfaite</span><br />

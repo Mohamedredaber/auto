@@ -13,11 +13,21 @@ class CarSearchService
 
         // Filtre status (en production, souvent limité à 'available')
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            // Ne pas exposer de voitures dont le status est incorrectement fixé à confirmé/terminé
+            if (in_array($request->status, ['confirmed', 'completed'], true)) {
+                $query->whereRaw('0 = 1');
+            } else {
+                $query->where('status', $request->status);
+            }
         } else {
             // Par défaut, afficher uniquement les voitures disponibles
             $query->where('status', 'available');
         }
+
+        // Exclure les voitures ayant déjà une réservation confirmée ou terminée
+        $query->whereDoesntHave('bookings', function ($q) {
+            $q->whereIn('status', ['confirmed', 'completed']);
+        });
 
         // Filtre recherche (brand + model)
         if ($request->filled('search')) {

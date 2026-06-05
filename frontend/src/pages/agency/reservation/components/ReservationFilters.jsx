@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Filter, MapPin, Calendar as CalendarIcon } from 'lucide-react';
+import { Button } from '../../../../components/ui';
 
 const ReservationFilters = ({ filters, setFilters }) => {
   const handleInputChange = (e) => {
@@ -33,17 +34,17 @@ const ReservationFilters = ({ filters, setFilters }) => {
           </select>
         </div>
 
-        <button className="filter-btn">
+        {/* <Button variant="secondary" className="filter-btn">
           <MapPin size={16} /> Ville
-        </button>
+        </Button> */}
 
-        <button className="filter-btn">
+        {/* <Button variant="secondary" className="filter-btn">
           <CalendarIcon size={16} /> Date
-        </button>
+        </Button> */}
 
-        <button className="btn-primary-pink">
+        {/* <Button variant="primary" className="btn-primary-pink">
           Nouvelle Réservation
-        </button>
+        </Button> */}
       </div>
     </div>
   );

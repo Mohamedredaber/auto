@@ -3,6 +3,8 @@
 namespace App\Services\Client;
 
 use App\Models\Booking;
+use App\Services\BookingService as CoreBookingService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -49,18 +51,25 @@ class BookingService
     public function cancelBooking(int $id): array
     {
         $booking = $this->getUserBooking($id);
+        $user = auth()->user();
+        $core = new CoreBookingService();
 
-        if (!in_array($booking->status, ['pending', 'confirmed'])) {
-            throw new HttpException(403, 'Impossible d\'annuler cette réservation');
-        }
+        $result = DB::transaction(function () use ($booking, $core, $user) {
+            // update legacy status for compatibility and richer state
+            $booking->update([
+                'status' => 'canceled',
+                'cancellation_reason' => 'Annulé par l\'utilisateur',
+                'canceled_by' => $user->id ?? null,
+            ]);
 
-        if (strtotime($booking->start_date) < time()) {
-            throw new HttpException(403, 'La réservation a déjà commencé');
-        }
-        $booking->update(['status' => 'canceled']);
+            $core->transition($booking, 'canceled', $user, 'Annulé par l\'utilisateur');
+
+            return $booking->fresh();
+        });
+
         return [
             'message' => 'Réservation annulée avec succès',
-            'booking' => $booking
+            'booking' => $result
         ];
     }
 

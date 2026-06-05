@@ -16,6 +16,7 @@ import adminCarsReducer from "../features/adminCars/adminCarsSlice";
 import adminUsersReducer from "../features/adminUsers/adminUsersSlice";
 import adminBookingsReducer from "../features/adminBookings/adminBookingsSlice";
 
+import contactReducer from "../features/contactSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -34,5 +35,6 @@ export const store = configureStore({
     adminCars: adminCarsReducer,
     adminUsers: adminUsersReducer,
     adminBookings: adminBookingsReducer,
+    contact: contactReducer
     },
 });

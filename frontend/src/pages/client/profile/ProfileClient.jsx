@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { User, Mail, Phone, Calendar, Edit2, Save, X } from "lucide-react";
+import { Button, Card } from "../../../components/ui";
 import {
   selectUserProfile,
   selectIsProfileLoading,
@@ -51,14 +52,14 @@ const ProfilePage = () => {
     dispatch(updateUserProfile(formData))
       .unwrap()
       .then(() => setIsEditing(false))
-      .catch((err) => alert("Erreur lors de la mise à jour : " + err));
+      .catch((err) => alert("Erreur lors de la mise a jour : " + err));
   };
 
   if (isLoading && !user) return <div className="loader">Chargement...</div>;
 
   return (
     <div className="profile-wrapper">
-      <div className="profile-header-section">
+      <Card className="profile-header-section">
         <div className="avatar-large">
           {user?.first_name?.charAt(0).toUpperCase()}
         </div>
@@ -69,23 +70,20 @@ const ProfilePage = () => {
           <p className="member-since">Membre depuis le {user?.created_at}</p>
         </div>
         {!isEditing ? (
-          <button
-            className="btn-edit-toggle"
-            onClick={() => setIsEditing(true)}
-          >
+          <Button className="btn-edit-toggle" onClick={() => setIsEditing(true)}>
             <Edit2 size={18} /> Modifier le profil
-          </button>
+          </Button>
         ) : (
           <div className="edit-actions">
-            <button className="btn-cancel" onClick={() => setIsEditing(false)}>
+            <Button variant="ghost" className="btn-cancel" onClick={() => setIsEditing(false)}>
               <X size={18} /> Annuler
-            </button>
+            </Button>
           </div>
         )}
-      </div>
+      </Card>
 
       <form className="profile-content-grid" onSubmit={handleSubmit}>
-        <div className="info-card">
+        <Card className="info-card">
           <div className="card-header">
             <User size={20} />
             <h2>Détails Personnels</h2>
@@ -115,9 +113,9 @@ const ProfilePage = () => {
               />
             </div>
           </div>
-        </div>
+        </Card>
 
-        <div className="info-card">
+        <Card className="info-card">
           <div className="card-header">
             <Mail size={20} />
             <h2>Contact & Sécurité</h2>
@@ -146,16 +144,16 @@ const ProfilePage = () => {
               />
             </div>
           </div>
-        </div>
+        </Card>
 
         {isEditing && (
           <div className="save-container">
-            <button type="submit" className="btn-save" disabled={isLoading}>
+            <Button type="submit" className="btn-save" disabled={isLoading}>
               <Save size={18} />{" "}
               {isLoading
                 ? "Enregistrement..."
                 : "Enregistrer les modifications"}
-            </button>
+            </Button>
           </div>
         )}
       </form>

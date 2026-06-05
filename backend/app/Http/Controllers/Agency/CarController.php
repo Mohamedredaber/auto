@@ -24,38 +24,44 @@ class CarController extends Controller
         ]);
     }
 
-    public function store(StoreCarRequest $request)
-    {
-        return DB::transaction(function () use ($request) {
-            $data = $request->validated();
-            unset($data['cover_image'], $data['images']);
+  public function store(StoreCarRequest $request)
+{
+    return DB::transaction(function () use ($request) {
+        $data = $request->validated();
 
-            $car = Car::create(array_merge($data, [
-                'agency_id' => Auth::user()->agency_id,
-            ]));
+        unset($data['cover_image'], $data['images']);
 
-            if ($request->hasFile('cover_image')) {
-                $path = $request->file('cover_image')->store('cars/covers', 'public');
+        $car = Car::create(array_merge($data, [
+            'agency_id' => Auth::user()->agency_id,
+        ]));
+
+        if ($request->hasFile('cover_image')) {
+            $path = $request->file('cover_image')->store('cars/covers', 'public');
+
+            $car->images()->create([
+                'url' => $path,
+                'is_cover' => true,
+            ]);
+        }
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('cars/gallery', 'public');
+
                 $car->images()->create([
                     'url' => $path,
-                    'is_cover' => true,
+                    'is_cover' => false,
                 ]);
             }
+        }
 
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store('cars/gallery', 'public');
-                    $car->images()->create([
-                        'url' => $path,
-                        'is_cover' => false,
-                    ]);
-                }
-            }
-
-            return (new CarResource($car->load(['coverImage', 'images'])))
-                ->additional(['success' => true, 'message' => 'Véhicule ajouté !']);
-        });
-    }
+        return (new CarResource($car->load(['coverImage', 'images'])))
+            ->additional([
+                'success' => true,
+                'message' => 'Véhicule ajouté !',
+            ]);
+    });
+}
 
     public function update(UpdateCarRequest $request, Car $car)
     {

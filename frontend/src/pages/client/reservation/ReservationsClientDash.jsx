@@ -4,6 +4,7 @@ import { fetchUserBookings, cancelBookingThunk } from '../../../features/client/
 import { selectBookingsSortedByDate, selectIsLoading } from '../../../features/client/clientSelectors';
 import BookingCard from './components/BookingCard';
 import { Link } from 'react-router-dom';
+import { Button } from '../../../components/ui';
 import './Bookings.css';
 
 const ReservationsClientDash = () => {
@@ -15,7 +16,7 @@ const ReservationsClientDash = () => {
     dispatch(fetchUserBookings());
   }, [dispatch]);
 
-  const handleCancel = (id) => {
+  const handleCancel = (id) => {  
     if (window.confirm("Voulez-vous vraiment annuler cette réservation ?")) {
       console.log(`Annulation de la réservation ${id}...`);
       dispatch(cancelBookingThunk(id));
@@ -34,7 +35,7 @@ const ReservationsClientDash = () => {
       {bookings.length === 0 ? (
         <div className="empty-state">
           <p>Aucune réservation trouvée.</p>
-          <Link to="/cars" className="btn-primary">Louer une voiture</Link>
+          <Button as={Link} to="/cars">Louer une voiture</Button>
         </div>
       ) : (
         <div className="bookings-grid">

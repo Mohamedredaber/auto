@@ -30,7 +30,6 @@ class StoreCarRequest extends FormRequest
             
             'cover_image'   => 'required|image|mimes:jpeg,png,jpg|max:2048', 
             
-            // Galerie d'images
             'images'        => 'nullable|array',
             'images.*'      => 'image|mimes:jpeg,png,jpg|max:2048', 
             'description'   => 'nullable|string',

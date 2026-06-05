@@ -12,15 +12,14 @@ const TopBar = () => {
   return (
     <header className="top-bar">
       <div className="top-bar-left">
-        {/* Hna t9der t-zid path bhal: Dashboard > Overview */}
-        
+
       </div>
 
       <div className="top-bar-right">
-        <button className="icon-btn" title="Notifications">
+        {/* <button className="icon-btn" title="Notifications">
           <BellIcon width={20} height={20} stroke="var(--color-text-muted)" />
           <span className="notification-dot"></span>
-        </button>
+        </button> */}
 
         <div className="divider-v"></div>
 
@@ -30,7 +29,7 @@ const TopBar = () => {
               {user?.full_name || `${user?.first_name} ${user?.last_name}`}
             </span>
 
-              <span className="user-role">{ role === "agency_manager" ? "Agency Manager" : "dashboard user"   }</span>
+              <span className="user-role">{ role === "admin_agency" ? "Agency Manager" : "dashboard user"   }</span>
           </div>
           
     

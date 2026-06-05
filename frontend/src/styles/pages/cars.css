@@ -32,7 +32,7 @@
 }
 
 .cars-hero__accent {
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
 }
 
 .cars-hero__sub {
@@ -42,7 +42,7 @@
 }
 
 .cars-hero__count {
-  color: var(--color-blue-400);
+  color: var(--color-primary-400);
   font-weight: var(--weight-semibold);
 }
 

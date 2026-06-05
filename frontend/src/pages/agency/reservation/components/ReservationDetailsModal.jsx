@@ -39,20 +39,19 @@ const ReservationDetailsModal = ({ booking, isOpen, onClose }) => {
   };
 
   const handleExport = () => {
-    const content = `
-DÉTAILS DE RÉSERVATION
+    const content = `DÉTAILS DE RÉSERVATION
 ${new Date().toLocaleDateString("fr-FR")}
 =====================================
 ID Réservation: RES-${booking.id}
-Client: ${booking.user.first_name} ${booking.user.last_name}
-Email: ${booking.user.email}
-Téléphone: ${booking.user.phone}
+Client: ${booking.user?.first_name ?? "—"} ${booking.user?.last_name ?? ""}
+Email: ${booking.user?.email ?? "—"}
+Téléphone: ${booking.user?.phone ?? "—"}
 
 VÉHICULE
-Marque: ${booking.car.brand}
-Modèle: ${booking.car.model}
-Année: ${booking.car.year}
-Immatriculation: ${booking.car.license_plate}
+Marque: ${booking.car?.brand ?? "—"}
+Modèle: ${booking.car?.model ?? ""}
+Année: ${booking.car?.year ?? "—"}
+Immatriculation: ${booking.car?.license_plate ?? "—"}
 
 PÉRIODE DE LOCATION
 Début: ${booking.start_date}
@@ -60,10 +59,10 @@ Fin: ${booking.end_date}
 Jours: ${calculateDays(booking.start_date, booking.end_date)}
 
 TARIFICATION
-Prix par jour: ${booking.car.price_per_day} MAD
-Total: ${booking.total_price} MAD
-Statut: ${statusLabels[booking.status]}
-    `;
+Prix par jour: ${booking.car?.price_per_day ?? "—"} MAD
+Total: ${booking.total_price ?? "—"} MAD
+Statut: ${statusLabels[booking.status] ?? booking.status}
+`;
 
     const element = document.createElement("a");
     element.setAttribute(
@@ -78,7 +77,7 @@ Statut: ${statusLabels[booking.status]}
   };
 
   const handleShare = () => {
-    const text = `Réservation RES-${booking.id}: ${booking.car.brand} ${booking.car.model} du ${booking.start_date} au ${booking.end_date} - ${booking.total_price} MAD`;
+    const text = `Réservation RES-${booking.id}: ${booking.car?.brand ?? ""} ${booking.car?.model ?? ""} du ${booking.start_date} au ${booking.end_date} - ${booking.total_price ?? "—"} MAD`;
 
     if (navigator.share) {
       navigator.share({
@@ -114,16 +113,17 @@ Statut: ${statusLabels[booking.status]}
             <div className="detail-row">
               <span className="label">Nom:</span>
               <span className="value">
-                {booking.user.first_name} {booking.user.last_name}
+                {booking.user?.first_name ?? "—"}{" "}
+                {booking.user?.last_name ?? ""}
               </span>
             </div>
             <div className="detail-row">
               <span className="label">Email:</span>
-              <span className="value">{booking.user.email}</span>
+              <span className="value">{booking.user?.email ?? "—"}</span>
             </div>
             <div className="detail-row">
               <span className="label">Téléphone:</span>
-              <span className="value">{booking.user.phone}</span>
+              <span className="value">{booking.user?.phone ?? "—"}</span>
             </div>
           </div>
 
@@ -133,20 +133,22 @@ Statut: ${statusLabels[booking.status]}
             <div className="detail-row">
               <span className="label">Marque & Modèle:</span>
               <span className="value">
-                {booking.car.brand} {booking.car.model}
+                {booking.car?.brand ?? "—"} {booking.car?.model ?? ""}
               </span>
             </div>
             <div className="detail-row">
               <span className="label">Année:</span>
-              <span className="value">{booking.car.year}</span>
+              <span className="value">{booking.car?.year ?? "—"}</span>
             </div>
             <div className="detail-row">
               <span className="label">Immatriculation:</span>
-              <span className="value">{booking.car.license_plate}</span>
+              <span className="value">{booking.car?.license_plate ?? "—"}</span>
             </div>
             <div className="detail-row">
               <span className="label">Prix/jour:</span>
-              <span className="value">{booking.car.price_per_day} MAD</span>
+              <span className="value">
+                {booking.car?.price_per_day ?? "—"} MAD
+              </span>
             </div>
           </div>
 

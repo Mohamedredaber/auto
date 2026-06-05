@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agency\AgencyProfileController;
 use App\Http\Controllers\Agency\AgencyClientController;
 use App\Http\Controllers\Agency\DashboardController;
+use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Public\AgencyPublicController;
 
 
+use App\Http\Controllers\ContactController;
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CarListingController::class, 'index']);
     Route::get('/{id}', [CarListingController::class, 'show']);
@@ -39,6 +41,7 @@ Route::post('/createbookings', [BookingController::class, 'store']);
 Route::middleware(['auth:sanctum', 'role:admin_agency'])
 ->prefix('agency') 
 ->group(function () {
+    Route::get('/statistics/export', [StatisticsController::class, 'exportReport']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/clients', [AgencyClientController::class, 'index']);
     Route::get('/clients/recent', [AgencyClientController::class, 'recent']);
@@ -53,7 +56,7 @@ Route::middleware(['auth:sanctum', 'role:admin_agency'])
             Route::get('/', [ReservationController::class, 'index']);
             Route::get('/{booking}', [ReservationController::class, 'show']);
             Route::patch('/{booking}', [ReservationController::class, 'update']);
-            Route::post('/{booking}/cancel', [ReservationController::class, 'cancel']);
+            Route::patch('/{booking}/cancel', [ReservationController::class, 'cancel']);
             Route::get('/stats/overview', [ReservationController::class, 'stats']);
             Route::get('/recent/{days?}', [ReservationController::class, 'recentBookings']);
     });
@@ -67,6 +70,7 @@ Route::middleware('auth:sanctum')
         Route::delete('/bookings/{id}/destroy', [ClientBookingController::class, 'destroy']);
         Route::get('/profile', [ClientBookingController::class, 'profile']);
         Route::post('/profile', [ClientBookingController::class, 'updateProfile']);
+        Route::get('/dashboard', [ClientDashboardController::class, 'getDashboardData']);
     });
 
 // Debug Routes (À SUPPRIMER EN PRODUCTION)
@@ -126,3 +130,15 @@ Route::prefix('super-admin')
         Route::get('/stats', [\App\Http\Controllers\super_admin\AdminStatsController::class, 'index']);
         Route::get('/dashboard', [\App\Http\Controllers\super_admin\AdminStatsController::class, 'dashboard']);
     });
+// routes/api.php
+
+// Public
+Route::post('/contact', [ContactController::class, 'store']);
+
+// Admin (protégé)
+Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+    Route::get('/contact',              [ContactController::class, 'index']);
+    Route::get('/contact/{contact}',    [ContactController::class, 'show']);
+    Route::post('/contact/{contact}/reply', [ContactController::class, 'reply']);
+    Route::delete('/contact/{contact}', [ContactController::class, 'destroy']);
+});

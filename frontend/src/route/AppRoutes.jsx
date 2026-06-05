@@ -30,6 +30,7 @@ import AdminCars from "../pages/admin/Cars";
 import CarDetails from "../pages/admin/CarDetails";
 import AdminCreateAgency from "../pages/admin/CreateAgency";
 import AdminAgencyDetails from "../pages/admin/AgencyDetails";
+
 import Reservations from "../pages/client/reservation/ReservationPage";
 import ReservationsClientDash from "../pages/client/reservation/ReservationsClientDash";
 import NotFound from "../pages/errors/NotFound";
@@ -45,6 +46,7 @@ import UserDetails from "../pages/admin/UserDetails";
 import AdminBookings from "../pages/admin/AdminBookings";
 import BookingDetails from "../pages/admin/BookingDetails";
 import AdminStats from "../pages/admin/AdminStats";
+
 
 export default function AppRoutes() {
   return (
@@ -121,6 +123,7 @@ export default function AppRoutes() {
             <Route path="/dashboard/admin/bookings" element={<AdminBookings />} />
             <Route path="/dashboard/admin/bookings/:id" element={<BookingDetails />} />
             <Route path="/dashboard/admin/stats" element={<AdminStats />} />
+
           </Route>
         </Route>
       </Route>
