@@ -28,8 +28,7 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        // 'password' => 'hashed',
-
+        // 'password' => 'hashed',  // ✅ Désactivé pour test en plaintext
     ];
     // ── Relations ──────────────────────────────────────────
     public function agency(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -59,5 +58,10 @@ class User extends Authenticatable
     public function getFullNameAttribute(): string
     {
         return trim("{$this->first_name} {$this->last_name}");
+    }
+    
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }

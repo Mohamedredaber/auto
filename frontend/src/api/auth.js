@@ -36,9 +36,8 @@ export const logout = async () => {
   return api.post("/auth/logout");
 };
 
-/**
- * 👤 Get current user
- */
+
 export const me = async () => {
+    await getCsrfToken(); 
   return api.get("/auth/me");
 };

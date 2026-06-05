@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Agency extends Model
 {
     use HasFactory;
+
+    public const STATUS_VERIFIED = 'verified';
+    public const STATUS_INVERIFIED = 'inverified';
+    public const STATUS_WAIT = 'wait';
+
     protected $fillable = [
         'agency_name',
         'city',
@@ -23,10 +28,13 @@ class Agency extends Model
     
 
     protected $casts = [
-        'is_verified'     => 'boolean',
         'accounts_social' => 'array',
         'latitude'        => 'float',
         'longitude'       => 'float',
+    ];
+
+    protected $appends = [
+        'logo_url',
     ];
     public function cars()
     {
@@ -36,7 +44,6 @@ class Agency extends Model
     {
         return $this->hasMany(User::class, 'agency_id');
     }
-        // L'admin de cette agence
     public function admin(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(User::class, 'agency_id');
@@ -46,5 +53,13 @@ class Agency extends Model
     public function getLogoUrlAttribute(): ?string
     {
         return $this->logo ? asset("storage/{$this->logo}") : null;
+    }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+    public function clients(){
+        return $this->hasManyThrough(User::class, Booking::class, 'agency_id', 'id', 'id', 'user_id')
+                    ->distinct();
     }
 }

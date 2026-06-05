@@ -1,0 +1,184 @@
+/* =============================================
+   FILTER BAR
+   ============================================= */
+
+.filterbar {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ───────── ROWS ───────── */
+
+.filterbar__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.filterbar__row--secondary {
+  justify-content: space-between;
+}
+
+/* ───────── SEARCH ───────── */
+
+.filterbar__search {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+}
+
+.filterbar__input {
+  width: 100%;
+  background: var(--color-bg-input);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 10px 40px 10px 38px;
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  transition: var(--transition-base);
+}
+
+.filterbar__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.filterbar__input:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-error-bg);
+}
+
+/* icon */
+.filterbar__search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  width: 16px;
+}
+
+/* clear btn */
+.filterbar__clear-input {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* ───────── SELECT ───────── */
+
+.filterbar__select-wrap {
+  min-width: 160px;
+}
+
+.filterbar__select {
+  width: 100%;
+  background: var(--color-bg-input);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 10px 12px;
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  transition: var(--transition-base);
+  cursor: pointer;
+}
+
+.filterbar__select:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-error-bg);
+}
+
+/* ───────── PRICE SLIDER ───────── */
+
+.filterbar__price-wrap {
+  flex: 1;
+  min-width: 260px;
+}
+
+.filterbar__price-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.filterbar__price-value {
+  color: var(--color-primary-500);
+  font-weight: var(--weight-semibold);
+}
+
+/* slider */
+.filterbar__slider {
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-border);
+  outline: none;
+}
+
+/* thumb */
+.filterbar__slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-primary-500);
+  cursor: pointer;
+  box-shadow: var(--shadow-red);
+  transition: var(--transition-fast);
+}
+
+.filterbar__slider::-webkit-slider-thumb:hover {
+  background: var(--color-primary-600);
+}
+
+/* ───────── RESET BUTTON ───────── */
+
+.filterbar__reset {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.filterbar__reset:hover {
+  border-color: var(--color-red-500);
+  color: var(--color-red-500);
+}
+
+/* ───────── RESPONSIVE ───────── */
+
+@media (max-width: 768px) {
+  .filterbar__row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterbar__row--secondary {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .filterbar__select-wrap {
+    width: 100%;
+  }
+}

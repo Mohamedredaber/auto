@@ -86,12 +86,12 @@
 .nav-item.active {
   background-color: var(--color-bg-card);
   color: var(--color-text-primary);
-  border-left-color: var(--color-blue-500);
+  border-left-color: var(--color-primary-500);
   font-weight: var(--weight-semibold);
 }
 
 .nav-icon-active {
-  color: var(--color-blue-500);
+  color: var(--color-primary-500);
 }
 
 /* Logout Button */

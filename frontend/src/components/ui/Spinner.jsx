@@ -1,5 +1,5 @@
 import React from "react";
-import "./Spinner.css"; // Assuming we create a CSS file for it
+import "./ui.css";
 
 const Spinner = ({ fullscreen = false }) => {
   const className = fullscreen ? "spinner fullscreen" : "spinner";

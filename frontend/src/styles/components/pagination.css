@@ -1,0 +1,43 @@
+/* =============================================
+   PAGINATION
+   ============================================= */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.pagination__info {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.pagination__controls {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.pagination__btn {
+  min-width: 40px;
+}
+
+.pagination__btn--active {
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.45) inset;
+}
+
+.pagination__ellipsis {
+  color: var(--color-text-muted);
+  padding: 0 var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

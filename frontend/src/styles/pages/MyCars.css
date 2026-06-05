@@ -1,4 +1,5 @@
-<<<<<<< HEAD
+/* MyCars.css - Fleet Management Styles */
+
 /* =============================================
    LAYOUT & GLOBAL
    ============================================= */
@@ -105,7 +106,7 @@
 .fleet-table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 6px; /* Espace vertical réduit */
+    border-spacing: 0 6px;
 }
 
 .fleet-table th {
@@ -133,6 +134,18 @@
 
 .car-row td:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
 .car-row td:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+.car-image-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-card);
+}
 
 .car-img-box {
     width: 50px;
@@ -187,15 +200,16 @@
 
 .stat-info span { font-size: 10px; color: var(--color-text-muted); text-transform: uppercase; font-weight: bold; }
 .stat-info h2 { font-size: var(--text-lg); font-weight: var(--weight-black); margin: 0; }
-=======
+
+/* Modal and table styles kept from the alternate branch */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Cachement partiel (Sombre) */
-    backdrop-filter: blur(4px); /* Effet de flou premium */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -225,7 +239,6 @@
     cursor: pointer;
 }
 
-/* Table styling (Compact & Dark) */
 .cars-table {
     width: 100%;
     border-collapse: collapse;
@@ -247,6 +260,5 @@
     margin-right: 15px;
 }
 
-.status-badge.available { color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 12px; font-size: 0.8rem;}
+.status-badge.available { color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; }
 /* Ajoutez les autres couleurs ici */
->>>>>>> dashagency

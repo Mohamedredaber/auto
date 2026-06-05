@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers\Public;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Booking;
+use App\Models\Car;
+use App\Services\BookingService;
+use Illuminate\Http\JsonResponse;
+use Exception;
+use App\Http\Resources\Public\CarCardResource;
+class BookingController extends Controller
+
+{
+    public function getCarForBooking(int $id)
+{
+    $car = Car::with('agency' ,'images' ,'coverImage' ,'bookings')->findOrFail($id);
+    
+    if ($car->coverImage) {
+        $car->coverImage->url = asset('storage/' . $car->coverImage->url);
+    }
+    
+    if ($car->images && $car->images->count() > 0) {
+        $car->images = $car->images->map(function ($image) {
+            $image->url = asset('storage/' . $image->url);
+            return $image;
+        });
+    }
+    
+    return response()->json($car);
+}
+    public function store(Request $request) 
+    {
+        $this->validate($request, [
+            'car_id' => 'required|exists:cars,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $car = Car::findOrFail($request->car_id);
+        $start = \Carbon\Carbon::parse($request->start_date);
+        $end = \Carbon\Carbon::parse($request->end_date);
+        $days = $start->diffInDays($end) ?: 1;
+
+        $service = new BookingService();
+
+        try {
+            $booking = $service->createBooking([
+                'car_id' => $car->id,
+                'user_id' => auth()->id(),
+                'agency_id' => $car->agency_id,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'total_price' => $days * $car->price_per_day,
+            ], auth()->user());
+
+            return response()->json(['success' => true, 'booking' => $booking], 201);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+        }
+}
+}

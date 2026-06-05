@@ -1,0 +1,194 @@
+/* =============================================
+   CAR CARD
+   ============================================= */
+
+.car-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+}
+
+.car-card:hover {
+  transform: translateY(-4px);
+  background: var(--color-bg-card-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ───────── IMAGE ───────── */
+
+.car-card__image-wrap {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.car-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-base);
+}
+
+.car-card:hover .car-card__image {
+  transform: scale(1.05);
+}
+
+/* year badge */
+.car-card__year {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  padding: 4px 8px;
+  font-size: var(--text-xs);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(6px);
+}
+
+/* ───────── BODY ───────── */
+
+.car-card__body {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ───────── TITLE ───────── */
+
+.car-card__title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.car-card__brand {
+  font-family: var(--font-heading);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.car-card__model {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ───────── PRICE ───────── */
+
+.car-card__price {
+  text-align: right;
+}
+
+.car-card__price-amount {
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  color: var(--color-primary-500);
+}
+
+.car-card__price-unit {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-left: 4px;
+}
+
+/* ───────── SPECS ───────── */
+
+.car-card__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.car-card__spec {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-input);
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.car-card__spec-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--color-primary-500);
+}
+
+/* ───────── ACTIONS ───────── */
+
+.car-card__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+/* base button */
+.car-card__btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+/* outline */
+.car-card__btn--outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.car-card__btn--outline:hover {
+  border-color: var(--color-primary-500);
+  color: var(--color-primary-500);
+}
+
+/* primary */
+.car-card__btn--primary {
+  background: var(--gradient-red);
+  border: none;
+  color: white;
+  box-shadow: var(--shadow-red);
+}
+
+.car-card__btn--primary:hover {
+  transform: translateY(-1px);
+  background: var(--color-red-600);
+}
+
+/* disabled */
+.car-card__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ───────── RESPONSIVE ───────── */
+
+@media (max-width: 768px) {
+  .car-card__image-wrap {
+    height: 160px;
+  }
+
+  .car-card__actions {
+    flex-direction: column;
+  }
+}
