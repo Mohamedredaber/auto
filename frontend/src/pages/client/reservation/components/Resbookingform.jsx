@@ -23,12 +23,7 @@ function fmt(dateStr) {
   return `${d}/${m}/${y}`;
 }
 
-export default function ResBookingForm({
-  car,
-  initialDepart,
-  initialRetour,
-  initialSubtotal,
-}) {
+export default function ResBookingForm({ car, initialDepart, initialRetour }) {
   const dispatch = useDispatch();
   const pricePerDay = parseFloat(car?.price_per_day) || 0;
 
@@ -58,6 +53,17 @@ export default function ResBookingForm({
     if (val >= retour) setRetour(addDays(val, 1));
   };
 
+  const formatBookingError = (err) => {
+    if (!err) return "Une erreur est survenue. Veuillez réessayer.";
+    if (typeof err === "string") return err;
+    if (err.message) return err.message;
+    if (err.errors) {
+      const firstError = Object.values(err.errors)[0];
+      return Array.isArray(firstError) ? firstError[0] : String(firstError);
+    }
+    return JSON.stringify(err);
+  };
+
   const handleSubmit = async () => {
     if (!car?.id) return;
     setSubmitting(true);
@@ -74,7 +80,7 @@ export default function ResBookingForm({
       setSubmitted(true);
       navigate("/dashboard/client/reservations");
     } catch (err) {
-      setError(err?.message || "Une erreur est survenue. Veuillez réessayer.");
+      setError(formatBookingError(err));
     } finally {
       setSubmitting(false);
     }
@@ -321,11 +327,11 @@ export default function ResBookingForm({
             )}
           </button>
 
-          <p className="res-legal" style={{ marginTop: "var(--space-3)" }}>
+          {/* <p className="res-legal" style={{ marginTop: "var(--space-3)" }}>
             En cliquant sur " réservation", vous acceptez nos{" "}
             <a href="#">Conditions Générales de Vente</a> et la{" "}
             <a href="#">Politique de Confidentialité</a> de l'agence.
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

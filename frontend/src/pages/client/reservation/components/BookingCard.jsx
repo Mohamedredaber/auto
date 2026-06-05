@@ -68,7 +68,7 @@ const BookingCard = ({ booking, onCancel }) => {
         </div>
 
         <div className="booking-actions">
-          <Button variant="secondary" size="sm">Details</Button>
+          {/* <Button variant="secondary" size="sm">Details</Button> */}
           {status === "pending" && (
             <Button
               variant="ghost"

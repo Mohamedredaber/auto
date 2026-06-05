@@ -13,7 +13,9 @@ import '../../../styles/pages/dashboard.css';
 const Sidebaradmin = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-
+  const tohome=()=>{
+    navigate('/')
+  }
   const navigate = useNavigate();
   const handlelogout = async () => {
     try {
@@ -38,7 +40,7 @@ const Sidebaradmin = () => {
   return (
     <aside className="sidebar">
     
-      <div className="sidebar-logo">
+      <div className="sidebar-logo" onClick={tohome}>
         <div className="logo-icon">
           <CarIcon width={24} height={24} stroke="white" />
         </div>

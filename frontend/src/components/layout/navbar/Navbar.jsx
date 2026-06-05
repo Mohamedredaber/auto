@@ -40,7 +40,7 @@ function Navbar() {
                         </NavLink>
                     </li>
 
-                    <li className="navbar__nav-item">
+                    {/* <li className="navbar__nav-item">
                         <NavLink
                             to="/contact"
                             className={({ isActive }) =>
@@ -51,7 +51,7 @@ function Navbar() {
                         >
                             Contact
                         </NavLink>
-                    </li>
+                    </li> */}
                 </ul>
 {!isAuth ?(
                 <div className="navbar__actions">

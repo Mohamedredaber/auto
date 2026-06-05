@@ -33,11 +33,13 @@ const Sidebarclient  = () => {
     { name : "profil", path : "/dashboard/client/profile", icon : UsersIcon},
     // { name : "settings", path : "/dashboard/client/settings", icon : SettingsIcon},
   ];
-
+  const tohome=()=>{
+    navigate('/')
+  }
   return (
     <aside className="sidebar">
     
-      <div className="sidebar-logo">
+      <div className="sidebar-logo" onClick={tohome}>
         <div className="logo-icon">
           <CarIcon width={24} height={24} stroke="white" />
         </div>
@@ -46,7 +48,7 @@ const Sidebarclient  = () => {
 
       {/* Menu Navigation */}
       <nav className="nav-menu">
-        <p className="nav-label">Gestion Agence</p>
+        <p className="nav-label">Gestion client</p>
         <ul className="nav-list">
           {agencyMenu.map((item) => {
             const Icon = item.icon;

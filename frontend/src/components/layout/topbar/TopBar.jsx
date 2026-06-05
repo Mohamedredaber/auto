@@ -29,7 +29,7 @@ const TopBar = () => {
               {user?.full_name || `${user?.first_name} ${user?.last_name}`}
             </span>
 
-              <span className="user-role">{ role === "agency_manager" ? "Agency Manager" : "dashboard user"   }</span>
+              <span className="user-role">{ role === "admin_agency" ? "Agency Manager" : "dashboard user"   }</span>
           </div>
           
      

@@ -35,7 +35,7 @@ Trouvez les meilleures agences de location de voitures au Maroc et voyagez en to
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/cars">Cars</Link></li>
-              <li><Link to="/contact">Contact Us</Link></li>
+              {/* <li><Link to="/contact">Contact Us</Link></li> */}
               <li><Link to="/register-agency">Register Agency</Link></li>
             </ul>
           </div>

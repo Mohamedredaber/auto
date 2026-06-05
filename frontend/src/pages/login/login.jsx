@@ -141,7 +141,7 @@ export default function Login() {
                 )}
               </div>
 
-              <div className="lp-remember">
+              {/* <div className="lp-remember">
                 <label className="lp-checkbox-wrap">
                   <input
                     id="lRemember"
@@ -152,7 +152,7 @@ export default function Login() {
                   <span className="lp-checkbox-lbl">Se souvenir de moi</span>
                 </label>
                 <a href="#" className="lp-forgot">Mot de passe oublié ?</a>
-              </div>
+              </div> */}
 
               {/* Actions */}
               <div className="lp-btn-actions">

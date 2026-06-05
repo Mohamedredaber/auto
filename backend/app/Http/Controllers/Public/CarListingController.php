@@ -35,7 +35,7 @@ class CarListingController extends Controller
             ], 500);
         }
     }
-    public function show($id)
+    public function show(int $id)
     {
         try {
             $car = Car::with(['images', 'agency','bookings'])->findOrFail($id);
