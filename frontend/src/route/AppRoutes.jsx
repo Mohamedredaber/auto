@@ -41,6 +41,7 @@ import ReservationPage from "../pages/client/reservation/ReservationPage";
 import StatisticsPage from "../pages/agency/statistique/StatisticsPage";
 import MyCars from "../pages/agency/mycars/MyCars";
 import AdminUsers from "../pages/admin/AdminUsers";
+import UserDetails from "../pages/admin/UserDetails";
 
 export default function AppRoutes() {
   return (
@@ -113,6 +114,7 @@ export default function AppRoutes() {
             <Route path="/dashboard/admin/cars" element={<AdminCars />} />
             <Route path="/dashboard/admin/cars/:id" element={<CarDetails />} />
             <Route path="/dashboard/admin/users" element={<AdminUsers />} />
+            <Route path="/dashboard/admin/users/:id" element={<UserDetails />} />
           </Route>
         </Route>
       </Route>

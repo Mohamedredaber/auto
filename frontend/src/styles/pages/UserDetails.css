@@ -1,0 +1,110 @@
+.user-details-page {
+  padding: 24px;
+  background: #12121a;
+  min-height: 100vh;
+}
+
+.back-btn {
+  border: 1px solid #374151;
+  background: #1a1a24;
+  color: #f8fafc;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.back-btn:hover {
+  background: #374151;
+}
+
+.user-details-page h1 {
+  margin-bottom: 20px;
+  color: #f8fafc;
+  text-transform: capitalize;
+}
+
+.user-card {
+  max-width: 850px;
+  background: #1a1a24;
+  border: 1px solid #374151;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #1f2937;
+  color: #f8fafc;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.user-card h2 {
+  color: #f8fafc;
+  margin-bottom: 6px;
+}
+
+.user-card p {
+  color: #cbd5e1;
+}
+
+.details-table {
+  max-width: 850px;
+  background: #1a1a24;
+  border: 1px solid #374151;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.details-table div {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  border-bottom: 1px solid #374151;
+}
+
+.details-table div:last-child {
+  border-bottom: none;
+}
+
+.details-table span {
+  padding: 14px 16px;
+  background: #1f2937;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.details-table strong {
+  padding: 14px 16px;
+  color: #f8fafc;
+  font-weight: 500;
+}
+
+.user-state {
+  padding: 30px;
+  text-align: center;
+  color: #f8fafc;
+}
+
+.user-state.error {
+  color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .details-table div {
+    grid-template-columns: 1fr;
+  }
+
+  .user-card {
+    align-items: flex-start;
+  }
+}

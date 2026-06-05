@@ -1,5 +1,6 @@
 import { useEffect , useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   Search,
   Filter,
@@ -34,15 +35,23 @@ import {
 import "../../styles/pages/AdminAgenciesPage.css";
 
 import {fetchAdminUsersStats} from "../../api/adminUserApi";
+import AdminUserForm from "../../components/admin/AdminUserForm";
 
+import {
+  createAdminUserThunk,
+  updateAdminUserThunk,
+} from "../../features/adminUsers/adminUsersThunks";
 
 export default function AdminUsers() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const users = useSelector(selectAdminUsers);
   const pagination = useSelector(selectAdminUsersPagination);
   const loading = useSelector(selectAdminUsersLoading);
   const error = useSelector(selectAdminUsersError);
+  const [formOpen, setFormOpen] = useState(false);
+  const [formMode, setFormMode] = useState("create");
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const filters = useSelector((state) => state.adminUsers.filters);
   const initialStats = {
@@ -70,10 +79,7 @@ export default function AdminUsers() {
         fetchStats();
     }, []);
 
-  const totalUsers = userStats.total_users || 0;
-  const totalClients = userStats.total_clients || 0;
-  const totalAgencyAdmins = userStats.total_admin_agencies || 0;
-  const totalSuperAdmins = userStats.total_super_admins || 0;
+  
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -90,6 +96,9 @@ export default function AdminUsers() {
     dispatch(resetFilters());
   };
 
+  const handleDetailsClick = (id) => {
+    navigate(`/dashboard/admin/users/${id}`);
+  }
   const handlePage = (url) => {
     if (!url) return;
 
@@ -102,7 +111,53 @@ export default function AdminUsers() {
       })
     );
   };
+ const handleFormClose = () => {
+    setFormOpen(false);
+    setSelectedUser(null);
+    setFormMode("create");
+  };
 
+    const handleFormSubmit = async (values) => {
+  try {
+    if (formMode === "edit") {
+      await dispatch(
+        updateAdminUserThunk({
+          userId: selectedUser.id,
+          userData: values,
+        })
+      ).unwrap();
+    } else {
+      await dispatch(
+        createAdminUserThunk(values)
+      ).unwrap();
+    }
+
+    setFormOpen(false);
+    setSelectedUser(null);
+
+    dispatch(fetchAdminUsersThunk(filters));
+
+    Swal.fire({
+      icon: "success",
+      title:
+        formMode === "create"
+          ? "Utilisateur créé"
+          : "Utilisateur modifié",
+      timer: 1500,
+      showConfirmButton: false,
+      background: "#111827",
+      color: "#f9fafb",
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Erreur",
+      text: error?.message || "Une erreur est survenue",
+      background: "#111827",
+      color: "#f9fafb",
+    });
+  }
+};
   const handleDeleteUser = async (user) => {
     const result = await Swal.fire({
       title: "Supprimer l'utilisateur ?",
@@ -151,53 +206,60 @@ export default function AdminUsers() {
           </div>
         </div>
 
-        <button className="btn-add">
+        <button
+          className="btn-add"
+          onClick={() => {
+            setFormMode("create");
+            setSelectedUser(null);
+            setFormOpen(true);
+          }}
+        >
           <Plus size={16} />
           Créer un utilisateur
         </button>
       </div>
 
-      <div className="admin-agencies-stats">
-        <div className="stat-card">
-          <div className="stat-icon red">
-            <Users size={20} />
-          </div>
-          <div className="stat-content">
-            <span className="stat-label">Total utilisateurs</span>
-            <span className="stat-value">{totalUsers}</span>
-          </div>
-        </div>
+     <div className="admin-agencies-stats">
+  <div className="stat-card">
+    <div className="stat-icon red">
+      <Users size={20} />
+    </div>
+    <div className="stat-content">
+      <span className="stat-label">Total utilisateurs</span>
+      <span className="stat-value">{userStats.total_users}</span>
+    </div>
+  </div>
 
-        <div className="stat-card">
-          <div className="stat-icon green">
-            <UserCheck size={20} />
-          </div>
-          <div className="stat-content">
-            <span className="stat-label">Clients</span>
-            <span className="stat-value">{totalClients}</span>
-          </div>
-        </div>
+  <div className="stat-card">
+    <div className="stat-icon green">
+      <UserCheck size={20} />
+    </div>
+    <div className="stat-content">
+      <span className="stat-label">Clients</span>
+      <span className="stat-value">{userStats.total_clients}</span>
+    </div>
+  </div>
 
-        <div className="stat-card">
-          <div className="stat-icon yellow">
-            <Building2 size={20} />
-          </div>
-          <div className="stat-content">
-            <span className="stat-label">Admins agences</span>
-            <span className="stat-value">{totalAgencyAdmins}</span>
-          </div>
-        </div>
+  <div className="stat-card">
+    <div className="stat-icon yellow">
+      <Building2 size={20} />
+    </div>
+    <div className="stat-content">
+      <span className="stat-label">Admins agences</span>
+      <span className="stat-value">{userStats.total_admin_agencies}</span>
+    </div>
+  </div>
 
-        <div className="stat-card">
-          <div className="stat-icon green">
-            <ShieldCheck size={20} />
-          </div>
-          <div className="stat-content">
-            <span className="stat-label">Super admins</span>
-            <span className="stat-value">{totalSuperAdmins}</span>
-          </div>
-        </div>
-      </div>
+  <div className="stat-card">
+    <div className="stat-icon green">
+      <ShieldCheck size={20} />
+    </div>
+    <div className="stat-content">
+      <span className="stat-label">Super admins</span>
+      <span className="stat-value">{userStats.total_super_admins}</span>
+    </div>
+  </div>
+</div>
 
       <div className="admin-agencies-filters">
         <div className="search-box">
@@ -308,12 +370,22 @@ export default function AdminUsers() {
 
                     <td>
                       <div className="table-actions">
-                        <button className="action-btn view" title="Voir détails">
+                        <button 
+                        className="action-btn view" title="Voir détails"
+                        onClick={() => handleDetailsClick(user.id)}
+                        >
                           <Eye size={16} />
                         </button>
 
-                        <button className="action-btn edit" title="Modifier">
-                          <Edit size={16} />
+            <button
+              className="action-btn edit"
+              title="Modifier"
+              onClick={() => {
+                setFormMode("edit");
+                setSelectedUser(user);
+                setFormOpen(true);
+              }}
+            >                          <Edit size={16} />
                         </button>
 
                         <button
@@ -358,6 +430,14 @@ export default function AdminUsers() {
           </div>
         )}
       </div>
+
+      <AdminUserForm
+        isOpen={formOpen}
+        mode={formMode}
+        initialData={selectedUser}
+        onClose={handleFormClose}
+        onSubmit={handleFormSubmit}
+      />
     </div>
   );
 }
