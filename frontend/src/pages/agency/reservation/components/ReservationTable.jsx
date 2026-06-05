@@ -46,72 +46,81 @@ const ReservationTable = ({ bookings, isLoading }) => {
   return (
     <>
       <DataTable className="table-wrapper">
-      <table className="visily-table ui-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Client</th>
-            <th>Véhicule</th>
-            <th>Période</th>
-            <th>Total (MAD)</th>
-            <th>Statut</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bookings.map((booking) => (
-            <tr key={booking.id}>
-              <td className="text-muted">RES-{booking.id}</td>
-              <td>
-                <div className="client-cell">
-                  <div className="avatar-sm">
-                    {booking.user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="client-info">
-                    <span className="client-name">
-                      {booking.user.name}
-                    </span>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div className="vehicle-info">
-                  <strong>
-                    {booking.car.brand} {booking.car.model}
-                  </strong>
-                  <span className="text-xs text-muted">
-                    ANNEE {booking.car.year}
-                  </span>
-                </div>
-              </td>
-              <td>
-                <div className="period-cell">
-                  <div>
-                    <span className="label">Début:</span> {booking.start_date}
-                  </div>
-                  <div>
-                    <span className="label">Fin:</span> {booking.end_date}
-                  </div>
-                </div>
-              </td>
-              <td className="price-cell">{booking.total_price} DH</td>
-              <td>
-                <span className={`badge badge-${booking.status}`}>
-                  {booking.status === "canceled" ? "Annulée" : booking.status}
-                </span>
-              </td>
-              <td>
-                <ActionMenu
-                  booking={booking}
-                  onViewDetails={handleViewDetails}
-                  onEditStatus={handleEditStatus}
-                  onCancel={handleCancel}
-                />
-              </td>
+        <table className="visily-table ui-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Client</th>
+              <th>Véhicule</th>
+              <th>Période</th>
+              <th>Total (MAD)</th>
+              <th>Statut</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {bookings.map((booking) => (
+              <tr key={booking?.id ?? Math.random()}>
+                <td className="text-muted">RES-{booking?.id ?? "—"}</td>
+                <td>
+                  <div className="client-cell">
+                    <div className="avatar-sm">
+                      {booking?.user?.name
+                        ? booking.user.name.charAt(0).toUpperCase()
+                        : "?"}
+                    </div>
+                    <div className="client-info">
+                      <span className="client-name">
+                        {booking?.user?.name ?? "Client supprimé"}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  {booking?.car ? (
+                    <div className="vehicle-info">
+                      <strong>
+                        {booking.car.brand} {booking.car.model}
+                      </strong>
+                      <span className="text-xs text-muted">
+                        ANNEE {booking.car.year}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="vehicle-info vehicle-missing">
+                      <strong>Véhicule supprimé</strong>
+                      <span className="text-xs text-muted">—</span>
+                    </div>
+                  )}
+                </td>
+                <td>
+                  <div className="period-cell">
+                    <div>
+                      <span className="label">Début:</span> {booking.start_date}
+                    </div>
+                    <div>
+                      <span className="label">Fin:</span> {booking.end_date}
+                    </div>
+                  </div>
+                </td>
+                <td className="price-cell">{booking.total_price} DH</td>
+                <td>
+                  <span className={`badge badge-${booking.status}`}>
+                    {booking.status === "canceled" ? "Annulée" : booking.status}
+                  </span>
+                </td>
+                <td>
+                  <ActionMenu
+                    booking={booking}
+                    onViewDetails={handleViewDetails}
+                    onEditStatus={handleEditStatus}
+                    onCancel={handleCancel}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </DataTable>
 
       <ReservationDetailsModal

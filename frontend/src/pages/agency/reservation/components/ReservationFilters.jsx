@@ -34,17 +34,17 @@ const ReservationFilters = ({ filters, setFilters }) => {
           </select>
         </div>
 
-        <Button variant="secondary" className="filter-btn">
+        {/* <Button variant="secondary" className="filter-btn">
           <MapPin size={16} /> Ville
-        </Button>
+        </Button> */}
 
-        <Button variant="secondary" className="filter-btn">
+        {/* <Button variant="secondary" className="filter-btn">
           <CalendarIcon size={16} /> Date
-        </Button>
+        </Button> */}
 
-        <Button variant="primary" className="btn-primary-pink">
+        {/* <Button variant="primary" className="btn-primary-pink">
           Nouvelle Réservation
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
