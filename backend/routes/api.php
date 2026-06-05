@@ -122,4 +122,7 @@ Route::prefix('super-admin')
         Route::put('/bookings/{id}', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'update']);
         Route::patch('/bookings/{id}', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'update']);
         Route::delete('/bookings/{id}', [\App\Http\Controllers\super_admin\AdminBookingController::class, 'destroy']);
+
+        Route::get('/stats', [\App\Http\Controllers\super_admin\AdminStatsController::class, 'index']);
+        Route::get('/dashboard', [\App\Http\Controllers\super_admin\AdminStatsController::class, 'dashboard']);
     });

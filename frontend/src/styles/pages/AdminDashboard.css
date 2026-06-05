@@ -1,0 +1,429 @@
+.admin-dashboard-page {
+  min-height: 100vh;
+  padding: 24px;
+  background: #0a0a0f;
+  color: #ffffff;
+}
+
+.dashboard-error {
+  color: #dc2626;
+}
+
+.dashboard-header {
+  margin-bottom: 28px;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.dashboard-header p {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* ===========================
+   CARDS
+=========================== */
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.dashboard-card {
+  background: #12121a;
+  border: 1px solid #2d2d3a;
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.25s ease;
+}
+
+.dashboard-card:hover {
+  border-color: #3d3d4a;
+  transform: translateY(-2px);
+}
+
+.dashboard-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+}
+
+/* Revenue */
+.dashboard-card:nth-child(1) .dashboard-card-icon {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+/* Cars */
+.dashboard-card:nth-child(2) .dashboard-card-icon {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+/* Users */
+.dashboard-card:nth-child(3) .dashboard-card-icon {
+  background: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+}
+
+/* Bookings */
+.dashboard-card:nth-child(4) .dashboard-card-icon {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+/* Agencies */
+.dashboard-card:nth-child(5) .dashboard-card-icon {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.dashboard-card p {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.dashboard-card h2 {
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* ===========================
+   PANELS
+=========================== */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.dashboard-bottom-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+}
+
+.dashboard-panel {
+  background: #12121a;
+  border: 1px solid #2d2d3a;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.dashboard-panel h2 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+}
+
+/* ===========================
+   STATUS BLOCKS
+=========================== */
+
+.status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a24;
+  border: 1px solid #2d2d3a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: all 0.25s ease;
+}
+
+.status-row:hover {
+  border-color: #3d3d4a;
+}
+
+.status-row span {
+  color: #6b7280;
+}
+
+.status-row strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* ===========================
+   TABLE
+=========================== */
+
+.dashboard-table-wrapper {
+  overflow-x: auto;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-table th {
+  color: #6b7280;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid #2d2d3a;
+  padding: 14px 12px;
+  text-align: left;
+}
+
+.dashboard-table td {
+  color: #ffffff;
+  padding: 14px 12px;
+  border-bottom: 1px solid #1a1a24;
+}
+
+.dashboard-table tr:hover {
+  background: #1a1a24;
+}
+
+.empty-row {
+  text-align: center;
+  color: #6b7280;
+  padding: 24px;
+}
+
+/* ===========================
+   STATUS BADGES
+=========================== */
+
+.dashboard-status {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.dashboard-status.confirmed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.dashboard-status.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.dashboard-status.canceled {
+  background: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+}
+
+.dashboard-status.completed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+/* ===========================
+   USERS
+=========================== */
+
+.dashboard-users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-user-item {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  background: #1a1a24;
+  border: 1px solid #2d2d3a;
+  border-radius: 12px;
+  padding: 12px;
+  transition: all 0.25s ease;
+}
+
+.dashboard-user-item:hover {
+  border-color: #3d3d4a;
+}
+
+.dashboard-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #252532;
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.dashboard-user-item strong {
+  display: block;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.dashboard-user-item p {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.role-pill {
+  background: #252532;
+  border: 1px solid #3d3d4a;
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #12121a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3d3d4a;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+
+/* Card icon colors */
+.dashboard-card:nth-child(1) .dashboard-card-icon {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.dashboard-card:nth-child(2) .dashboard-card-icon {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.dashboard-card:nth-child(3) .dashboard-card-icon {
+  background: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+}
+
+.dashboard-card:nth-child(4) .dashboard-card-icon {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.dashboard-card:nth-child(5) .dashboard-card-icon {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+/* Booking status */
+.dashboard-status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dashboard-status.confirmed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.dashboard-status.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.dashboard-status.canceled {
+  background: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+}
+
+.dashboard-status.completed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+/* Role colors */
+.role-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.role-pill.role-client {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.role-pill.role-admin_agency {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.role-pill.role-super_admin {
+  background: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+}
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 1200px) {
+  .dashboard-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid,
+  .dashboard-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-user-item {
+    grid-template-columns: 46px 1fr;
+  }
+
+  .role-pill {
+    grid-column: 2;
+    width: fit-content;
+  }
+}
